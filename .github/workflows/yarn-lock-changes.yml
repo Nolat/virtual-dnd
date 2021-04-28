@@ -1,0 +1,16 @@
+name: yarn-lock-changes
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  yarn-lock-changes:
+    steps:
+      - name: Yarn Lock Changes
+        uses: Simek/yarn-lock-changes@main 
+        with:
+          path: 'yarn.lock'
+          token: ${{ secrets.GITHUB_TOKEN }}

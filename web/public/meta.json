@@ -1,0 +1,50 @@
+{
+  "name": "web",
+  "plugins": [
+    {
+      "name": "Chakra UI",
+      "description": "Chakra UI is a simple, modular and accessible component library that gives you the building blocks you need to build your React applications.",
+      "url": "https://chakra-ui.com/docs/getting-started"
+    },
+    {
+      "name": "CSS / styled-jsx",
+      "description": "Next.js comes with built-in support for CSS and styled-jsx. Styled-jsx is full, scoped and component-friendly CSS support for JSX (rendered on the server or the client).",
+      "url": "https://github.com/vercel/styled-jsx"
+    },
+    {
+      "name": "Storybook",
+      "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue, Angular, and more. It makes building stunning UIs organized and efficient.",
+      "url": "https://storybook.js.org/docs/react/get-started/introduction"
+    },
+    {
+      "name": "Environment Variables",
+      "description": "Use environment variables in your next.js project for server side, client or both.",
+      "url": "https://github.com/vercel/next.js/tree/canary/examples/environment-variables"
+    },
+    {
+      "name": "Reverse Proxy",
+      "description": "Proxying some URLs can be useful when you have a separate API backend development server and you want to send API requests on the same domain.",
+      "url": "https://webpack.js.org/configuration/dev-server/#devserverproxy"
+    },
+    {
+      "name": "Bundle Analyzer",
+      "description": "Use webpack-bundle-analyzer in your Next.js project. Visualize size of webpack output files with an interactive zoomable treemap.",
+      "url": "https://github.com/vercel/next.js/tree/canary/packages/next-bundle-analyzer"
+    },
+    {
+      "name": "Testing Library",
+      "description": "The React Testing Library is a very light-weight solution for testing React components. It provides light utility functions on top of react-dom and react-dom/test-utils.",
+      "url": "https://testing-library.com/docs/"
+    },
+    {
+      "name": "Cypress",
+      "description": "Fast, easy and reliable testing for anything that runs in a browser.",
+      "url": "https://docs.cypress.io/guides/overview/why-cypress.html"
+    },
+    {
+      "name": "Github Actions",
+      "description": "GitHub Actions makes it easy to automate all your software workflows, now with world-class CI/CD. Build, test, and deploy your code right from GitHub.",
+      "url": "https://docs.github.com/en/actions"
+    }
+  ]
+}

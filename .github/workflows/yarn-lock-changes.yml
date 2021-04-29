@@ -8,6 +8,12 @@ on:
 
 jobs:
   yarn-lock-changes:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
     steps:
       - name: Yarn Lock Changes
         uses: Simek/yarn-lock-changes@main 

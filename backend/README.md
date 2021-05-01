@@ -1,10 +1,10 @@
 <p align="center">
-  <h1 align="center">Virtual D&D Web</h1>
+  <h1 align="center">Virtual D&D Backend</h1>
 </p>
 
 <p align="center">
-  <img alt="Version v0.1.0" src="https://img.shields.io/static/v1?label=version&message=v0.1.0&color=black&style=for-the-badge">
-  <img alt="Continuous Integration status" src="https://img.shields.io/github/workflow/status/Nolat/virtual-dnd/ci-web?label=CI&style=for-the-badge">
+  <img alt="Backend version v0.1.0" src="https://img.shields.io/static/v1?label=backend%20version&message=v0.1.0&color=black&style=for-the-badge">
+  <img alt="Backend Continuous Integration status" src="https://img.shields.io/github/workflow/status/Nolat/virtual-dnd/ci-backend?label=BACKEND%20CI&style=for-the-badge">
   <a href="https://github.com/Nolat/virtual-dnd/blob/main/LICENSE" target="_blank">
     <img alt="License: GPL-3.0" src="https://img.shields.io/github/license/Nolat/virtual-dnd?color=33CC12&style=for-the-badge" target="_blank" />
   </a>
@@ -19,7 +19,7 @@
 
 ## What is this folder?
 
-This folder contains the Next.js frontend of the application.
+This folder contains the Nest.js backend server of the application.
 
 ## Contributing
 
@@ -35,17 +35,11 @@ This folder contains the Next.js frontend of the application.
     yarn dev
 ```
 
-### 📕 Running storybook
-
-```bash
-    yarn storybook
-```
-
 ### ✅ Running the tests
 
 ```bash
     yarn test
-    yarn crypress:run
+    yarn test:e2e
 ```
 
 ### 👷 Building for production
@@ -57,7 +51,7 @@ This folder contains the Next.js frontend of the application.
 ### 🚀 Running the production server
 
 ```bash
-    yarn start
+    yarn start:prod
 ```
 
 ---

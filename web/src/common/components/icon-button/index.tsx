@@ -7,7 +7,12 @@ import {
 
 export const IconButton: React.FC<IconButtonProps> = ({ tooltip, tooltipPlacement, ...props }) => {
   return (
-    <Tooltip hasArrow label={tooltip} placement={tooltipPlacement}>
+    <Tooltip
+      data-testid="icon-button-tooltip"
+      hasArrow
+      label={tooltip}
+      placement={tooltipPlacement}
+    >
       <CIconButton data-testid="icon-button" variant="outline" {...props} />
     </Tooltip>
   );

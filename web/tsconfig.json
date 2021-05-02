@@ -33,6 +33,6 @@
       "test": ["test"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx","test/index.jsx"],
   "exclude": ["node_modules", "test/*", "cypress/*"]
 }

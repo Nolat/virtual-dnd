@@ -25,6 +25,8 @@
       "modules": ["src/modules"],
       "pages/*": ["src/pages/*"],
       "pages": ["src/pages"],
+      "modules/*": ["src/modules/*"],
+      "modules": ["src/modules"],
       "public/*": ["public/*"],
       "public": ["public"],
       "test/*": ["test/*"],

@@ -1,5 +1,6 @@
 import { ChakraProvider, cookieStorageManager, localStorageManager } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
+import { Provider as SessionProvider } from "next-auth/client";
 import { AppProps } from "next/app";
 
 import { Container } from "components/container";
@@ -12,9 +13,11 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
 
   return (
     <ChakraProvider resetCSS colorModeManager={colorModeManager} theme={theme}>
-      <Container>
-        <Component {...pageProps} />
-      </Container>
+      <SessionProvider session={pageProps.session}>
+        <Container>
+          <Component {...pageProps} />
+        </Container>
+      </SessionProvider>
     </ChakraProvider>
   );
 }

@@ -2353,7 +2353,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/react@npm:^1.1.4":
+"@chakra-ui/react@npm:^1.6.0":
   version: 1.6.0
   resolution: "@chakra-ui/react@npm:1.6.0"
   dependencies:
@@ -6227,10 +6227,10 @@ __metadata:
     prettier-plugin-import-sort: ^0.0.6
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^6.6.6
+    rxjs: ^7.0.0
     supertest: ^6.1.3
     ts-jest: ^26.5.4
-    ts-loader: ^8.0.18
+    ts-loader: ^9.1.1
     ts-node: ^9.1.1
     tsconfig-paths: ^3.9.0
     typeorm: ^0.2.32
@@ -6243,7 +6243,7 @@ __metadata:
   resolution: "@virtual-dnd/web@workspace:web"
   dependencies:
     "@babel/core": ^7.12.10
-    "@chakra-ui/react": ^1.1.4
+    "@chakra-ui/react": ^1.6.0
     "@emotion/react": ^11.1.4
     "@emotion/styled": ^11.0.0
     "@next/bundle-analyzer": ^10.2.0
@@ -10564,7 +10564,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^4.0.0, enhanced-resolve@npm:^4.5.0":
+"enhanced-resolve@npm:^4.5.0":
   version: 4.5.0
   resolution: "enhanced-resolve@npm:4.5.0"
   dependencies:
@@ -10575,7 +10575,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.7.0":
+"enhanced-resolve@npm:^5.0.0, enhanced-resolve@npm:^5.7.0":
   version: 5.8.0
   resolution: "enhanced-resolve@npm:5.8.0"
   dependencies:
@@ -19167,12 +19167,21 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^6.3.3, rxjs@npm:^6.6.0, rxjs@npm:^6.6.3, rxjs@npm:^6.6.6, rxjs@npm:^6.6.7":
+"rxjs@npm:^6.3.3, rxjs@npm:^6.6.0, rxjs@npm:^6.6.3, rxjs@npm:^6.6.7":
   version: 6.6.7
   resolution: "rxjs@npm:6.6.7"
   dependencies:
     tslib: ^1.9.0
   checksum: 1146975cbd5388ee5e61450235dc5670931e43cce71813f567977d334acc4d75c6e8d9d293df67e1fb31510b99fc8957943d4a9b550d109e4dc69967a8471543
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "rxjs@npm:7.0.0"
+  dependencies:
+    tslib: ~2.1.0
+  checksum: e0d08420f94474c73a14e57b7a1bcbf7010791817e06e5a16a998a8e151b89bd0b4a4883203cb86906a81b0e052cb99cfe3d96b652de4c744282f4d60a51d73e
   languageName: node
   linkType: hard
 
@@ -21021,19 +21030,18 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^8.0.18":
-  version: 8.2.0
-  resolution: "ts-loader@npm:8.2.0"
+"ts-loader@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "ts-loader@npm:9.1.1"
   dependencies:
     chalk: ^4.1.0
-    enhanced-resolve: ^4.0.0
-    loader-utils: ^2.0.0
+    enhanced-resolve: ^5.0.0
     micromatch: ^4.0.0
     semver: ^7.3.4
   peerDependencies:
     typescript: "*"
     webpack: "*"
-  checksum: c34c66e5193b234e9b2bca3a6ad21a25fc22fb05ac1c9b2e3b6c655adc431033bac60a36c1d0c9caea473ea91748e29f41bf91f25fad3930a32c06cbdee7d9f3
+  checksum: d74d6fa6846b27763ae5927dc0f07d156909e8d5302e1514668da7404c89ad0494b656b6a971a89c344d34d419b5b63db24346cfea1a4b03a2ee539b66d10629
   languageName: node
   linkType: hard
 

@@ -4,6 +4,7 @@ import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 import { buildSchema } from "type-graphql";
 
+import { UserResolver } from "modules/api/resolvers/User.resolver";
 import { connection, initializeDatabase } from "modules/database";
 
 let handler;
@@ -13,7 +14,7 @@ const bootstrap = async () => {
 
   if (!handler) {
     const schema = await buildSchema({
-      resolvers: [null]
+      resolvers: [UserResolver]
     });
 
     const server = new ApolloServer({ schema });

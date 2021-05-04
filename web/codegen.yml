@@ -1,0 +1,19 @@
+overwrite: true
+schema: ${SCHEMA_PATH}
+documents: "src/common/definitions/graphql/**/*.gql"
+generates:
+  src/common/definitions/graphql/generated.ts:
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      fetcher:
+        endpoint: ${API_ENDPOINT}
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+    - eslint --fix

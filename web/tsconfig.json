@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "esnext.asynciterable"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -12,6 +12,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
@@ -19,6 +21,8 @@
       "components": ["src/common/components"],
       "definitions/*": ["src/common/definitions/*"],
       "definitions": ["src/common/definitions"],
+      "modules/*": ["src/modules/*"],
+      "modules": ["src/modules"],
       "pages/*": ["src/pages/*"],
       "pages": ["src/pages"],
       "public/*": ["public/*"],

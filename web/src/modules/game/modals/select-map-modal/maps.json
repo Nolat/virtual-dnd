@@ -1,0 +1,46 @@
+{
+  "list": [
+    {
+      "id": 1,
+      "name": "Sacred Spring",
+      "width": 16,
+      "height": 16,
+      "imageUrl": "https://mk0a2minutetabl7hq7i.kinstacdn.com/wp-content/uploads/2021/04/Sacred-Spring-battle-map-Cropped.jpg.webp"
+    },
+    {
+      "id": 2,
+      "name": "Desert Ruins",
+      "width": 16,
+      "height": 16,
+      "imageUrl": "https://via.placeholder.com/200"
+    },
+    {
+      "id": 3,
+      "name": "Autumn Stream",
+      "width": 16,
+      "height": 16,
+      "imageUrl": "https://via.placeholder.com/200"
+    },
+    {
+      "id": 4,
+      "name": "City Gates",
+      "width": 16,
+      "height": 16,
+      "imageUrl": "https://via.placeholder.com/200"
+    },
+    {
+      "id": 5,
+      "name": "Celestial Temple",
+      "width": 16,
+      "height": 16,
+      "imageUrl": "https://via.placeholder.com/200"
+    },
+    {
+      "id": 6,
+      "name": "Underground Highway",
+      "width": 16,
+      "height": 16,
+      "imageUrl": "https://via.placeholder.com/200"
+    }
+  ]
+}

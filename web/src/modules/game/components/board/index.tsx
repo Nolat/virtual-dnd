@@ -10,7 +10,7 @@ import { useStageStore } from "modules/game/store/useStageStore";
 import { BackToCenterButton } from "../back-to-center-button";
 
 export const Board: React.FC = () => {
-  const bgColor = useColorModeValue("gray.200", "gray.700");
+  const bgColor = useColorModeValue("gray.50", "gray.900");
   const { width, height } = useWindowSize();
 
   const { setStageRef, stagePosition, stageScale, updatePosition, updateScale } = useStageStore();

@@ -5914,6 +5914,7 @@ __metadata:
     import-sort-style-module-alias: ^1.1.0
     isomorphic-unfetch: ^3.1.0
     jest: ^26.6.3
+    konva: ^7.2.5
     next: 10.2.0
     next-auth: ^3.19.8
     next-compose-plugins: ^2.2.1
@@ -5924,6 +5925,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-icons: ^4.2.0
+    react-konva: ^17.0.2-0
     react-query: ^3.15.2
     reflect-metadata: ^0.1.13
     start-server-and-test: ^1.11.0
@@ -14582,6 +14584,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"konva@npm:^7.2.5":
+  version: 7.2.5
+  resolution: "konva@npm:7.2.5"
+  checksum: d60321b0f9e71fe873d1f20f765be232266f42917984eeb30e3d31bdca02013386579499d0bd3f1d6356683ead38777fdb23c6fb195557d53d719f3e8c57a279
+  languageName: node
+  linkType: hard
+
 "language-subtag-registry@npm:~0.3.2":
   version: 0.3.21
   resolution: "language-subtag-registry@npm:0.3.21"
@@ -18090,6 +18099,20 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-konva@npm:^17.0.2-0":
+  version: 17.0.2-0
+  resolution: "react-konva@npm:17.0.2-0"
+  dependencies:
+    react-reconciler: ~0.26.1
+    scheduler: ^0.20.1
+  peerDependencies:
+    konva: ">=7"
+    react: ">=17.0.2"
+    react-dom: ">=17.0.2"
+  checksum: b6569250790c6be1651806ff829b24193255befde9c0149c9b8de7434b56434119a08838b2bf90b4dc844a10b85c6536982111393ee4e213362fee933b521b68
+  languageName: node
+  linkType: hard
+
 "react-lifecycles-compat@npm:^3.0.4":
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
@@ -18139,6 +18162,19 @@ fsevents@^1.2.7:
     react-native:
       optional: true
   checksum: 6dfd7706b4e7fe7b640b5dec67b8c7b577a80244f6e1351b9b67313a8628681ed1e34002af0f73dad539162dd6ff45e85f46f951fcab33ecfd3348b1405bc2bd
+  languageName: node
+  linkType: hard
+
+"react-reconciler@npm:~0.26.1":
+  version: 0.26.2
+  resolution: "react-reconciler@npm:0.26.2"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+    scheduler: ^0.20.2
+  peerDependencies:
+    react: ^17.0.2
+  checksum: 5abd10272cd4c57f76ba1cc8c1c3c190b3a1208434bb9bb39f90816944b6780e59021d79d9d1d46f1d05276a0db9cd66f2ccc7f8bbb51bcf970320bcd1b21f69
   languageName: node
   linkType: hard
 
@@ -19058,7 +19094,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.20.2":
+"scheduler@npm:^0.20.1, scheduler@npm:^0.20.2":
   version: 0.20.2
   resolution: "scheduler@npm:0.20.2"
   dependencies:

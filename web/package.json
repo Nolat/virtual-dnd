@@ -30,6 +30,7 @@
     "crypto": "^1.0.1",
     "framer-motion": "^4.1.11",
     "graphql": "^15.5.0",
+    "konva": "^7.2.5",
     "next": "10.2.0",
     "next-auth": "^3.19.8",
     "next-compose-plugins": "^2.2.1",
@@ -37,6 +38,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "^4.2.0",
+    "react-konva": "^17.0.2-0",
     "react-query": "^3.15.2",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
@@ -94,6 +96,7 @@
         "alias": [
           "components",
           "definitions",
+          "hooks",
           "modules",
           "pages",
           "public",

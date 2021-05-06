@@ -2,9 +2,7 @@ import { Stack } from "@chakra-ui/layout";
 import Head from "next/head";
 
 import { ColorModeButton } from "components/color-mode-button";
-import { Board } from "modules/game/components";
-import { Sidebar } from "modules/game/components/sidebar";
-import { Topbar } from "modules/game/components/topbar";
+import { Board, Sidebar, Topbar } from "modules/game/components";
 
 const Game = () => {
   return (

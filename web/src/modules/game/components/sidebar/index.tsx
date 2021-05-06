@@ -12,7 +12,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ side, ...props }) => {
       top={0}
       p={2}
       justifyContent="center"
-    ></Flex>
+    />
   );
 };
 

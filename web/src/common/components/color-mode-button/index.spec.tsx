@@ -15,7 +15,7 @@ describe("Color mode button component", () => {
 
     await screen.findByTestId("icon-button-tooltip");
 
-    expect(screen.getByText("Switch to light mode")).toBeInTheDocument();
+    expect(screen.getByText("Passer en mode clair")).toBeInTheDocument();
     expect(screen.getByTestId("icon-button-tooltip")).toBeInTheDocument();
   });
 
@@ -28,7 +28,7 @@ describe("Color mode button component", () => {
 
     await screen.findByTestId("icon-button-tooltip");
 
-    expect(screen.getByText("Switch to dark mode")).toBeInTheDocument();
+    expect(screen.getByText("Passer en mode sombre")).toBeInTheDocument();
     expect(screen.getByTestId("icon-button-tooltip")).toBeInTheDocument();
   });
 });

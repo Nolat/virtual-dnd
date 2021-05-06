@@ -5,12 +5,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { buildSchema } from "type-graphql";
 
 import { UserResolver } from "modules/api/resolvers/User.resolver";
-import { connection, initializeDatabase } from "modules/database";
+import { initializeDatabase } from "modules/database";
 
 let handler;
 
 const bootstrap = async () => {
-  if (!connection) initializeDatabase();
+  await initializeDatabase();
 
   if (!handler) {
     const schema = await buildSchema({

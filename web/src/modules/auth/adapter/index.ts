@@ -3,11 +3,9 @@ import { createHash } from "crypto";
 import { AppOptions } from "next-auth/internals";
 
 import { Account, Session, User, VerificationRequest } from "modules/api/models";
-import { connection, initializeDatabase } from "modules/database";
+import { initializeDatabase } from "modules/database";
 
 export const AuthAdapter = () => {
-  if (!connection) initializeDatabase();
-
   return {
     getAdapter: async ({ session: { maxAge, updateAge }, secret, ...appOptions }: AppOptions) => {
       const sessionMaxAge = maxAge * 1000;
@@ -17,38 +15,56 @@ export const AuthAdapter = () => {
 
       return {
         async createUser(profile: any) {
-          console.log({ profile });
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(User);
+
           const user = new User();
           user.name = profile.name;
           user.email = profile.email;
           user.image = profile.image;
           if (profile.emailVerified) user.emailVerifiedOn = new Date();
 
-          return User.save(user);
+          return repository.save(user);
         },
         async getUser(id) {
-          return User.findOne(id);
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(User);
+
+          return repository.findOne(id);
         },
         async getUserByEmail(email) {
-          return User.findOne({ where: { email } });
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(User);
+
+          return repository.findOne({ where: { email } });
         },
         async getUserByProviderAccountId(providerId, providerAccountId) {
-          const account = await Account.findOne({
+          const connection = await initializeDatabase();
+          const accountRepository = connection.getRepository(Account);
+          const userRepository = connection.getRepository(User);
+
+          const account = await accountRepository.findOne({
             where: { providerId, providerAccountId },
             relations: ["user"]
           });
 
           if (account) {
-            return await User.findOne(account.user.id);
+            return await userRepository.findOne(account.user.id);
           }
 
           return null;
         },
         async updateUser(user) {
-          return User.save(user);
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(User);
+
+          return repository.save(user);
         },
         async deleteUser(userId) {
-          return User.delete({ id: userId });
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(User);
+
+          return repository.delete({ id: userId });
         },
         async linkAccount(
           userId,
@@ -59,8 +75,12 @@ export const AuthAdapter = () => {
           accessToken,
           accessTokenExpiresOn
         ) {
+          const connection = await initializeDatabase();
+          const accountRepository = connection.getRepository(Account);
+          const userRepository = connection.getRepository(User);
+
           const account = new Account();
-          account.user = await User.findOne(userId);
+          account.user = await userRepository.findOne(userId);
           account.providerId = providerId;
           account.providerType = providerType;
           account.providerAccountId = providerAccountId;
@@ -68,13 +88,20 @@ export const AuthAdapter = () => {
           account.accessToken = accessToken;
           account.accessTokenExpiresOn = accessTokenExpiresOn;
 
-          return Account.save(account);
+          return accountRepository.save(account);
         },
         async unlinkAccount(userId, providerId, providerAccountId) {
-          const user = await User.findOne(userId);
-          Account.delete({ user, providerId, providerAccountId });
+          const connection = await initializeDatabase();
+          const accountRepository = connection.getRepository(Account);
+          const userRepository = connection.getRepository(User);
+
+          const user = await userRepository.findOne(userId);
+          accountRepository.delete({ user, providerId, providerAccountId });
         },
         async createSession(user: User) {
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(Session);
+
           let expiresOn = null;
 
           if (sessionMaxAge) {
@@ -83,16 +110,19 @@ export const AuthAdapter = () => {
             expiresOn = dateExpires;
           }
 
-          await Session.delete({ user });
+          await repository.delete({ user });
 
           const session = new Session();
           session.user = user;
           session.expiresOn = expiresOn;
 
-          return Session.save(session);
+          return repository.save(session);
         },
         async getSession(sessionToken) {
-          const session = await Session.findOne({ where: { sessionToken } });
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(Session);
+
+          const session = await repository.findOne({ where: { sessionToken } });
 
           if (new Date() > session.expiresOn) {
             // TODO : Delete old sessions from database
@@ -102,6 +132,9 @@ export const AuthAdapter = () => {
           return session;
         },
         async updateSession(session: Session, force) {
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(Session);
+
           if (sessionMaxAge && (sessionUpdateAge || sessionUpdateAge === 0) && session.expiresOn) {
             // Calculate last updated date, to throttle write updates to database
             // Formula: ({expiry date} - sessionMaxAge) + sessionUpdateAge
@@ -135,12 +168,18 @@ export const AuthAdapter = () => {
             }
           }
 
-          return Session.save(session);
+          return repository.save(session);
         },
         async deleteSession(sessionToken) {
-          return Session.delete({ sessionToken });
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(Session);
+
+          return repository.delete({ sessionToken });
         },
         async createVerificationRequest(identifier, url, token, _, provider) {
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(VerificationRequest);
+
           const { sendVerificationRequest, maxAge } = provider;
 
           const hashedToken = hashToken(token);
@@ -157,7 +196,7 @@ export const AuthAdapter = () => {
           verificationRequest.token = hashedToken;
           verificationRequest.expiresOn = expiresOn;
 
-          await VerificationRequest.save(verificationRequest);
+          await repository.save(verificationRequest);
 
           // With the verificationCallback on a provider, you can send an email, or queue
           // an email to be sent, or perform some other action (e.g. send a text message)
@@ -170,8 +209,11 @@ export const AuthAdapter = () => {
           });
         },
         async getVerificationRequest(identifier, token) {
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(VerificationRequest);
+
           const hashedToken = hashToken(token);
-          const verificationRequest = await VerificationRequest.findOne({
+          const verificationRequest = await repository.findOne({
             where: {
               identifier,
               token: hashedToken
@@ -180,15 +222,18 @@ export const AuthAdapter = () => {
 
           if (new Date() > verificationRequest.expiresOn) {
             // Delete verification entry so it cannot be used again
-            await VerificationRequest.delete({ token: hashedToken });
+            await repository.delete({ token: hashedToken });
             return null;
           }
 
           return verificationRequest;
         },
         async deleteVerificationRequest(identifier, token) {
+          const connection = await initializeDatabase();
+          const repository = connection.getRepository(VerificationRequest);
+
           const hashedToken = hashToken(token);
-          await VerificationRequest.delete({
+          await repository.delete({
             identifier,
             token: hashedToken
           });

@@ -2,9 +2,11 @@ import { Connection, createConnection, getConnection } from "typeorm";
 
 import { Account, Session, User, VerificationRequest } from "modules/api/models";
 
-export let connection: Connection;
+let connection: Connection;
 
 export const initializeDatabase = async () => {
+  if (connection) return connection;
+
   try {
     const staleConnection = getConnection();
     await staleConnection.close();
@@ -16,7 +18,10 @@ export const initializeDatabase = async () => {
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: process.env.NODE_ENV !== "production",
+    ssl: { rejectUnauthorized: false },
     cache: true,
     entities: [Account, Session, User, VerificationRequest]
   });
+
+  return connection;
 };

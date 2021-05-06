@@ -4,6 +4,7 @@ import Head from "next/head";
 import { ColorModeButton } from "components/color-mode-button";
 import { Board, Sidebar, Topbar } from "modules/game/components";
 import { SelectMapButton } from "modules/game/map/components";
+import { ModalController } from "modules/game/modals";
 
 const Game = () => {
   return (
@@ -16,7 +17,7 @@ const Game = () => {
       <Topbar></Topbar>
 
       <Sidebar side="left">
-        <Stack spacing={2} alignSelf="flex-end">
+        <Stack spacing={4} alignSelf="flex-end">
           <SelectMapButton />
           <ColorModeButton />
         </Stack>
@@ -25,6 +26,8 @@ const Game = () => {
       <Sidebar side="right"></Sidebar>
 
       <Board />
+
+      <ModalController />
     </>
   );
 };

@@ -11,8 +11,8 @@ export const ColorModeButton: React.FC = () => {
   return (
     <IconButton
       icon={isDark ? <FiMoon /> : <FiSun />}
-      aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-      tooltip={`Switch to ${isDark ? "light" : "dark"} mode`}
+      aria-label={`Passer en mode ${isDark ? "clair" : "sombre"}`}
+      tooltip={`Passer en mode ${isDark ? "clair" : "sombre"}`}
       tooltipPlacement="auto"
       onClick={toggleColorMode}
       color={color}

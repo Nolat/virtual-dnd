@@ -18,7 +18,7 @@ export class UserResolver {
     nullable: true
   })
   getUser(@Arg("id") id: string): Promise<User> {
-    return User.findOne(id);
+    return User.findOne(id, { relations: ["games"] });
   }
 
   @Query(() => User, {

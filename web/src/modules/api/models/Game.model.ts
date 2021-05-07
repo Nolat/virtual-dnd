@@ -4,35 +4,33 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
 
+import User from "./User.model";
 import { GameUser } from ".";
 
 @Entity()
 @ObjectType()
-export default class User extends BaseEntity {
+export default class Game extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   @Field(() => ID)
   id: string;
 
-  @Column()
+  @ManyToOne(() => User)
   @Field()
-  name: string;
+  master: User;
 
-  @Column({ unique: true, nullable: true })
-  @Field()
-  email: string;
-
-  @Column()
-  @Field()
-  image: string;
-
-  @OneToMany(() => GameUser, (gameUser) => gameUser.user)
+  @OneToMany(() => GameUser, (gameUser) => gameUser.game)
   @Field(() => [GameUser])
-  games: GameUser[];
+  users: GameUser;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  password: string;
 
   @CreateDateColumn({ type: "timestamp" })
   @Field()

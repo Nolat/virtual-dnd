@@ -6,7 +6,7 @@ import { getSession } from "next-auth/client";
 import { buildSchema } from "type-graphql";
 
 import { User } from "modules/api/models";
-import { UserResolver } from "modules/api/resolvers/User.resolver";
+import { GameResolver, UserResolver } from "modules/api/resolvers";
 import { initializeDatabase } from "modules/database";
 
 let handler;
@@ -16,7 +16,7 @@ const bootstrap = async () => {
 
   if (!handler) {
     const schema = await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [GameResolver, UserResolver],
       authChecker: ({ context: { user } }) => {
         if (user) return true;
       }

@@ -1,3 +1,5 @@
+import "focus-visible/dist/focus-visible";
+
 import { ChakraProvider, cookieStorageManager, localStorageManager } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { Provider as SessionProvider } from "next-auth/client";

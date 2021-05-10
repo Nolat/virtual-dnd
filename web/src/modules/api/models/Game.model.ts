@@ -10,8 +10,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import User from "./User.model";
-import { GameUser } from ".";
+import { GameUser, User } from "modules/api/models";
 
 @Entity()
 @ObjectType()
@@ -20,13 +19,21 @@ export default class Game extends BaseEntity {
   @Field(() => ID)
   id: string;
 
+  @Column()
+  @Field()
+  name: string;
+
   @ManyToOne(() => User)
   @Field()
   master: User;
 
   @OneToMany(() => GameUser, (gameUser) => gameUser.game)
-  @Field(() => [GameUser])
-  users: GameUser[];
+  gameUsers: GameUser[];
+
+  @Field(() => [User])
+  users(): User[] {
+    return this.gameUsers.map((gu) => gu.user);
+  }
 
   @Column({ nullable: true })
   @Field({ nullable: true })

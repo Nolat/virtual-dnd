@@ -9,7 +9,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import User from "./User.model";
+import { User } from "modules/api/models";
 
 @Entity()
 export default class Account extends BaseEntity {

@@ -9,7 +9,7 @@ export class GameResolver {
     nullable: true
   })
   getGame(@Arg("gameId") id: string): Promise<Game | undefined> {
-    return Game.findOne(id, { relations: ["master", "users", "users.user"] });
+    return Game.findOne(id, { relations: ["master", "gameUsers", "gameUsers.user"] });
   }
 
   @Mutation(() => Game, {
@@ -18,18 +18,23 @@ export class GameResolver {
   })
   async createGame(
     @Arg("userId") userId: string,
+    @Arg("name") name: string,
     @Arg("password", { nullable: true }) password?: string
   ): Promise<Game | undefined> {
     try {
       const user = await User.findOne(userId);
+
       const game = new Game();
+      game.name = name;
       game.password = password;
       game.master = user;
       await game.save();
+
       const gameUser = new GameUser();
       gameUser.user = user;
       gameUser.game = game;
       await gameUser.save();
+
       return game;
     } catch (_) {
       console.log("Error with creating game");

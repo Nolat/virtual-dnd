@@ -26,7 +26,7 @@ export default class Game extends BaseEntity {
 
   @OneToMany(() => GameUser, (gameUser) => gameUser.game)
   @Field(() => [GameUser])
-  users: GameUser;
+  users: GameUser[];
 
   @Column({ nullable: true })
   @Field({ nullable: true })

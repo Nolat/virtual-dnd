@@ -12,14 +12,14 @@ export default class GameUser extends BaseEntity {
   id: string;
 
   @ManyToOne(() => User, (user) => user.games)
-  @Field()
+  @Field(() => User)
   user: User;
 
   @ManyToOne(() => Game, (game) => game.users)
   @Field()
   game: Game;
 
-  @Column({ type: "timestamp" })
-  @Field()
+  @Column({ type: "timestamp", nullable: true })
+  @Field({ nullable: true })
   lastSeenAt: Date;
 }

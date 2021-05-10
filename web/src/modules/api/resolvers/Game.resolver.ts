@@ -1,6 +1,6 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 
-import { Game, User } from "../models";
+import { Game, GameUser, User } from "../models";
 
 @Resolver(() => Game)
 export class GameResolver {
@@ -9,7 +9,7 @@ export class GameResolver {
     nullable: true
   })
   getGame(@Arg("gameId") id: string): Promise<Game | undefined> {
-    return Game.findOne(id);
+    return Game.findOne(id, { relations: ["master", "users", "users.user"] });
   }
 
   @Mutation(() => Game, {
@@ -20,11 +20,20 @@ export class GameResolver {
     @Arg("userId") userId: string,
     @Arg("password", { nullable: true }) password?: string
   ): Promise<Game | undefined> {
-    const game = new Game();
-    game.password = password;
-    game.master = await User.findOne(userId);
-
-    return game.save();
+    try {
+      const user = await User.findOne(userId);
+      const game = new Game();
+      game.password = password;
+      game.master = user;
+      await game.save();
+      const gameUser = new GameUser();
+      gameUser.user = user;
+      gameUser.game = game;
+      await gameUser.save();
+      return game;
+    } catch (_) {
+      console.log("Error with creating game");
+    }
   }
 
   @Query(() => Boolean, {

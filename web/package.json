@@ -46,7 +46,7 @@
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.32",
     "use-image": "^1.0.7",
-    "zustand": "^3.5.0"
+    "zustand": "^3.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

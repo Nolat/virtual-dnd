@@ -1,6 +1,6 @@
 import { Connection, createConnection, getConnection } from "typeorm";
 
-import { Account, Session, User, VerificationRequest } from "modules/api/models";
+import { Account, Session, User } from "modules/api/models";
 
 let connection: Connection;
 
@@ -20,7 +20,7 @@ export const initializeDatabase = async () => {
     synchronize: process.env.NODE_ENV !== "production",
     ssl: { rejectUnauthorized: false },
     cache: true,
-    entities: [Account, Session, User, VerificationRequest]
+    entities: [Account, Session, User]
   });
 
   return connection;

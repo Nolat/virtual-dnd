@@ -2,8 +2,10 @@ import "reflect-metadata";
 
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/client";
 import { buildSchema } from "type-graphql";
 
+import { User } from "modules/api/models";
 import { UserResolver } from "modules/api/resolvers/User.resolver";
 import { initializeDatabase } from "modules/database";
 
@@ -14,10 +16,26 @@ const bootstrap = async () => {
 
   if (!handler) {
     const schema = await buildSchema({
-      resolvers: [UserResolver]
+      resolvers: [UserResolver],
+      authChecker: ({ context: { user } }) => {
+        if (user) return true;
+      }
     });
 
-    const server = new ApolloServer({ schema });
+    const server = new ApolloServer({
+      schema,
+      context: async ({ req }) => {
+        const session = await getSession({ req });
+
+        if (!session) return { user: undefined };
+
+        const user = await User.findOne({
+          where: { email: session.user.email, name: session.user.name }
+        });
+
+        return { user };
+      }
+    });
 
     handler = server.createHandler({
       path: "/api/graphql"

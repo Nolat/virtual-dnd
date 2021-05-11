@@ -1,17 +1,13 @@
-import { createHash } from "crypto";
-
 import { AppOptions } from "next-auth/internals";
 
-import { Account, Session, User, VerificationRequest } from "modules/api/models";
+import { Account, Session, User } from "modules/api/models";
 import { initializeDatabase } from "modules/database";
 
 export const AuthAdapter = () => {
   return {
-    getAdapter: async ({ session: { maxAge, updateAge }, secret, ...appOptions }: AppOptions) => {
+    getAdapter: async ({ session: { maxAge, updateAge } }: AppOptions) => {
       const sessionMaxAge = maxAge * 1000;
       const sessionUpdateAge = updateAge * 1000;
-
-      const hashToken = (token) => createHash("sha256").update(`${token}${secret}`).digest("hex");
 
       return {
         async createUser(profile: any) {
@@ -22,7 +18,6 @@ export const AuthAdapter = () => {
           user.name = profile.name;
           user.email = profile.email;
           user.image = profile.image;
-          if (profile.emailVerified) user.emailVerifiedOn = new Date();
 
           return repository.save(user);
         },
@@ -124,8 +119,10 @@ export const AuthAdapter = () => {
 
           const session = await repository.findOne({ where: { sessionToken } });
 
+          if (!session) return null;
+
           if (new Date() > session.expiresOn) {
-            // TODO : Delete old sessions from database
+            repository.remove(session);
             return null;
           }
 
@@ -175,68 +172,6 @@ export const AuthAdapter = () => {
           const repository = connection.getRepository(Session);
 
           return repository.delete({ sessionToken });
-        },
-        async createVerificationRequest(identifier, url, token, _, provider) {
-          const connection = await initializeDatabase();
-          const repository = connection.getRepository(VerificationRequest);
-
-          const { sendVerificationRequest, maxAge } = provider;
-
-          const hashedToken = hashToken(token);
-
-          let expiresOn = null;
-          if (maxAge) {
-            const dateExpires = new Date();
-            dateExpires.setTime(dateExpires.getTime() + maxAge * 1000);
-            expiresOn = dateExpires;
-          }
-
-          const verificationRequest = new VerificationRequest();
-          verificationRequest.identifier = identifier;
-          verificationRequest.token = hashedToken;
-          verificationRequest.expiresOn = expiresOn;
-
-          await repository.save(verificationRequest);
-
-          // With the verificationCallback on a provider, you can send an email, or queue
-          // an email to be sent, or perform some other action (e.g. send a text message)
-          await sendVerificationRequest({
-            identifier,
-            url,
-            token,
-            baseUrl: appOptions.baseUrl,
-            provider
-          });
-        },
-        async getVerificationRequest(identifier, token) {
-          const connection = await initializeDatabase();
-          const repository = connection.getRepository(VerificationRequest);
-
-          const hashedToken = hashToken(token);
-          const verificationRequest = await repository.findOne({
-            where: {
-              identifier,
-              token: hashedToken
-            }
-          });
-
-          if (new Date() > verificationRequest.expiresOn) {
-            // Delete verification entry so it cannot be used again
-            await repository.delete({ token: hashedToken });
-            return null;
-          }
-
-          return verificationRequest;
-        },
-        async deleteVerificationRequest(identifier, token) {
-          const connection = await initializeDatabase();
-          const repository = connection.getRepository(VerificationRequest);
-
-          const hashedToken = hashToken(token);
-          await repository.delete({
-            identifier,
-            token: hashedToken
-          });
         }
       };
     }

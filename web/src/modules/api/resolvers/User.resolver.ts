@@ -1,6 +1,7 @@
-import { Arg, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Query, Resolver } from "type-graphql";
 
 import { User } from "../models";
+import { APIContext } from "../types/APIContext";
 
 @Resolver(() => User)
 export class UserResolver {
@@ -8,7 +9,7 @@ export class UserResolver {
     name: "Users",
     nullable: true
   })
-  getUsers(): Promise<User[] | undefined> {
+  getUsers(): Promise<User[]> {
     return User.find();
   }
 
@@ -16,7 +17,15 @@ export class UserResolver {
     name: "User",
     nullable: true
   })
-  getUser(@Arg("id") id: string): Promise<User | undefined> {
+  getUser(@Arg("id") id: string): Promise<User> {
     return User.findOne(id);
+  }
+
+  @Query(() => User, {
+    name: "me",
+    nullable: true
+  })
+  getMe(@Ctx() { user }: APIContext): User {
+    return user;
   }
 }

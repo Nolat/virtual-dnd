@@ -23,9 +23,6 @@ export default class User extends BaseEntity {
   @Field()
   email: string;
 
-  @Column({ type: "timestamp", nullable: true })
-  emailVerifiedOn: Date;
-
   @Column()
   @Field()
   image: string;

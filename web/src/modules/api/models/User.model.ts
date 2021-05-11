@@ -1,11 +1,14 @@
 import { Field, ID, ObjectType } from "type-graphql";
+import { TypeormLoader } from "type-graphql-dataloader";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  In,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn
 } from "typeorm";
 
@@ -31,11 +34,20 @@ export default class User extends BaseEntity {
   image: string;
 
   @OneToMany(() => GameUser, (gameUser) => gameUser.user)
+  @TypeormLoader(() => GameUser, (user: User) => user.gameUserIds)
+  @Field(() => [GameUser])
   gameUsers: GameUser[];
 
+  @RelationId((game: Game) => game.gameUsers)
+  gameUserIds: string[];
+
   @Field(() => [Game], { nullable: true })
-  games(): Game[] {
-    return this.gameUsers.map((gu) => gu.game);
+  async games(): Promise<Game[]> {
+    const gameUsers = await GameUser.find({
+      where: { id: In(this.gameUserIds) }
+    });
+
+    return gameUsers.map((gu) => gu.game);
   }
 
   @CreateDateColumn({ type: "timestamp" })

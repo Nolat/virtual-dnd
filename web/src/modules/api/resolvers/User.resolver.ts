@@ -1,16 +1,20 @@
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { Repository } from "typeorm";
+import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { User } from "../models";
 import { APIContext } from "../types/APIContext";
 
 @Resolver(() => User)
 export class UserResolver {
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+
   @Query(() => [User], {
     name: "Users",
     nullable: true
   })
   getUsers(): Promise<User[]> {
-    return User.find();
+    return this.userRepository.find();
   }
 
   @Query(() => User, {
@@ -18,7 +22,7 @@ export class UserResolver {
     nullable: true
   })
   getUser(@Arg("id") id: string): Promise<User> {
-    return User.findOne(id, { relations: ["games"] });
+    return this.userRepository.findOne(id);
   }
 
   @Query(() => User, {

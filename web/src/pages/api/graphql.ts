@@ -4,6 +4,9 @@ import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/client";
 import { buildSchema } from "type-graphql";
+import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
+import { getConnection } from "typeorm";
+import { Container } from "typeorm-typedi-extensions";
 
 import { User } from "modules/api/models";
 import { GameResolver, UserResolver } from "modules/api/resolvers";
@@ -17,6 +20,7 @@ const bootstrap = async () => {
   if (!handler) {
     const schema = await buildSchema({
       resolvers: [GameResolver, UserResolver],
+      container: Container,
       authChecker: ({ context: { user } }) => {
         if (user) return true;
       }
@@ -24,12 +28,19 @@ const bootstrap = async () => {
 
     const server = new ApolloServer({
       schema,
+      plugins: [
+        ApolloServerLoaderPlugin({
+          typeormGetConnection: getConnection
+        })
+      ],
       context: async ({ req }) => {
         const session = await getSession({ req });
 
         if (!session) return { user: undefined };
 
-        const user = await User.findOne({
+        const connection = getConnection();
+
+        const user = await connection.getRepository(User).findOne({
           where: { email: session.user.email, name: session.user.name }
         });
 

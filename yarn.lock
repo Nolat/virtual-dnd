@@ -5935,7 +5935,10 @@ __metadata:
     ts-jest: ^26.4.4
     tsconfig-paths-webpack-plugin: ^3.5.1
     type-graphql: ^1.1.1
+    type-graphql-dataloader: ^0.3.7
+    typedi: ^0.10.0
     typeorm: ^0.2.32
+    typeorm-typedi-extensions: ^0.4.1
     typescript: ^4.2.4
     use-image: ^1.0.7
     zustand: ^3.5.0
@@ -9356,7 +9359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dataloader@npm:2.0.0":
+"dataloader@npm:2.0.0, dataloader@npm:^2.0.0":
   version: 2.0.0
   resolution: "dataloader@npm:2.0.0"
   checksum: 0165c2e80751d269c33d2a14b0078a4f3853cb010e2531e7aa99523aba8d0cdc922b9ad67e4c2bb9074c90e0ee0a41b6e7f5f63c40d31224a71c8a0b703f4be3
@@ -21035,6 +21038,19 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"type-graphql-dataloader@npm:^0.3.7":
+  version: 0.3.7
+  resolution: "type-graphql-dataloader@npm:0.3.7"
+  dependencies:
+    dataloader: ^2.0.0
+    lodash: ^4.17.20
+    reflect-metadata: ^0.1.13
+    typedi: ^0.8.0
+    uuid: ^8.3.1
+  checksum: 8ba2b14ab640a40b5155e73dfcce7e1e2018577444a548dc611d883dc39e87198eaa504ad55d8e5adfafa5315108f9f8cfeb4436d24d7c6a196210d041d31abe
+  languageName: node
+  linkType: hard
+
 "type-graphql@npm:^1.1.1":
   version: 1.1.1
   resolution: "type-graphql@npm:1.1.1"
@@ -21077,6 +21093,30 @@ resolve@^2.0.0-next.3:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: c9ef0176aaf32593514c31e5c6edc1db970847aff6e1f0a0570a6ac0cc996335792f394c2fcec59cc76691d22a01888ea073a2f3c6930cfcf7c519addf4e2ad7
+  languageName: node
+  linkType: hard
+
+"typedi@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "typedi@npm:0.10.0"
+  checksum: 20c9df495f03def5110ac81d49c93fd5292b0cb55fcaa5151b82a6771977585a5ef7da74348062087e10f3aeea26d73b2e9743e6b1a12043a455724da714049f
+  languageName: node
+  linkType: hard
+
+"typedi@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "typedi@npm:0.8.0"
+  checksum: a53ede48b2e9e1faecc5523a71555f652fd0e92cf2c39b224ef4f77ed353d95ab453467e60757523fbb5bb6e85e1b876aca1428afbd5317143b2d11505c0f73b
+  languageName: node
+  linkType: hard
+
+"typeorm-typedi-extensions@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "typeorm-typedi-extensions@npm:0.4.1"
+  peerDependencies:
+    typedi: ">=0.10.0"
+    typeorm: ">=0.2.30"
+  checksum: 0303532f4de6ad349e45c68dabb92bce484c6530727b3390a978b332cb74e132b57a54fbe28a5d298c628db24ed5226ff5ee05aa74c2ae0937142fe38fb06a3d
   languageName: node
   linkType: hard
 
@@ -21664,7 +21704,7 @@ typescript@^4.2.4:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.0.0, uuid@npm:^8.3.0":
+"uuid@npm:^8.0.0, uuid@npm:^8.3.0, uuid@npm:^8.3.1":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:

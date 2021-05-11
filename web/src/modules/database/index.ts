@@ -1,10 +1,13 @@
-import { Connection, createConnection, getConnection } from "typeorm";
+import { Connection, createConnection, getConnection, useContainer } from "typeorm";
+import { Container } from "typeorm-typedi-extensions";
 
 import { Account, Game, GameUser, Session, User } from "modules/api/models";
 
 let connection: Connection;
 
 export const initializeDatabase = async () => {
+  useContainer(Container);
+
   if (connection) return connection;
 
   try {

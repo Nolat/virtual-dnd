@@ -70,6 +70,6 @@ jobs:
 
       - name: Publish stories to chromatic
         working-directory: ./web
-        run: yarn chromatic
+        run: yarn chromatic --exit-once-uploaded 
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

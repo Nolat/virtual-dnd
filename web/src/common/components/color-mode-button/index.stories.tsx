@@ -1,6 +1,6 @@
-import { Box, DarkMode, LightMode } from "@chakra-ui/react";
+import { useColorMode } from "@chakra-ui/react";
 import { Meta, Story } from "@storybook/react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { ColorModeButton } from ".";
 
@@ -10,21 +10,25 @@ export default {
 } as Meta;
 
 export const Light: Story = () => {
-  return (
-    <LightMode>
-      <Box minH="100vh" bg="white">
-        <ColorModeButton />
-      </Box>
-    </LightMode>
-  );
+  const { setColorMode } = useColorMode();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setColorMode("light");
+    }, 0);
+  }, [setColorMode]);
+
+  return <ColorModeButton />;
 };
 
 export const Dark: Story = () => {
-  return (
-    <DarkMode>
-      <Box minH="100vh" bg="gray.800">
-        <ColorModeButton />
-      </Box>
-    </DarkMode>
-  );
+  const { setColorMode } = useColorMode();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setColorMode("dark");
+    }, 0);
+  }, [setColorMode]);
+
+  return <ColorModeButton />;
 };

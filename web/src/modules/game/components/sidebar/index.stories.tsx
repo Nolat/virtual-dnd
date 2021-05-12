@@ -1,5 +1,6 @@
+import { useColorMode } from "@chakra-ui/react";
 import { Meta, Story } from "@storybook/react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Sidebar } from ".";
 
@@ -9,9 +10,25 @@ export default {
 } as Meta;
 
 export const Right: Story = () => {
-  return <Sidebar bg="red.200" side="right" />;
+  const { setColorMode } = useColorMode();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setColorMode("light");
+    }, 0);
+  }, [setColorMode]);
+
+  return <Sidebar bg="gray.800" side="right" />;
 };
 
 export const Left: Story = () => {
-  return <Sidebar bg="red.200" side="left" />;
+  const { setColorMode } = useColorMode();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setColorMode("light");
+    }, 0);
+  }, [setColorMode]);
+
+  return <Sidebar bg="gray.800" side="left" />;
 };

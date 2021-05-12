@@ -22,6 +22,7 @@ export const SignInModal: React.FC<SignInModalProps> = ({ providers, isOpen, onC
               key={provider.name}
               width="85%"
               bg={brandColor(provider.name)}
+              color="white"
               onClick={() => signIn(provider.id, { callbackUrl: process.env.NEXTAUTH_URL })}
             >
               <ProviderIcon name={provider.name} />

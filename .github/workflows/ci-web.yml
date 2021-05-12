@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+        with:
+          fetch-depth: 0
 
       - name: Setup node env
         uses: actions/setup-node@v2.1.2
@@ -65,3 +67,9 @@ jobs:
       - name: Run e2e test
         working-directory: ./web
         run: yarn cypress:test
+
+      - name: Publish stories to chromatic
+        working-directory: ./web
+        run: yarn chromatic
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

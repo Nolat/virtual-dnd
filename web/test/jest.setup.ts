@@ -2,22 +2,22 @@ import "isomorphic-unfetch";
 
 import dotenv from "dotenv";
 import nock from "nock";
-import { Connection, createConnection } from "typeorm";
+import { Connection } from "typeorm";
+
+import { initializeTestDatabase } from "./setup/initializeTestDatabase";
 
 dotenv.config({ path: ".env.test" });
 
 let connection: Connection;
 
 beforeAll(async (done) => {
-  connection = await createConnection({
-    type: "postgres",
-    url: process.env.DATABASE_URL,
-    synchronize: true,
-    logging: false,
-    cache: false,
-    dropSchema: true,
-    entities: ["../src/modules/api/models/**.model.ts"]
-  });
+  connection = await initializeTestDatabase();
+
+  done();
+});
+
+beforeEach(async (done) => {
+  await connection.synchronize(true);
 
   done();
 });
@@ -25,7 +25,8 @@ beforeAll(async (done) => {
 afterAll((done) => {
   nock.cleanAll();
   nock.restore();
-  connection.close();
+
+  connection?.close();
 
   done();
 });

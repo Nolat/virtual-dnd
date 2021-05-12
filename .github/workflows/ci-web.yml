@@ -55,10 +55,12 @@ jobs:
       - name: Build application
         working-directory: ./web
         run: yarn build
-
+        
       - name: Run tests
         working-directory: ./web
-        run: yarn test --passWithNoTests
+        run: yarn test -i --passWithNoTests
+        env: 
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run e2e test
         working-directory: ./web

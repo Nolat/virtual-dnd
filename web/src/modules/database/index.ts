@@ -21,7 +21,7 @@ export const initializeDatabase = async () => {
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: process.env.NODE_ENV !== "production",
-    ssl: { rejectUnauthorized: false },
+    ssl: !process.env.DATABASE_URL.includes("localhost") && { rejectUnauthorized: false },
     cache: true,
     entities: [Account, Game, GameUser, Session, User]
   });

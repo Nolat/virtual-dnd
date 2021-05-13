@@ -23,8 +23,16 @@ const Index: React.FC<IndexProps> = ({ providers }) => {
         <Flex justifyContent="center" alignItems="center" height="100vh" flexDir="column">
           <Heading fontSize="6vw">Virtual D&D</Heading>
 
-          {!session && <Button onClick={() => onOpen()}>Se connecter</Button>}
-          {session && <Button onClick={() => signOut()}>Se déconnecter</Button>}
+          {!session && (
+            <Button data-testid="sign-in-button" onClick={() => onOpen()}>
+              Se connecter
+            </Button>
+          )}
+          {session && (
+            <Button data-testid="sign-out-button" onClick={() => signOut()}>
+              Se déconnecter
+            </Button>
+          )}
         </Flex>
       </Box>
 

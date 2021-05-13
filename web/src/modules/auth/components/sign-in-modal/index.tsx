@@ -3,7 +3,7 @@ import { Token } from "@chakra-ui/styled-system/dist/types/utils";
 import * as CSS from "csstype";
 import { ClientSafeProvider, signIn } from "next-auth/client";
 import React from "react";
-import { FaApple, FaFacebook, FaGoogle, FaTwitch, FaTwitter } from "react-icons/fa";
+import { FaApple, FaDiscord, FaFacebook, FaGoogle, FaTwitch, FaTwitter } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 
 import { ModalContainer } from "common/containers";
@@ -19,7 +19,8 @@ export const SignInModal: React.FC<SignInModalProps> = ({ providers, isOpen, onC
         <Stack justifyContent="center" alignItems="center" spacing={4} mb={4}>
           {Object.values(providers).map((provider) => (
             <Button
-              key={provider.name}
+              data-testid={`${provider.id}-button`}
+              key={provider.id}
               width="85%"
               bg={brandColor(provider.name)}
               color="white"
@@ -39,6 +40,9 @@ const ProviderIcon = ({ name }) => {
   switch (name) {
     case "Apple":
       return <Icon as={FaApple} mr={2} />;
+
+    case "Discord":
+      return <Icon as={FaDiscord} mr={2} />;
 
     case "Facebook":
       return <Icon as={FaFacebook} mr={2} />;
@@ -61,6 +65,9 @@ function brandColor(name: string): Token<CSS.Property.Color, "colors"> {
   switch (name) {
     case "Apple":
       return "gray.900";
+
+    case "Discord":
+      return "#5865F2";
 
     case "Facebook":
       return "#3b5998";

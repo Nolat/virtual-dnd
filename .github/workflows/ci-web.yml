@@ -64,9 +64,9 @@ jobs:
         env: 
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: Run e2e test
-        working-directory: ./web
-        run: yarn cypress:test
+      # - name: Run e2e test
+      #   working-directory: ./web
+      #   run: yarn start-server-and-test start http://localhost:3000 'yarn cypress:run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}'
 
       - name: Publish stories to chromatic
         working-directory: ./web

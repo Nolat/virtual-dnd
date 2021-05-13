@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game resolver should create a new game 1`] = `
+Object {
+  "master": Object {
+    "name": "test-user",
+  },
+  "name": "Test Game",
+  "users": Array [
+    Object {
+      "name": "test-user",
+    },
+  ],
+}
+`;
+
+exports[`Game resolver should get a specific game from id 1`] = `
+Object {
+  "master": Object {
+    "name": "test-user",
+  },
+  "name": "Test Game",
+  "users": Array [
+    Object {
+      "name": "test-user",
+    },
+  ],
+}
+`;
+
+exports[`Game resolver should prevent creating a game when user is not in context 1`] = `
+Array [
+  [GraphQLError: Access denied! You need to be authorized to perform this action!],
+]
+`;

@@ -4,49 +4,58 @@ import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/client";
 import { buildSchema } from "type-graphql";
+import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
+import { getConnection } from "typeorm";
+import { Container } from "typeorm-typedi-extensions";
 
 import { User } from "modules/api/models";
-import { UserResolver } from "modules/api/resolvers/User.resolver";
+import { GameResolver, UserResolver } from "modules/api/resolvers";
 import { initializeDatabase } from "modules/database";
 
-let handler;
+export const bootstrapServer = async (): Promise<ApolloServer> => {
+  const schema = await buildSchema({
+    resolvers: [GameResolver, UserResolver],
+    container: Container,
+    authChecker: ({ context: { user } }) => {
+      if (user) return true;
+    }
+  });
 
-const bootstrap = async () => {
-  await initializeDatabase();
+  const server = new ApolloServer({
+    schema,
+    plugins: [
+      ApolloServerLoaderPlugin({
+        typeormGetConnection: getConnection
+      })
+    ],
+    context: async ({ req }) => {
+      const session = await getSession({ req });
 
-  if (!handler) {
-    const schema = await buildSchema({
-      resolvers: [UserResolver],
-      authChecker: ({ context: { user } }) => {
-        if (user) return true;
-      }
-    });
+      if (!session) return { user: undefined };
 
-    const server = new ApolloServer({
-      schema,
-      context: async ({ req }) => {
-        const session = await getSession({ req });
+      const connection = getConnection();
 
-        if (!session) return { user: undefined };
+      const user = await connection.getRepository(User).findOne({
+        where: { email: session.user.email, name: session.user.name }
+      });
 
-        const user = await User.findOne({
-          where: { email: session.user.email, name: session.user.name }
-        });
+      return { user };
+    }
+  });
 
-        return { user };
-      }
-    });
-
-    handler = server.createHandler({
-      path: "/api/graphql"
-    });
-  }
-  return handler;
+  return server;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const apolloServerHandler = await bootstrap();
-  return apolloServerHandler(req, res);
+  await initializeDatabase();
+
+  const apolloServer = await bootstrapServer();
+
+  const handler = apolloServer.createHandler({
+    path: "/api/graphql"
+  });
+
+  return handler(req, res);
 };
 
 export const config = {

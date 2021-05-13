@@ -47,6 +47,11 @@
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off"
       }
+    }, 
+    {
+      "files": "**/*.ts", "rules": {
+        "react-hooks/rules-of-hooks": "off"
+      }
     }
   ]
 }

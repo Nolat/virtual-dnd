@@ -1,10 +1,13 @@
-import { Connection, createConnection, getConnection } from "typeorm";
+import { Connection, createConnection, getConnection, useContainer } from "typeorm";
+import { Container } from "typeorm-typedi-extensions";
 
-import { Account, Session, User } from "modules/api/models";
+import { Account, Game, GameUser, Session, User } from "modules/api/models";
 
 let connection: Connection;
 
 export const initializeDatabase = async () => {
+  useContainer(Container);
+
   if (connection) return connection;
 
   try {
@@ -18,9 +21,9 @@ export const initializeDatabase = async () => {
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: process.env.NODE_ENV !== "production",
-    ssl: { rejectUnauthorized: false },
+    ssl: !process.env.DATABASE_URL.includes("localhost") && { rejectUnauthorized: false },
     cache: true,
-    entities: [Account, Session, User]
+    entities: [Account, Game, GameUser, Session, User]
   });
 
   return connection;

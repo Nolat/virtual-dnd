@@ -6,10 +6,10 @@ import Fuse from "fuse.js";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { FiMap, FiTrash } from "react-icons/fi";
 
-import { IconButton } from "components/icon-button";
+import { IconButton } from "common/components/icon-button";
+import { useMapStore } from "modules/game-map/store/useMapStore";
+import { useModalStore } from "modules/game-modals/store/useModalStore";
 import { AssetPreview, SearchInput } from "modules/game/components";
-import { useMapStore } from "modules/game/store/useMapStore";
-import { useModalStore } from "modules/game/store/useModalStore";
 
 import maps from "./maps.json";
 

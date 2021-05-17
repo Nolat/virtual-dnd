@@ -1,10 +1,11 @@
 import { Stack } from "@chakra-ui/layout";
 import Head from "next/head";
 
-import { ColorModeButton } from "components/color-mode-button";
-import { Board, Sidebar, Topbar } from "modules/game/components";
-import { SelectMapButton } from "modules/game/map/components";
-import { ModalController } from "modules/game/modals";
+import { ColorModeButton } from "common/components/color-mode-button";
+import { SelectMapButton } from "modules/game-map/components";
+import { ModalController } from "modules/game-modals/containers";
+import { Sidebar, Topbar } from "modules/game/components";
+import { Board } from "modules/game/containers";
 
 const Game = () => {
   return (

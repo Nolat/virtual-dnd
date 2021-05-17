@@ -7,7 +7,7 @@ import { FiGitlab } from "react-icons/fi";
 import { IconButton } from ".";
 
 export default {
-  title: "Components/Icon Button",
+  title: "common/components/Icon Button",
   component: IconButton,
   argTypes: { onClick: { action: "clicked" } }
 } as Meta;

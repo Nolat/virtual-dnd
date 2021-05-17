@@ -1,8 +1,8 @@
 import React from "react";
 import { FiMap } from "react-icons/fi";
 
-import { IconButton } from "components/icon-button";
-import { ModalType, useModalStore } from "modules/game/store/useModalStore";
+import { IconButton } from "common/components/icon-button";
+import { ModalType, useModalStore } from "modules/game-modals/store/useModalStore";
 
 export const SelectMapButton: React.FC = () => {
   const { openModal } = useModalStore();

@@ -1,7 +1,7 @@
 import { AppOptions } from "next-auth/internals";
 
+import { initializeDatabase } from "modules/api/database";
 import { Account, Session, User } from "modules/api/models";
-import { initializeDatabase } from "modules/database";
 
 export const AuthAdapter = () => {
   return {

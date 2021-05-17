@@ -1,8 +1,7 @@
 import React from "react";
 
-import { Layer } from "modules/game/components";
-
-import { MapImage } from "../map-image";
+import { MapImage } from "modules/game-map/components";
+import { Layer } from "modules/game/containers";
 
 export const MapLayer: React.FC = () => {
   return (

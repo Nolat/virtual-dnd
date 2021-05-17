@@ -6,7 +6,7 @@ import React from "react";
 import { FaApple, FaFacebook, FaGoogle, FaTwitch, FaTwitter } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 
-import { ModalContainer } from "components";
+import { ModalContainer } from "common/containers";
 
 export const SignInModal: React.FC<SignInModalProps> = ({ providers, isOpen, onClose }) => {
   return (

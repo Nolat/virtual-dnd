@@ -1,9 +1,8 @@
 import React from "react";
 
-import { ModalContainer } from "components";
-import { ModalType, useModalStore } from "modules/game/store/useModalStore";
-
-import { SelectMapModal } from "../select-map-modal";
+import { ModalContainer } from "common/containers";
+import { SelectMapModal } from "modules/game-modals/components";
+import { ModalType, useModalStore } from "modules/game-modals/store/useModalStore";
 
 const SwitchModal = ({ modal }) => {
   switch (modal) {

@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { ColorModeButton } from ".";
 
 export default {
-  title: "Components/Color mode button",
+  title: "common/components/Color mode button",
   component: ColorModeButton
 } as Meta;
 

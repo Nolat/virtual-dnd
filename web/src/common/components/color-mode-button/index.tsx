@@ -1,7 +1,7 @@
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { FiMoon, FiSun } from "react-icons/fi";
 
-import { IconButton } from "components";
+import { IconButton } from "common/components";
 
 export const ColorModeButton: React.FC = () => {
   const color = useColorModeValue("black", "white");

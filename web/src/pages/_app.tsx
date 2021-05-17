@@ -1,14 +1,19 @@
 import "focus-visible/dist/focus-visible";
 
-import { ChakraProvider, cookieStorageManager, localStorageManager } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  Flex,
+  cookieStorageManager,
+  localStorageManager,
+  useColorModeValue
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { Provider as SessionProvider } from "next-auth/client";
 import { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Hydrate } from "react-query/hydration";
 
-import { Container } from "components/container";
-import theme from "definitions/chakra/theme";
+import theme from "common/definitions/chakra/theme";
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const queryClient = new QueryClient();
@@ -31,6 +36,24 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     </ChakraProvider>
   );
 }
+
+const Container: React.FC = ({ children }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
+
+  return (
+    <Flex
+      direction="column"
+      alignItems="center"
+      justifyContent="flex-start"
+      bg={bgColor}
+      color={color}
+      height="100vh"
+    >
+      {children}
+    </Flex>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   return {

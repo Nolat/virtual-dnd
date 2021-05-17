@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Layer as CanvasLayer } from "react-konva";
 
-import theme from "definitions/chakra/theme";
+import theme from "common/definitions/chakra/theme";
 
 export const Layer: React.FC = ({ children }) => {
   // * Add border radius

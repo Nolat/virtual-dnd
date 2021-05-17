@@ -2,7 +2,7 @@ import { useColorModeValue } from "@chakra-ui/color-mode";
 import React from "react";
 import { FiCrosshair } from "react-icons/fi";
 
-import { IconButton } from "components/icon-button";
+import { IconButton } from "common/components/icon-button";
 import { useStageStore } from "modules/game/store/useStageStore";
 
 export const BackToCenterButton: React.FC = () => {

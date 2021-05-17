@@ -8,9 +8,9 @@ import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 import { getConnection } from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
 
+import { initializeDatabase } from "modules/api/database";
 import { User } from "modules/api/models";
 import { GameResolver, UserResolver } from "modules/api/resolvers";
-import { initializeDatabase } from "modules/database";
 
 export const bootstrapServer = async (): Promise<ApolloServer> => {
   const schema = await buildSchema({

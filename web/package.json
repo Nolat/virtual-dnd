@@ -105,9 +105,7 @@
       "parser": "typescript",
       "options": {
         "alias": [
-          "components",
-          "definitions",
-          "hooks",
+          "common",
           "modules",
           "pages",
           "public",

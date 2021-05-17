@@ -2,7 +2,7 @@ import React from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
 
-import { useMapStore } from "modules/game/store/useMapStore";
+import { useMapStore } from "modules/game-map/store/useMapStore";
 import { useStageStore } from "modules/game/store/useStageStore";
 
 export const MapImage: React.FC = () => {

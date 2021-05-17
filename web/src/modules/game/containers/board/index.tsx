@@ -3,11 +3,10 @@ import { KonvaEventObject } from "konva/types/Node";
 import { useEffect, useRef } from "react";
 import { Stage } from "react-konva";
 
-import { useWindowSize } from "hooks";
-import { MapLayer } from "modules/game/map/components";
+import { useWindowSize } from "common/hooks";
+import { MapLayer } from "modules/game-map/containers";
+import { BackToCenterButton } from "modules/game/components";
 import { useStageStore } from "modules/game/store/useStageStore";
-
-import { BackToCenterButton } from "../back-to-center-button";
 
 export const Board: React.FC = () => {
   const bgColor = useColorModeValue("gray.50", "gray.900");

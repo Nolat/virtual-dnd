@@ -20,10 +20,6 @@ export const BackToCenterButton: React.FC = () => {
       opacity={1}
       bg={bg}
       isRound
-      position="absolute"
-      m={4}
-      right={0}
-      bottom={0}
       onClick={() => {
         resetPosition();
         resetScale();

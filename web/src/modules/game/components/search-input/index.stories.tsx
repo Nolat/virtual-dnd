@@ -2,12 +2,17 @@ import { useColorMode } from "@chakra-ui/react";
 import { Meta, Story } from "@storybook/react";
 import React, { useEffect } from "react";
 
-import { ColorModeButton } from ".";
+import { SearchInput } from ".";
 
 export default {
-  title: "common/Color mode button",
-  component: ColorModeButton
+  title: "Game/Search input",
+  component: SearchInput,
+  argTypes: { onChange: { action: "changed" } }
 } as Meta;
+
+const Template: Story = ({ onChange }) => {
+  return <SearchInput placeholder="Search input" onChange={onChange} />;
+};
 
 export const Light: Story = () => {
   const { setColorMode } = useColorMode();
@@ -18,7 +23,7 @@ export const Light: Story = () => {
     }, 0);
   }, [setColorMode]);
 
-  return <ColorModeButton />;
+  return <Template />;
 };
 
 export const Dark: Story = () => {
@@ -30,5 +35,5 @@ export const Dark: Story = () => {
     }, 0);
   }, [setColorMode]);
 
-  return <ColorModeButton />;
+  return <Template />;
 };

@@ -16,4 +16,27 @@ const withChakra = (StoryFn: Function, _: StoryContext) => {
   );
 };
 
+export const parameters = {
+  backgrounds: {
+    values: [
+      {
+        name: "light-bg",
+        value: "#ffffff"
+      },
+      {
+        name: "light-board",
+        value: "#F1F2F3"
+      },
+      {
+        name: "dark-bg",
+        value: "#060607"
+      },
+      {
+        name: "dark-board",
+        value: "#202225"
+      }
+    ]
+  }
+};
+
 export const decorators = [withChakra];

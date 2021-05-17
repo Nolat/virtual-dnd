@@ -70,7 +70,9 @@ export const Board: React.FC = () => {
         <MapLayer />
       </Stage>
 
-      <BackToCenterButton />
+      <Box position="absolute" m={4} right={0} bottom={0}>
+        <BackToCenterButton />
+      </Box>
     </Box>
   );
 };

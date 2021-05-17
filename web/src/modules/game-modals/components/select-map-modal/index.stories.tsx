@@ -2,12 +2,22 @@ import { useColorMode } from "@chakra-ui/react";
 import { Meta, Story } from "@storybook/react";
 import React, { useEffect } from "react";
 
-import { ColorModeButton } from ".";
+import { ModalContainer } from "common/containers";
+
+import { SelectMapModal } from ".";
 
 export default {
-  title: "common/Color mode button",
-  component: ColorModeButton
+  title: "Game/Modals/Select map",
+  component: SelectMapModal
 } as Meta;
+
+const Template: Story = () => {
+  return (
+    <ModalContainer isOpen={true} onClose={() => false}>
+      <SelectMapModal />
+    </ModalContainer>
+  );
+};
 
 export const Light: Story = () => {
   const { setColorMode } = useColorMode();
@@ -18,7 +28,7 @@ export const Light: Story = () => {
     }, 0);
   }, [setColorMode]);
 
-  return <ColorModeButton />;
+  return <Template />;
 };
 
 export const Dark: Story = () => {
@@ -30,5 +40,5 @@ export const Dark: Story = () => {
     }, 0);
   }, [setColorMode]);
 
-  return <ColorModeButton />;
+  return <Template />;
 };

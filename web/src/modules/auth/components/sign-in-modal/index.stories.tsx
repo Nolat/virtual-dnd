@@ -18,6 +18,13 @@ const Template: Story = () => {
       signinUrl: "http://localhost:3000/api/auth/signin/apple",
       callbackUrl: "http://localhost:3000/api/auth/callback/apple"
     },
+    discord: {
+      id: "discord",
+      name: "Discord",
+      type: "oauth",
+      signinUrl: "http://localhost:3000/api/auth/signin/discord",
+      callbackUrl: "http://localhost:3000/api/auth/callback/discord"
+    },
     facebook: {
       id: "facebook",
       name: "Facebook",

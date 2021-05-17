@@ -22,7 +22,7 @@ export class UserResolver {
     nullable: true
   })
   getUser(@Arg("id") id: string): Promise<User> {
-    return this.userRepository.findOne(id);
+    return this.userRepository.findOne({ where: { id } });
   }
 
   @Query(() => User, {

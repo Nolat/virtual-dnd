@@ -60,7 +60,7 @@ jobs:
         
       - name: Run tests
         working-directory: ./web
-        run: yarn test -i --passWithNoTests
+        run: yarn test --passWithNoTests
         env: 
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 

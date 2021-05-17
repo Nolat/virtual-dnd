@@ -1,8 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`User resolver should get a list of users 1`] = `Array []`;
+exports[`User resolver should get a list of users 1`] = `
+Array [
+  Object {
+    "email": "test1@test.com",
+    "image": "img:test1",
+    "name": "test1-user",
+  },
+  Object {
+    "email": "test2@test.com",
+    "image": "img:test2",
+    "name": "test2-user",
+  },
+]
+`;
 
-exports[`User resolver should get a specific user from id 1`] = `null`;
+exports[`User resolver should get a specific user from id 1`] = `
+Object {
+  "email": "test1@test.com",
+  "image": "img:test1",
+  "name": "test1-user",
+}
+`;
 
 exports[`User resolver should get a user when passed from context 1`] = `
 Object {

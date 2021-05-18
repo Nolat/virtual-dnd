@@ -22,10 +22,12 @@ export const AuthAdapter = () => {
           return repository.save(user);
         },
         async getUser(id) {
+          if (!id) return null;
+
           const connection = await initializeDatabase();
           const repository = connection.getRepository(User);
 
-          return repository.findOne(id);
+          return repository.findOne({ where: { id } });
         },
         async getUserByEmail(email) {
           const connection = await initializeDatabase();
@@ -117,7 +119,9 @@ export const AuthAdapter = () => {
           const connection = await initializeDatabase();
           const repository = connection.getRepository(Session);
 
-          const session = await repository.findOne({ where: { sessionToken } });
+          const session = await repository.findOne({
+            where: { sessionToken }
+          });
 
           if (!session) return null;
 

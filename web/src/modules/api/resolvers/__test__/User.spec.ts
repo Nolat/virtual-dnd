@@ -9,9 +9,11 @@ describe("User resolver", () => {
   const USER1_DATA = { email: "test1@test.com", name: "test1-user", image: "img:test1" };
   const USER2_DATA = { email: "test2@test.com", name: "test2-user", image: "img:test2" };
 
-  const users: User[] = [];
+  let users: User[] = [];
 
-  beforeAll(async () => {
+  beforeEach(async () => {
+    users = [];
+
     const connection = getConnection();
     const userRepository = connection.getRepository(User);
 

@@ -17,7 +17,7 @@ beforeAll(async (done) => {
 });
 
 beforeEach(async (done) => {
-  await connection.synchronize(true);
+  await connection?.synchronize(true);
 
   done();
 });

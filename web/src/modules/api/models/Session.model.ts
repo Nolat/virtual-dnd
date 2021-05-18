@@ -8,6 +8,7 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn
 } from "typeorm";
 
@@ -21,12 +22,15 @@ export default class Session extends BaseEntity {
     this.accessToken = randomBytes(32).toString("hex");
   }
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @OneToOne(() => User)
   @JoinColumn()
   user: User;
+
+  @RelationId((session: Session) => session.user)
+  userId: string;
 
   @Column({ type: "timestamp" })
   expiresOn: Date;

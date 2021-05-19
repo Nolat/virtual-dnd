@@ -34,7 +34,12 @@ export class GameResolver {
 
     const gameUser = await this.gameUserRepository.findOne({ user, game });
 
-    return { hasJoined: !!gameUser, hasPassword: !!game.password };
+    return {
+      userId: user.id,
+      gameId: game.id,
+      hasJoined: !!gameUser,
+      hasPassword: !!game.password
+    };
   }
 
   @Authorized()

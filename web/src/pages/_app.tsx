@@ -1,5 +1,6 @@
 import "focus-visible/dist/focus-visible";
 
+import { ApolloProvider } from "@apollo/client";
 import {
   ChakraProvider,
   Flex,
@@ -10,28 +11,25 @@ import {
 import { GetServerSideProps } from "next";
 import { Provider as SessionProvider } from "next-auth/client";
 import { AppProps } from "next/app";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Hydrate } from "react-query/hydration";
 
+import { useClient } from "common/definitions/apollo/client";
 import theme from "common/definitions/chakra/theme";
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
-  const queryClient = new QueryClient();
-
   const { cookies } = pageProps;
   const colorModeManager =
     typeof cookies === "string" ? cookieStorageManager(cookies) : localStorageManager;
 
+  const client = useClient();
+
   return (
     <ChakraProvider resetCSS colorModeManager={colorModeManager} theme={theme}>
       <SessionProvider session={pageProps.session}>
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydratedState}>
-            <Container>
-              <Component {...pageProps} />
-            </Container>
-          </Hydrate>
-        </QueryClientProvider>
+        <ApolloProvider client={client}>
+          <Container>
+            <Component {...pageProps} />
+          </Container>
+        </ApolloProvider>
       </SessionProvider>
     </ChakraProvider>
   );

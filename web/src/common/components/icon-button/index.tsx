@@ -19,7 +19,7 @@ export const IconButton: React.FC<IconButtonProps> = ({ tooltip, tooltipPlacemen
 };
 
 export interface IconButtonProps extends CIconButtonProps {
-  tooltipPlacement: Placement;
-  tooltip: string;
+  tooltipPlacement?: Placement;
+  tooltip?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }

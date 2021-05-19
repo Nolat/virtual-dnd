@@ -1,0 +1,5 @@
+query Game($id: String!) {
+  Game(id: $id) {
+    ...GameFields
+  }
+}

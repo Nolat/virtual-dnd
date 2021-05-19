@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { useDisclosure } from "@chakra-ui/react";
+import { Spinner, Stack, useDisclosure } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { ClientSafeProvider, getProviders, signOut, useSession } from "next-auth/client";
 import Head from "next/head";
@@ -8,7 +8,7 @@ import Head from "next/head";
 import { SignInModal } from "modules/auth/components";
 
 const Index: React.FC<IndexProps> = ({ providers }) => {
-  const [session] = useSession();
+  const [session, loading] = useSession();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -23,15 +23,23 @@ const Index: React.FC<IndexProps> = ({ providers }) => {
         <Flex justifyContent="center" alignItems="center" height="100vh" flexDir="column">
           <Heading fontSize="6vw">Virtual D&D</Heading>
 
-          {!session && (
-            <Button data-testid="sign-in-button" onClick={() => onOpen()}>
+          {loading && <Spinner />}
+
+          {!loading && !session && (
+            <Button data-testid="sign-in-button" variant="outline" onClick={() => onOpen()}>
               Se connecter
             </Button>
           )}
+
           {session && (
-            <Button data-testid="sign-out-button" onClick={() => signOut()}>
-              Se déconnecter
-            </Button>
+            <Stack spacing={4} mb={4}>
+              <Button data-testid="sign-out-button" onClick={() => false}>
+                Créer une partie
+              </Button>
+              <Button data-testid="sign-out-button" variant="outline" onClick={() => signOut()}>
+                Se déconnecter
+              </Button>
+            </Stack>
           )}
         </Flex>
       </Box>

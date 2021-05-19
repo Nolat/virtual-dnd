@@ -1,0 +1,4 @@
+fragment GameFields on Game {
+  id
+  name
+}

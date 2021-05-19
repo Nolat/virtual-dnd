@@ -1,0 +1,5 @@
+mutation JoinGame($id: String!, $password: String) {
+  JoinGame(id: $id, password: $password) {
+    ...GameFields
+  }
+}

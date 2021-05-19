@@ -15,8 +15,8 @@ export const MapImage: React.FC = () => {
   return (
     <Image
       image={image}
-      x={(stageRef?.getWidth() - image?.width ?? 0) / 2}
-      y={(stageRef?.getHeight() - image?.height ?? 0) / 2}
+      x={(stageRef?.getWidth() - image?.width || 0) / 2}
+      y={(stageRef?.getHeight() - image?.height || 0) / 2}
       onMouseEnter={() => {
         stageRef.container().style.cursor = "move";
       }}

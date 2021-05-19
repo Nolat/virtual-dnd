@@ -1,9 +1,10 @@
+import { ThemingProps } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
 import { ModalContainer } from "common/containers";
-import { SelectMapModal } from "modules/modals/components";
+import { InvitePlayersModal, SelectMapModal } from "modules/modals/components";
 import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
 import { CreateGameModal } from "../create-game-modal";
@@ -17,6 +18,9 @@ const SwitchModal = ({ modal }) => {
 
     case ModalType.GAME_PASSWORD:
       return <GamePasswordModal />;
+
+    case ModalType.INVITE_PLAYERS:
+      return <InvitePlayersModal />;
 
     case ModalType.SELECT_MAP:
       return <SelectMapModal />;
@@ -35,13 +39,12 @@ export const ModalController: React.FC = () => {
 
   const { modal, closeModal } = useModalStore();
 
-  const [size, setSize] = useState("6xl");
+  const [size, setSize] = useState<ThemingProps<"Modal">["size"]>("6xl");
 
   useEffect(() => {
     switch (modal) {
       case undefined:
         break;
-
       case ModalType.GAME_PASSWORD:
         setSize("xs");
         break;
@@ -49,6 +52,10 @@ export const ModalController: React.FC = () => {
       case ModalType.CREATE_GAME:
       case ModalType.SIGN_IN:
         setSize("sm");
+        break;
+
+      case ModalType.INVITE_PLAYERS:
+        setSize("md");
         break;
 
       default:

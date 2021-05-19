@@ -10,7 +10,8 @@ export const SignInModal: React.FC<SignInModalProps> = ({ providers }) => {
   return (
     <>
       <ModalHeader>
-        <Icon as={FiLogIn} mr={4} /> Se connecter
+        <Icon as={FiLogIn} mr={4} />
+        Se connecter
       </ModalHeader>
       <ModalCloseButton />
       <ModalBody>

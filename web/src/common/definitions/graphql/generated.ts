@@ -99,7 +99,9 @@ export type User = {
   updatedAt: Scalars["DateTime"];
 };
 
-export type GameFieldsFragment = { __typename?: "Game" } & Pick<Game, "id" | "name">;
+export type GameFieldsFragment = { __typename?: "Game" } & Pick<Game, "id" | "name"> & {
+    master: { __typename?: "User" } & Pick<User, "id">;
+  };
 
 export type CreateGameMutationVariables = Exact<{
   name: Scalars["String"];
@@ -144,6 +146,9 @@ export const GameFieldsFragmentDoc = gql`
   fragment GameFields on Game {
     id
     name
+    master {
+      id
+    }
   }
 `;
 export const CreateGameDocument = gql`

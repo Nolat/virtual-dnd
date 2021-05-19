@@ -1,7 +1,9 @@
 import { Stack } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
+import { useSession } from "next-auth/client";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { ColorModeButton } from "common/components/color-mode-button";
@@ -16,12 +18,17 @@ import {
   useJoinGameMutation
 } from "common/definitions/graphql/generated";
 import { SelectMapButton } from "modules/game-map/components";
-import { Sidebar, Topbar } from "modules/game/components";
+import { InvitePlayersButton, Sidebar, Topbar } from "modules/game/components";
 import { Board, GameContainer } from "modules/game/containers";
 import { ModalController } from "modules/modals/containers";
 import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
-const Game: React.FC<GameProps> = ({ id, name }) => {
+const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
+  const [session, loading] = useSession();
+  const router = useRouter();
+
+  if (!loading && !session) router.replace("/");
+
   const { openModal } = useModalStore();
 
   const { data, loading: queryLoading } = useJoinGameInfoQuery({ variables: { id } });
@@ -61,7 +68,8 @@ const Game: React.FC<GameProps> = ({ id, name }) => {
 
       <Sidebar side="left">
         <Stack spacing={4} alignSelf="flex-end">
-          <SelectMapButton />
+          {session?.id === masterId && <SelectMapButton />}
+          <InvitePlayersButton />
           <ColorModeButton />
         </Stack>
       </Sidebar>
@@ -95,13 +103,14 @@ export const getServerSideProps: GetServerSideProps<GameProps> = async (ctx) => 
   }
 
   return {
-    props: { id, name: data.Game.name }
+    props: { id, name: data.Game.name, masterId: data.Game.master.id }
   };
 };
 
 interface GameProps {
   id: string;
   name: string;
+  masterId: string;
 }
 
 export default Game;

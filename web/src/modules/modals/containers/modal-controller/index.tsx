@@ -3,18 +3,27 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 
 import { ModalContainer } from "common/containers";
-import { SelectMapModal } from "modules/game-modals/components";
-import { GameModalType, useGameModalStore } from "modules/game-modals/store/useGameModalStore";
+import { SelectMapModal } from "modules/modals/components";
+import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
+import { CreateGameModal } from "../create-game-modal";
 import { GamePasswordModal } from "../game-password-modal";
+import { SignInModalContainer } from "../sign-in-modal-container";
 
 const SwitchModal = ({ modal }) => {
   switch (modal) {
-    case GameModalType.SELECT_MAP:
+    case ModalType.CREATE_GAME:
+      return <CreateGameModal />;
+
+    case ModalType.GAME_PASSWORD:
+      return <GamePasswordModal />;
+
+    case ModalType.SELECT_MAP:
       return <SelectMapModal />;
 
-    case GameModalType.GAME_PASSWORD:
-      return <GamePasswordModal />;
+    case ModalType.SIGN_IN: {
+      return <SignInModalContainer />;
+    }
 
     default:
       return <></>;
@@ -24,7 +33,7 @@ const SwitchModal = ({ modal }) => {
 export const ModalController: React.FC = () => {
   const router = useRouter();
 
-  const { modal, closeModal } = useGameModalStore();
+  const { modal, closeModal } = useModalStore();
 
   const [size, setSize] = useState("6xl");
 
@@ -33,8 +42,13 @@ export const ModalController: React.FC = () => {
       case undefined:
         break;
 
-      case GameModalType.GAME_PASSWORD:
+      case ModalType.GAME_PASSWORD:
         setSize("xs");
+        break;
+
+      case ModalType.CREATE_GAME:
+      case ModalType.SIGN_IN:
+        setSize("sm");
         break;
 
       default:
@@ -45,7 +59,7 @@ export const ModalController: React.FC = () => {
 
   const onClose = () => {
     switch (modal) {
-      case GameModalType.GAME_PASSWORD:
+      case ModalType.GAME_PASSWORD:
         router.replace("/");
         break;
 
@@ -60,7 +74,7 @@ export const ModalController: React.FC = () => {
       isOpen={modal != undefined}
       onClose={onClose}
       size={size}
-      closeOnOverlayClick={modal !== GameModalType.GAME_PASSWORD}
+      closeOnOverlayClick={modal !== ModalType.GAME_PASSWORD}
     >
       <SwitchModal modal={modal} />
     </ModalContainer>

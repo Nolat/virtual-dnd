@@ -1,16 +1,16 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { Spinner, Stack, useDisclosure } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { ClientSafeProvider, getProviders, signOut, useSession } from "next-auth/client";
+import { Spinner, Stack } from "@chakra-ui/react";
+import { signOut, useSession } from "next-auth/client";
 import Head from "next/head";
 
-import { SignInModal } from "modules/auth/components";
+import { ModalController } from "modules/modals/containers";
+import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
-const Index: React.FC<IndexProps> = ({ providers }) => {
+const Index: React.FC = () => {
   const [session, loading] = useSession();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { openModal } = useModalStore();
 
   return (
     <>
@@ -26,14 +26,21 @@ const Index: React.FC<IndexProps> = ({ providers }) => {
           {loading && <Spinner />}
 
           {!loading && !session && (
-            <Button data-testid="sign-in-button" variant="outline" onClick={() => onOpen()}>
+            <Button
+              data-testid="sign-in-button"
+              variant="outline"
+              onClick={() => openModal(ModalType.SIGN_IN)}
+            >
               Se connecter
             </Button>
           )}
 
           {session && (
             <Stack spacing={4} mb={4}>
-              <Button data-testid="sign-out-button" onClick={() => false}>
+              <Button
+                data-testid="sign-out-button"
+                onClick={() => openModal(ModalType.CREATE_GAME)}
+              >
                 Créer une partie
               </Button>
               <Button data-testid="sign-out-button" variant="outline" onClick={() => signOut()}>
@@ -44,21 +51,9 @@ const Index: React.FC<IndexProps> = ({ providers }) => {
         </Flex>
       </Box>
 
-      <SignInModal providers={providers} isOpen={isOpen} onClose={onClose} />
+      <ModalController />
     </>
   );
 };
-
-export const getServerSideProps: GetServerSideProps<IndexProps> = async () => {
-  const providers = await getProviders();
-
-  return {
-    props: { providers }
-  };
-};
-
-interface IndexProps {
-  providers: Record<string, ClientSafeProvider>;
-}
 
 export default Index;

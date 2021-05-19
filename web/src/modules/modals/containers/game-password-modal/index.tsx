@@ -20,13 +20,13 @@ import {
   JoinGameInfoQuery,
   useJoinGameMutation
 } from "common/definitions/graphql/generated";
-import { useGameModalStore } from "modules/game-modals/store/useGameModalStore";
+import { useModalStore } from "modules/modals/store/useModalStore";
 
 export const GamePasswordModal: React.FC = () => {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const { closeModal } = useGameModalStore();
+  const { closeModal } = useModalStore();
 
   const [isShown, setIsShown] = useState(false);
   const [password, setPassword] = useState("");

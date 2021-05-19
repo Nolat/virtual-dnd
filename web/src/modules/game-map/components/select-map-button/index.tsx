@@ -2,10 +2,10 @@ import React from "react";
 import { FiMap } from "react-icons/fi";
 
 import { IconButton } from "common/components/icon-button";
-import { GameModalType, useGameModalStore } from "modules/game-modals/store/useGameModalStore";
+import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
 export const SelectMapButton: React.FC = () => {
-  const { openModal } = useGameModalStore();
+  const { openModal } = useModalStore();
 
   return (
     <IconButton
@@ -13,7 +13,7 @@ export const SelectMapButton: React.FC = () => {
       aria-label="Sélectionner une map"
       tooltip="Sélectionner une map"
       tooltipPlacement="auto"
-      onClick={() => openModal(GameModalType.SELECT_MAP)}
+      onClick={() => openModal(ModalType.SELECT_MAP)}
     />
   );
 };

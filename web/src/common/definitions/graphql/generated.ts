@@ -101,6 +101,15 @@ export type User = {
 
 export type GameFieldsFragment = { __typename?: "Game" } & Pick<Game, "id" | "name">;
 
+export type CreateGameMutationVariables = Exact<{
+  name: Scalars["String"];
+  password?: Maybe<Scalars["String"]>;
+}>;
+
+export type CreateGameMutation = { __typename?: "Mutation" } & {
+  CreateGame?: Maybe<{ __typename?: "Game" } & GameFieldsFragment>;
+};
+
 export type JoinGameMutationVariables = Exact<{
   id: Scalars["String"];
   password?: Maybe<Scalars["String"]>;
@@ -137,6 +146,52 @@ export const GameFieldsFragmentDoc = gql`
     name
   }
 `;
+export const CreateGameDocument = gql`
+  mutation CreateGame($name: String!, $password: String) {
+    CreateGame(name: $name, password: $password) {
+      ...GameFields
+    }
+  }
+  ${GameFieldsFragmentDoc}
+`;
+export type CreateGameMutationFn = Apollo.MutationFunction<
+  CreateGameMutation,
+  CreateGameMutationVariables
+>;
+
+/**
+ * __useCreateGameMutation__
+ *
+ * To run a mutation, you first call `useCreateGameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGameMutation, { data, loading, error }] = useCreateGameMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useCreateGameMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateGameMutation, CreateGameMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateGameMutation, CreateGameMutationVariables>(
+    CreateGameDocument,
+    options
+  );
+}
+export type CreateGameMutationHookResult = ReturnType<typeof useCreateGameMutation>;
+export type CreateGameMutationResult = Apollo.MutationResult<CreateGameMutation>;
+export type CreateGameMutationOptions = Apollo.BaseMutationOptions<
+  CreateGameMutation,
+  CreateGameMutationVariables
+>;
 export const JoinGameDocument = gql`
   mutation JoinGame($id: String!, $password: String) {
     JoinGame(id: $id, password: $password) {

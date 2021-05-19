@@ -8,14 +8,14 @@ import { FiMap, FiTrash } from "react-icons/fi";
 
 import { IconButton } from "common/components/icon-button";
 import { useMapStore } from "modules/game-map/store/useMapStore";
-import { useGameModalStore } from "modules/game-modals/store/useGameModalStore";
 import { AssetPreview, SearchInput } from "modules/game/components";
+import { useModalStore } from "modules/modals/store/useModalStore";
 
 import maps from "./maps.json";
 
 export const SelectMapModal: React.FC = () => {
   const { mapUrl, selectMap } = useMapStore();
-  const { closeModal } = useGameModalStore();
+  const { closeModal } = useModalStore();
 
   // * Handle search
   const [searchText, setSearchText] = useState<string>();

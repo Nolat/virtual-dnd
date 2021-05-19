@@ -16,13 +16,13 @@ import {
   useJoinGameMutation
 } from "common/definitions/graphql/generated";
 import { SelectMapButton } from "modules/game-map/components";
-import { ModalController } from "modules/game-modals/containers";
-import { GameModalType, useGameModalStore } from "modules/game-modals/store/useGameModalStore";
 import { Sidebar, Topbar } from "modules/game/components";
 import { Board, GameContainer } from "modules/game/containers";
+import { ModalController } from "modules/modals/containers";
+import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
 const Game: React.FC<GameProps> = ({ id, name }) => {
-  const { openModal } = useGameModalStore();
+  const { openModal } = useModalStore();
 
   const { data, loading: queryLoading } = useJoinGameInfoQuery({ variables: { id } });
 
@@ -31,7 +31,7 @@ const Game: React.FC<GameProps> = ({ id, name }) => {
   useEffect(() => {
     if (data && !data?.JoinGameInfo.hasJoined) {
       if (data?.JoinGameInfo.hasPassword) {
-        openModal(GameModalType.GAME_PASSWORD);
+        openModal(ModalType.GAME_PASSWORD);
       } else {
         joinGame({
           variables: { id },

@@ -1,0 +1,8 @@
+query JoinGameInfo($id: String!) {
+  JoinGameInfo(id: $id) {
+    userId
+    gameId
+    hasJoined
+    hasPassword
+  }
+}

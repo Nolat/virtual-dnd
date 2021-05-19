@@ -35,8 +35,6 @@ export const bootstrapServer = async (): Promise<ApolloServer> => {
 
       const connection = getConnection();
 
-      // console.log({ session });
-
       const user = await connection.getRepository(User).findOne({
         where: { email: session.user.email, name: session.user.name }
       });

@@ -7,12 +7,11 @@ generates:
       withHooks: true
       withComponent: false
       withHOC: false
-      fetcher:
-        endpoint: ${API_ENDPOINT}
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-query
+      - typescript-react-apollo
+      - typescript-apollo-client-helpers
 hooks:
   afterAllFileWrite:
     - prettier --write

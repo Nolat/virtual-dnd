@@ -1,19 +1,21 @@
 import React from "react";
-import { FiMap } from "react-icons/fi";
+import { FiUserPlus } from "react-icons/fi";
 
 import { IconButton } from "common/components/icon-button";
 import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
-export const SelectMapButton: React.FC = () => {
+export const InvitePlayersButton: React.FC = () => {
   const { openModal } = useModalStore();
 
   return (
     <IconButton
-      icon={<FiMap />}
-      aria-label="Sélectionner une map"
-      tooltip="Sélectionner une map"
+      icon={<FiUserPlus />}
+      aria-label="Inviter des joueurs"
+      tooltip="Inviter des joueurs"
       tooltipPlacement="auto"
-      onClick={() => openModal(ModalType.SELECT_MAP)}
+      onClick={() => {
+        openModal(ModalType.INVITE_PLAYERS);
+      }}
     />
   );
 };

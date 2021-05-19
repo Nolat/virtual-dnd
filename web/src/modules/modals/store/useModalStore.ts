@@ -1,7 +1,11 @@
 import create from "zustand";
 
 export enum ModalType {
-  SELECT_MAP
+  CREATE_GAME,
+  GAME_PASSWORD,
+  INVITE_PLAYERS,
+  SELECT_MAP,
+  SIGN_IN
 }
 
 type ModalState = {

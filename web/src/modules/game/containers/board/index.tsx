@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { KonvaEventObject } from "konva/types/Node";
 import { useEffect, useRef } from "react";
 import { Stage } from "react-konva";
@@ -9,7 +9,6 @@ import { BackToCenterButton } from "modules/game/components";
 import { useStageStore } from "modules/game/store/useStageStore";
 
 export const Board: React.FC = () => {
-  const bgColor = useColorModeValue("gray.50", "gray.900");
   const { width, height } = useWindowSize();
 
   const { setStageRef, stagePosition, stageScale, updatePosition, updateScale } = useStageStore();
@@ -46,15 +45,7 @@ export const Board: React.FC = () => {
   };
 
   return (
-    <Box
-      w="calc(100% - 128px)"
-      h="100%"
-      bg={bgColor}
-      mt="64px"
-      mb={0}
-      borderTopRadius="4xl"
-      position="relative"
-    >
+    <>
       <Stage
         ref={stageRef}
         width={width - 128}
@@ -73,6 +64,6 @@ export const Board: React.FC = () => {
       <Box position="absolute" m={4} right={0} bottom={0}>
         <BackToCenterButton />
       </Box>
-    </Box>
+    </>
   );
 };

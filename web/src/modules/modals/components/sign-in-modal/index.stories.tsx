@@ -2,6 +2,8 @@ import { useColorMode } from "@chakra-ui/react";
 import { Meta, Story } from "@storybook/react";
 import React, { useEffect } from "react";
 
+import { ModalContainer } from "common/containers";
+
 import { SignInModal } from ".";
 
 export default {
@@ -55,7 +57,11 @@ const Template: Story = () => {
     }
   };
 
-  return <SignInModal isOpen={true} onClose={() => false} providers={providers as any} />;
+  return (
+    <ModalContainer isOpen={true} onClose={() => false}>
+      <SignInModal providers={providers as any} />
+    </ModalContainer>
+  );
 };
 
 export const Light: Story = () => {

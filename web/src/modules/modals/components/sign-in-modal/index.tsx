@@ -6,18 +6,17 @@ import React from "react";
 import { FaApple, FaDiscord, FaFacebook, FaGoogle, FaTwitch, FaTwitter } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 
-import { ModalContainer } from "common/containers";
-
-export const SignInModal: React.FC<SignInModalProps> = ({ providers, isOpen, onClose }) => {
+export const SignInModal: React.FC<SignInModalProps> = ({ providers }) => {
   return (
-    <ModalContainer isOpen={isOpen} onClose={onClose} size="sm">
+    <>
       <ModalHeader>
-        <Icon as={FiLogIn} mr={4} /> Se connecter
+        <Icon as={FiLogIn} mr={4} />
+        Se connecter
       </ModalHeader>
       <ModalCloseButton />
       <ModalBody>
         <Stack justifyContent="center" alignItems="center" spacing={4} mb={4}>
-          {Object.values(providers).map((provider) => (
+          {Object.values(providers || []).map((provider) => (
             <Button
               data-testid={`${provider.id}-button`}
               key={provider.id}
@@ -32,7 +31,7 @@ export const SignInModal: React.FC<SignInModalProps> = ({ providers, isOpen, onC
           ))}
         </Stack>
       </ModalBody>
-    </ModalContainer>
+    </>
   );
 };
 
@@ -88,6 +87,4 @@ function brandColor(name: string): Token<CSS.Property.Color, "colors"> {
 
 export interface SignInModalProps {
   providers: Record<string, ClientSafeProvider>;
-  isOpen: boolean;
-  onClose: () => void;
 }

@@ -1,0 +1,5 @@
+mutation CreateSession($input: CreateSessionInput!) {
+  CreateSession(input: $input) {
+    ...SessionFields
+  }
+}

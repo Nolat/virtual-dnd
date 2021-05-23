@@ -20,7 +20,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   const colorModeManager =
     typeof cookies === "string" ? cookieStorageManager(cookies) : localStorageManager;
 
-  const client = useClient();
+  const client = useClient(pageProps);
 
   return (
     <ChakraProvider resetCSS colorModeManager={colorModeManager} theme={theme}>

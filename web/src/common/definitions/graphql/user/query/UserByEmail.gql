@@ -1,0 +1,5 @@
+query UserByEmail($email: String!) {
+  UserByEmail(email: $email) {
+    ...UserFields
+  }
+}

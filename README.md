@@ -3,6 +3,8 @@
 </p>
 
 <p align="center">
+  <img alt="Backend version v0.1.0" src="https://img.shields.io/static/v1?label=backend%20version&message=v0.1.0&color=black&style=for-the-badge">
+  <img alt="Backend Continuous Integration status" src="https://img.shields.io/github/workflow/status/Nolat/virtual-dnd/ci-backend?label=BACKEND%20CI&style=for-the-badge">
   <img alt="Web version v0.1.0" src="https://img.shields.io/static/v1?label=web%20version&message=v0.1.0&color=black&style=for-the-badge">
   <img alt="Web Continuous Integration status" src="https://img.shields.io/github/workflow/status/Nolat/virtual-dnd/ci-web?label=WEB%20CI&style=for-the-badge">
   <a href="https://github.com/Nolat/virtual-dnd/blob/main/LICENSE" target="_blank">
@@ -21,6 +23,7 @@
 
 | Codebase             |      Description      |
 | :------------------- | :-------------------: |
+| [backend](backend)   |   Nest.js Backend     |
 | [web](web)           |   Next.js Frontend    |
 
 ## Contributing

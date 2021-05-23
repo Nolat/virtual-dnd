@@ -1,0 +1,3 @@
+mutation DeleteSession($token: String!) {
+  DeleteSession(token: $token)
+}

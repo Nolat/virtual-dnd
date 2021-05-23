@@ -12,9 +12,9 @@ import {
   GameDocument,
   GameQuery,
   GameQueryVariables,
-  JoinGameInfoDocument,
-  JoinGameInfoQuery,
-  useJoinGameInfoQuery,
+  GameUserInfoDocument,
+  GameUserInfoQuery,
+  useGameUserInfoQuery,
   useJoinGameMutation
 } from "common/definitions/graphql/generated";
 import { SelectMapButton } from "modules/game-map/components";
@@ -31,24 +31,26 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
 
   const { openModal } = useModalStore();
 
-  const { data, loading: queryLoading } = useJoinGameInfoQuery({ variables: { id } });
+  const { data, loading: queryLoading } = useGameUserInfoQuery({
+    variables: { id }
+  });
 
   const [joinGame, { loading: mutationLoading }] = useJoinGameMutation();
 
   useEffect(() => {
-    if (data && !data?.JoinGameInfo.hasJoined) {
-      if (data?.JoinGameInfo.hasPassword) {
+    if (data && !data?.GameUserInfo.hasJoined) {
+      if (data?.GameUserInfo.hasPassword) {
         openModal(ModalType.GAME_PASSWORD);
       } else {
         joinGame({
-          variables: { id },
+          variables: { input: { id } },
           update(cache) {
-            cache.writeQuery<JoinGameInfoQuery>({
-              query: JoinGameInfoDocument,
+            cache.writeQuery<GameUserInfoQuery>({
+              query: GameUserInfoDocument,
               variables: { id },
               data: {
                 __typename: "Query",
-                JoinGameInfo: { ...data.JoinGameInfo, hasJoined: true }
+                GameUserInfo: { ...data.GameUserInfo, hasJoined: true }
               }
             });
           }
@@ -79,7 +81,7 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
       <GameContainer>
         {(queryLoading || mutationLoading) && <Spinner />}
 
-        {!(queryLoading || mutationLoading) && data?.JoinGameInfo.hasJoined && <Board />}
+        {!queryLoading && !mutationLoading && data?.GameUserInfo?.hasJoined && <Board />}
       </GameContainer>
 
       <ModalController />
@@ -90,14 +92,15 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
 export const getServerSideProps: GetServerSideProps<GameProps> = async (ctx) => {
   const id = ctx.query.id as string;
 
-  const client = getClient(ctx);
+  const client = getClient();
 
-  const { data } = await client.query<GameQuery, GameQueryVariables>({
+  const { data, errors } = await client.query<GameQuery, GameQueryVariables>({
     query: GameDocument,
-    variables: { id: id as string }
+    variables: { id: id as string },
+    errorPolicy: "all"
   });
 
-  if (!data.Game) {
+  if (!data.Game || errors) {
     ctx.res.writeHead(301, { Location: "/404" });
     ctx.res.end();
   }

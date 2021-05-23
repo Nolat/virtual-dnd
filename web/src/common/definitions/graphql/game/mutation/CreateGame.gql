@@ -1,5 +1,5 @@
-mutation CreateGame($name: String!, $password: String) {
-  CreateGame(name: $name, password: $password) {
+mutation CreateGame($input: CreateGameInput!) {
+  CreateGame(input: $input) {
     ...GameFields
   }
 }

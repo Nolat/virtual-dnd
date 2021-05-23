@@ -16,8 +16,8 @@ import { Shake } from "reshake";
 
 import { IconButton } from "common/components";
 import {
-  JoinGameInfoDocument,
-  JoinGameInfoQuery,
+  GameUserInfoDocument,
+  GameUserInfoQuery,
   useJoinGameMutation
 } from "common/definitions/graphql/generated";
 import { useModalStore } from "modules/modals/store/useModalStore";
@@ -36,7 +36,7 @@ export const GamePasswordModal: React.FC = () => {
 
   const onSubmit = async () => {
     await joinGame({
-      variables: { id, password },
+      variables: { input: { id, password } },
       update(cache, { errors }) {
         if (errors) {
           setHasError(true);
@@ -47,12 +47,12 @@ export const GamePasswordModal: React.FC = () => {
         } else {
           closeModal();
 
-          cache.writeQuery<JoinGameInfoQuery>({
-            query: JoinGameInfoDocument,
+          cache.writeQuery<GameUserInfoQuery>({
+            query: GameUserInfoDocument,
             variables: { id },
             data: {
               __typename: "Query",
-              JoinGameInfo: { hasJoined: true, hasPassword: true, userId: "", gameId: id }
+              GameUserInfo: { hasJoined: true, hasPassword: true }
             }
           });
         }

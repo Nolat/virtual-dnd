@@ -1,39 +1,23 @@
-import { ApolloClient, ApolloLink, HttpLink } from "@apollo/client";
+import { ApolloClient, HttpLink } from "@apollo/client";
 import { NormalizedCacheObject } from "@apollo/client/cache";
-import { GetServerSidePropsContext } from "next";
 import { useMemo } from "react";
 
 import cache from "./cache";
 
-const createClient = (ctx?: GetServerSidePropsContext) => {
-  const setCookiesAfterware = new ApolloLink((operation, forward) =>
-    forward(operation).map((response) => {
-      ctx?.res.setHeader(
-        "set-cookie",
-        operation.getContext().response.headers.raw()["set-cookie"] || ""
-      );
-      return response;
-    })
-  );
-
+const createClient = () => {
   return new ApolloClient({
-    link: setCookiesAfterware.concat(
-      new HttpLink({
-        uri: process.env.NEXT_PUBLIC_API_ENDPOINT,
-        headers: { cookie: ctx?.req.headers.cookie }
-      })
-    ),
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_API_ENDPOINT,
+      credentials: "include"
+    }),
     cache,
     connectToDevTools: true
   });
 };
 
 let client: ApolloClient<NormalizedCacheObject> | undefined;
-const initializeClient = (
-  initialState?: NormalizedCacheObject,
-  ctx?: GetServerSidePropsContext
-) => {
-  const apolloClient = client ?? createClient(ctx);
+const initializeClient = (initialState?: NormalizedCacheObject) => {
+  const apolloClient = client ?? createClient();
 
   if (initialState) {
     const prevState = apolloClient.extract();
@@ -45,15 +29,13 @@ const initializeClient = (
     });
   }
 
-  if (typeof window === "undefined") return apolloClient;
-
-  client ??= apolloClient;
+  client = apolloClient;
 
   return client;
 };
 
 const useClient = (initialState?: NormalizedCacheObject) =>
   useMemo(() => initializeClient(initialState), [initialState]);
-const getClient = (ctx: GetServerSidePropsContext) => initializeClient(undefined, ctx);
+const getClient = () => initializeClient(undefined);
 
 export { useClient, getClient };

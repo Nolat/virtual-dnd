@@ -1,0 +1,3 @@
+mutation UnlinkAccount($input: UnlinkAccountInput!) {
+  UnlinkAccount(input: $input)
+}

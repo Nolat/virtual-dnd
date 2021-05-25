@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "incremental": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "decorators/*": ["src/decorators/*"],
+      "decorators": ["src/decorators"],
+      "guard/*": ["src/guard/*"],
+      "guard": ["src/guard"],
+      "modules/*": ["src/modules/*"],
+      "modules": ["src/modules"],
+      "types/*": ["src/types/*"],
+      "types": ["src/types"],
+      "utils/*": ["src/utils/*"],
+      "utils": ["src/utils"],
+      "test/*": ["test/*"],
+      "test": ["test"]
+    }
+  }
+}

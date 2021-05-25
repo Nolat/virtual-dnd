@@ -1,0 +1,5 @@
+query UserById($id: String!) {
+  UserById(id: $id) {
+    ...UserFields
+  }
+}

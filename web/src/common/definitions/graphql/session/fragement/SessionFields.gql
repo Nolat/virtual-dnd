@@ -1,0 +1,10 @@
+fragment SessionFields on Session {
+  id
+  user {
+    ...UserFields
+  }
+  userId
+  expiresOn
+  sessionToken
+  accessToken
+}

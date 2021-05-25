@@ -1,0 +1,5 @@
+query Session($token: String!) {
+  Session(token: $token) {
+    ...SessionFields
+  }
+}

@@ -1,0 +1,5 @@
+query UserByAccountId($id: String!, $providerId: String!) {
+  UserByAccountId(id: $id, providerId: $providerId) {
+    ...UserFields
+  }
+}

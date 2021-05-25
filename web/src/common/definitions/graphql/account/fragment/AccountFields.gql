@@ -1,0 +1,12 @@
+fragment AccountFields on Account {
+  id
+  user {
+    ...UserFields
+  }
+  providerType
+  providerId
+  providerAccountId
+  refreshToken
+  accessToken
+  accessTokenExpiresOn
+}

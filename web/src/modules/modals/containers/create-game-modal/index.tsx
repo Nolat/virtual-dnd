@@ -33,7 +33,7 @@ export const CreateGameModal: React.FC = () => {
     if (password === "") setPassword(undefined);
 
     createGame({
-      variables: { name, password },
+      variables: { input: { name, password } },
       update(_, { data, errors }) {
         if (errors) {
           setHasError(true);

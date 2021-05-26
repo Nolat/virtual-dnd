@@ -2,7 +2,7 @@ import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { Session } from "modules/database/models";
+import { Session } from "models";
 import { UserService } from "modules/user/user.service";
 
 import { CreateSessionInput, UpdateSessionInput } from "./session.input";

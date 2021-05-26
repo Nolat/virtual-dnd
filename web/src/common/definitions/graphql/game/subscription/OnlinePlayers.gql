@@ -1,0 +1,5 @@
+subscription OnOnlinePlayersChanged($id: String!) {
+  onlinePlayersChanged(id: $id) {
+    ...GameUserFields
+  }
+}

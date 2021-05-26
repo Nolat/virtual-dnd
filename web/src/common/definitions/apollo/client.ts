@@ -1,15 +1,41 @@
-import { ApolloClient, HttpLink } from "@apollo/client";
+import { ApolloClient, HttpLink, split } from "@apollo/client";
 import { NormalizedCacheObject } from "@apollo/client/cache";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import { getMainDefinition } from "@apollo/client/utilities";
 import { useMemo } from "react";
 
 import cache from "./cache";
 
 const createClient = () => {
+  const httpLink = new HttpLink({
+    uri: process.env.NEXT_PUBLIC_API_ENDPOINT,
+    credentials: "include"
+  });
+
+  const wsLink = process.browser
+    ? new WebSocketLink({
+        uri: process.env.NEXT_PUBLIC_WS_ENDPOINT,
+        options: {
+          reconnect: true
+        }
+      })
+    : null;
+
+  const link = process.browser
+    ? split(
+        ({ query }) => {
+          const definition = getMainDefinition(query);
+          return (
+            definition.kind === "OperationDefinition" && definition.operation === "subscription"
+          );
+        },
+        wsLink,
+        httpLink
+      )
+    : httpLink;
+
   return new ApolloClient({
-    link: new HttpLink({
-      uri: process.env.NEXT_PUBLIC_API_ENDPOINT,
-      credentials: "include"
-    }),
+    link,
     cache,
     connectToDevTools: true
   });

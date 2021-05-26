@@ -1,0 +1,7 @@
+query OnlinePlayers($id: String!) {
+  Game(id: $id) {
+    onlinePlayers {
+      ...GameUserFields
+    }
+  }
+}

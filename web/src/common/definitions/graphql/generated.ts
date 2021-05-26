@@ -51,15 +51,18 @@ export type Game = {
   name: Scalars["String"];
   master: User;
   gameUsers: Array<GameUser>;
-  users: Array<User>;
   password?: Maybe<Scalars["String"]>;
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
+  users?: Maybe<Array<User>>;
+  onlinePlayers?: Maybe<Array<GameUser>>;
 };
 
 export type GameUser = {
   __typename?: "GameUser";
   id: Scalars["ID"];
+  name: Scalars["String"];
+  color: Scalars["String"];
   user: User;
   game: Game;
   lastSeenAt?: Maybe<Scalars["DateTime"]>;
@@ -192,6 +195,15 @@ export type Session = {
   accessToken: Scalars["String"];
 };
 
+export type Subscription = {
+  __typename?: "Subscription";
+  onlinePlayersChanged?: Maybe<Array<GameUser>>;
+};
+
+export type SubscriptionOnlinePlayersChangedArgs = {
+  id: Scalars["String"];
+};
+
 export type UnlinkAccountInput = {
   userId: Scalars["String"];
   providerId: Scalars["String"];
@@ -219,9 +231,9 @@ export type User = {
   email: Scalars["String"];
   image: Scalars["String"];
   gameUsers: Array<GameUser>;
-  games?: Maybe<Array<Game>>;
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
+  games?: Maybe<Array<Game>>;
 };
 
 export type AccountFieldsFragment = { __typename?: "Account" } & Pick<
@@ -248,6 +260,11 @@ export type UnlinkAccountMutationVariables = Exact<{
 }>;
 
 export type UnlinkAccountMutation = { __typename?: "Mutation" } & Pick<Mutation, "UnlinkAccount">;
+
+export type GameUserFieldsFragment = { __typename?: "GameUser" } & Pick<
+  GameUser,
+  "id" | "name" | "color"
+>;
 
 export type GameFieldsFragment = { __typename?: "Game" } & Pick<Game, "id" | "name"> & {
     master: { __typename?: "User" } & Pick<User, "id">;
@@ -285,6 +302,26 @@ export type GameUserInfoQuery = { __typename?: "Query" } & {
   GameUserInfo?: Maybe<
     { __typename?: "GameUserInfo" } & Pick<GameUserInfo, "hasJoined" | "hasPassword">
   >;
+};
+
+export type OnlinePlayersQueryVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type OnlinePlayersQuery = { __typename?: "Query" } & {
+  Game?: Maybe<
+    { __typename?: "Game" } & {
+      onlinePlayers?: Maybe<Array<{ __typename?: "GameUser" } & GameUserFieldsFragment>>;
+    }
+  >;
+};
+
+export type OnOnlinePlayersChangedSubscriptionVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type OnOnlinePlayersChangedSubscription = { __typename?: "Subscription" } & {
+  onlinePlayersChanged?: Maybe<Array<{ __typename?: "GameUser" } & GameUserFieldsFragment>>;
 };
 
 export type SessionFieldsFragment = { __typename?: "Session" } & Pick<
@@ -396,6 +433,13 @@ export const AccountFieldsFragmentDoc = gql`
     accessTokenExpiresOn
   }
   ${UserFieldsFragmentDoc}
+`;
+export const GameUserFieldsFragmentDoc = gql`
+  fragment GameUserFields on GameUser {
+    id
+    name
+    color
+  }
 `;
 export const GameFieldsFragmentDoc = gql`
   fragment GameFields on Game {
@@ -680,6 +724,98 @@ export type GameUserInfoQueryResult = Apollo.QueryResult<
   GameUserInfoQuery,
   GameUserInfoQueryVariables
 >;
+export const OnlinePlayersDocument = gql`
+  query OnlinePlayers($id: String!) {
+    Game(id: $id) {
+      onlinePlayers {
+        ...GameUserFields
+      }
+    }
+  }
+  ${GameUserFieldsFragmentDoc}
+`;
+
+/**
+ * __useOnlinePlayersQuery__
+ *
+ * To run a query within a React component, call `useOnlinePlayersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOnlinePlayersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnlinePlayersQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOnlinePlayersQuery(
+  baseOptions: Apollo.QueryHookOptions<OnlinePlayersQuery, OnlinePlayersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<OnlinePlayersQuery, OnlinePlayersQueryVariables>(
+    OnlinePlayersDocument,
+    options
+  );
+}
+export function useOnlinePlayersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<OnlinePlayersQuery, OnlinePlayersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<OnlinePlayersQuery, OnlinePlayersQueryVariables>(
+    OnlinePlayersDocument,
+    options
+  );
+}
+export type OnlinePlayersQueryHookResult = ReturnType<typeof useOnlinePlayersQuery>;
+export type OnlinePlayersLazyQueryHookResult = ReturnType<typeof useOnlinePlayersLazyQuery>;
+export type OnlinePlayersQueryResult = Apollo.QueryResult<
+  OnlinePlayersQuery,
+  OnlinePlayersQueryVariables
+>;
+export const OnOnlinePlayersChangedDocument = gql`
+  subscription OnOnlinePlayersChanged($id: String!) {
+    onlinePlayersChanged(id: $id) {
+      ...GameUserFields
+    }
+  }
+  ${GameUserFieldsFragmentDoc}
+`;
+
+/**
+ * __useOnOnlinePlayersChangedSubscription__
+ *
+ * To run a query within a React component, call `useOnOnlinePlayersChangedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnOnlinePlayersChangedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnOnlinePlayersChangedSubscription({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOnOnlinePlayersChangedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    OnOnlinePlayersChangedSubscription,
+    OnOnlinePlayersChangedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useSubscription<
+    OnOnlinePlayersChangedSubscription,
+    OnOnlinePlayersChangedSubscriptionVariables
+  >(OnOnlinePlayersChangedDocument, options);
+}
+export type OnOnlinePlayersChangedSubscriptionHookResult = ReturnType<
+  typeof useOnOnlinePlayersChangedSubscription
+>;
+export type OnOnlinePlayersChangedSubscriptionResult = Apollo.SubscriptionResult<OnOnlinePlayersChangedSubscription>;
 export const CreateSessionDocument = gql`
   mutation CreateSession($input: CreateSessionInput!) {
     CreateSession(input: $input) {
@@ -1146,10 +1282,11 @@ export type GameKeySpecifier = (
   | "name"
   | "master"
   | "gameUsers"
-  | "users"
   | "password"
   | "createdAt"
   | "updatedAt"
+  | "users"
+  | "onlinePlayers"
   | GameKeySpecifier
 )[];
 export type GameFieldPolicy = {
@@ -1157,14 +1294,25 @@ export type GameFieldPolicy = {
   name?: FieldPolicy<any> | FieldReadFunction<any>;
   master?: FieldPolicy<any> | FieldReadFunction<any>;
   gameUsers?: FieldPolicy<any> | FieldReadFunction<any>;
-  users?: FieldPolicy<any> | FieldReadFunction<any>;
   password?: FieldPolicy<any> | FieldReadFunction<any>;
   createdAt?: FieldPolicy<any> | FieldReadFunction<any>;
   updatedAt?: FieldPolicy<any> | FieldReadFunction<any>;
+  users?: FieldPolicy<any> | FieldReadFunction<any>;
+  onlinePlayers?: FieldPolicy<any> | FieldReadFunction<any>;
 };
-export type GameUserKeySpecifier = ("id" | "user" | "game" | "lastSeenAt" | GameUserKeySpecifier)[];
+export type GameUserKeySpecifier = (
+  | "id"
+  | "name"
+  | "color"
+  | "user"
+  | "game"
+  | "lastSeenAt"
+  | GameUserKeySpecifier
+)[];
 export type GameUserFieldPolicy = {
   id?: FieldPolicy<any> | FieldReadFunction<any>;
+  name?: FieldPolicy<any> | FieldReadFunction<any>;
+  color?: FieldPolicy<any> | FieldReadFunction<any>;
   user?: FieldPolicy<any> | FieldReadFunction<any>;
   game?: FieldPolicy<any> | FieldReadFunction<any>;
   lastSeenAt?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1239,15 +1387,19 @@ export type SessionFieldPolicy = {
   sessionToken?: FieldPolicy<any> | FieldReadFunction<any>;
   accessToken?: FieldPolicy<any> | FieldReadFunction<any>;
 };
+export type SubscriptionKeySpecifier = ("onlinePlayersChanged" | SubscriptionKeySpecifier)[];
+export type SubscriptionFieldPolicy = {
+  onlinePlayersChanged?: FieldPolicy<any> | FieldReadFunction<any>;
+};
 export type UserKeySpecifier = (
   | "id"
   | "name"
   | "email"
   | "image"
   | "gameUsers"
-  | "games"
   | "createdAt"
   | "updatedAt"
+  | "games"
   | UserKeySpecifier
 )[];
 export type UserFieldPolicy = {
@@ -1256,9 +1408,9 @@ export type UserFieldPolicy = {
   email?: FieldPolicy<any> | FieldReadFunction<any>;
   image?: FieldPolicy<any> | FieldReadFunction<any>;
   gameUsers?: FieldPolicy<any> | FieldReadFunction<any>;
-  games?: FieldPolicy<any> | FieldReadFunction<any>;
   createdAt?: FieldPolicy<any> | FieldReadFunction<any>;
   updatedAt?: FieldPolicy<any> | FieldReadFunction<any>;
+  games?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type TypedTypePolicies = TypePolicies & {
   Account?: Omit<TypePolicy, "fields" | "keyFields"> & {
@@ -1288,6 +1440,10 @@ export type TypedTypePolicies = TypePolicies & {
   Session?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | SessionKeySpecifier | (() => undefined | SessionKeySpecifier);
     fields?: SessionFieldPolicy;
+  };
+  Subscription?: Omit<TypePolicy, "fields" | "keyFields"> & {
+    keyFields?: false | SubscriptionKeySpecifier | (() => undefined | SubscriptionKeySpecifier);
+    fields?: SubscriptionFieldPolicy;
   };
   User?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | UserKeySpecifier | (() => undefined | UserKeySpecifier);

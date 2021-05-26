@@ -1,7 +1,7 @@
 import { Module, forwardRef } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { Session } from "modules/database/models";
+import { Session } from "models";
 import { UserModule } from "modules/user/user.module";
 
 import { SessionResolver } from "./session.resolver";

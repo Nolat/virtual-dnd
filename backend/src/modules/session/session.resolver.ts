@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 
-import { Session } from "modules/database/models";
+import { Session } from "models";
 
 import { CreateSessionInput, UpdateSessionInput } from "./session.input";
 import { SessionService } from "./session.service";

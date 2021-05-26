@@ -18,6 +18,7 @@ import {
   useJoinGameMutation
 } from "common/definitions/graphql/generated";
 import { SelectMapButton } from "modules/game-map/components";
+import { PlayersList } from "modules/game-players/containers";
 import { InvitePlayersButton, Sidebar, Topbar } from "modules/game/components";
 import { Board, GameContainer } from "modules/game/containers";
 import { ModalController } from "modules/modals/containers";
@@ -32,14 +33,15 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
   const { openModal } = useModalStore();
 
   const { data, loading: queryLoading } = useGameUserInfoQuery({
-    variables: { id }
+    variables: { id },
+    errorPolicy: "all"
   });
 
   const [joinGame, { loading: mutationLoading }] = useJoinGameMutation();
 
   useEffect(() => {
-    if (data && !data?.GameUserInfo.hasJoined) {
-      if (data?.GameUserInfo.hasPassword) {
+    if (data && !data?.GameUserInfo?.hasJoined) {
+      if (data?.GameUserInfo?.hasPassword) {
         openModal(ModalType.GAME_PASSWORD);
       } else {
         joinGame({
@@ -59,6 +61,9 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
     }
   }, [data, joinGame, id, openModal]);
 
+  const isLoading = queryLoading || mutationLoading;
+  const isMaster = session?.id === masterId;
+
   return (
     <>
       <Head>
@@ -66,11 +71,11 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <Topbar></Topbar>
+      <Topbar>{!isLoading && <PlayersList />}</Topbar>
 
       <Sidebar side="left">
         <Stack spacing={4} alignSelf="flex-end">
-          {session?.id === masterId && <SelectMapButton />}
+          {isMaster && <SelectMapButton />}
           <InvitePlayersButton />
           <ColorModeButton />
         </Stack>
@@ -78,31 +83,28 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
 
       <Sidebar side="right"></Sidebar>
 
-      <GameContainer>
-        {(queryLoading || mutationLoading) && <Spinner />}
-
-        {!queryLoading && !mutationLoading && data?.GameUserInfo?.hasJoined && <Board />}
-      </GameContainer>
+      <GameContainer>{isLoading ? <Spinner /> : <Board />}</GameContainer>
 
       <ModalController />
     </>
   );
 };
 
+export default Game;
+
 export const getServerSideProps: GetServerSideProps<GameProps> = async (ctx) => {
   const id = ctx.query.id as string;
 
   const client = getClient();
 
-  const { data, errors } = await client.query<GameQuery, GameQueryVariables>({
+  const { data } = await client.query<GameQuery, GameQueryVariables>({
     query: GameDocument,
-    variables: { id: id as string },
+    variables: { id },
     errorPolicy: "all"
   });
 
-  if (!data.Game || errors) {
-    ctx.res.writeHead(301, { Location: "/404" });
-    ctx.res.end();
+  if (!data.Game) {
+    return { notFound: true };
   }
 
   return {
@@ -115,5 +117,3 @@ interface GameProps {
   name: string;
   masterId: string;
 }
-
-export default Game;

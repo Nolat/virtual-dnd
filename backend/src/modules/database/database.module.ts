@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { Account, Game, GameUser, Session, User } from "./models";
+import { Account, Game, GameUser, Session, User } from "../../models";
 
 @Module({
   imports: [

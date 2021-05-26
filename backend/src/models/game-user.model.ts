@@ -11,11 +11,19 @@ export default class GameUser extends BaseEntity {
   @Field(() => ID)
   id: string;
 
-  @ManyToOne(() => User, (user) => user.gameUsers, { lazy: true })
+  @Column()
+  @Field()
+  name: string;
+
+  @Column()
+  @Field()
+  color: string;
+
+  @ManyToOne(() => User, (user) => user.gameUsers)
   @Field(() => User)
   user: User;
 
-  @ManyToOne(() => Game, (game) => game.gameUsers, { lazy: true })
+  @ManyToOne(() => Game, (game) => game.gameUsers)
   @Field(() => Game)
   game: Game;
 

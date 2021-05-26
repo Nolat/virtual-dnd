@@ -1,7 +1,7 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
 
 import { CurrentUser } from "decorators/current-user.decorator";
-import { Game, User } from "modules/database/models";
+import { Game, User } from "models";
 
 import { CreateUserInput, UpdateUserInput } from "./user.input";
 import { UserService } from "./user.service";
@@ -71,10 +71,8 @@ export class UserResolver {
     return this.userService.delete(id);
   }
 
-  @ResolveField(() => [Game], { nullable: true })
-  async games(@Parent() user: User): Promise<Game[]> {
-    const gameUsers = (await this.userService.findById(user.id)).gameUsers;
-
-    return gameUsers.map((gu) => gu.game);
+  @ResolveField(() => [Game], { name: "games", nullable: true })
+  async getGames(@Parent() user: User): Promise<Game[]> {
+    return this.userService.getGames(user.id);
   }
 }

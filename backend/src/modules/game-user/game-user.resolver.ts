@@ -3,7 +3,7 @@ import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 
 import { CurrentUser } from "decorators/current-user.decorator";
 import { AuthGuard } from "guard/auth.guard";
-import { Game, GameUser, User } from "modules/database/models";
+import { Game, GameUser, User } from "models";
 
 import { JoinGameInput } from "./game-user.input";
 import { GameUserInfo } from "./game-user.output";

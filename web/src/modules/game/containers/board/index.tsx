@@ -2,8 +2,8 @@ import { Box } from "@chakra-ui/react";
 import { KonvaEventObject } from "konva/types/Node";
 import { useEffect, useRef } from "react";
 import { Stage } from "react-konva";
+import { useWindowSize } from "react-use";
 
-import { useWindowSize } from "common/hooks";
 import { MapLayer } from "modules/game-map/containers";
 import { BackToCenterButton } from "modules/game/components";
 import { useStageStore } from "modules/game/store/useStageStore";

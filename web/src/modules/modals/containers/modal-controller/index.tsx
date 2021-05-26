@@ -68,6 +68,7 @@ export const ModalController: React.FC = () => {
     switch (modal) {
       case ModalType.GAME_PASSWORD:
         router.replace("/");
+        closeModal();
         break;
 
       default:

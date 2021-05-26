@@ -1,7 +1,7 @@
 import { Module, forwardRef } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { GameUser } from "modules/database/models";
+import { GameUser } from "models";
 import { GameModule } from "modules/game/game.module";
 
 import { GameUserResolver } from "./game-user.resolver";

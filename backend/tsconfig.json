@@ -16,6 +16,8 @@
       "decorators": ["src/decorators"],
       "guard/*": ["src/guard/*"],
       "guard": ["src/guard"],
+      "models/*": ["src/models/*"],
+      "models": ["src/models"],
       "modules/*": ["src/modules/*"],
       "modules": ["src/modules"],
       "types/*": ["src/types/*"],

@@ -2,8 +2,8 @@ import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOneOptions, Repository } from "typeorm";
 
+import { User } from "models";
 import { AccountService } from "modules/account/account.service";
-import { User } from "modules/database/models";
 
 import { CreateUserInput, UpdateUserInput } from "./user.input";
 
@@ -32,6 +32,12 @@ export class UserService {
     const account = await this.accountService.findById(id, providerId);
 
     return this.userRepository.findOneOrFail({ where: { id: account.user.id } });
+  }
+
+  async getGames(id: string) {
+    const gameUsers = (await this.findById(id)).gameUsers;
+
+    return Promise.all(gameUsers.map((gu) => gu.game));
   }
 
   create(input: CreateUserInput) {

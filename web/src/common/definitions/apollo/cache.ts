@@ -3,7 +3,24 @@ import { InMemoryCache } from "@apollo/client";
 import { TypedTypePolicies } from "../graphql/generated";
 
 const typePolicies: TypedTypePolicies = {
-  Query: {}
+  Query: {
+    fields: {
+      Game: {
+        merge(_, incoming) {
+          return incoming;
+        }
+      }
+    }
+  },
+  Subscription: {
+    fields: {
+      onlinePlayersChanged: {
+        merge(_, incoming) {
+          return incoming;
+        }
+      }
+    }
+  }
 };
 
 const cache = new InMemoryCache({

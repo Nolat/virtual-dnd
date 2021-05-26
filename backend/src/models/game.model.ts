@@ -24,11 +24,11 @@ export default class Game extends BaseEntity {
   @Field()
   name: string;
 
-  @ManyToOne(() => User, { lazy: true })
+  @ManyToOne(() => User, { eager: true })
   @Field(() => User)
   master: User;
 
-  @OneToMany(() => GameUser, (gameUser) => gameUser.game, { eager: true })
+  @OneToMany(() => GameUser, (gameUser) => gameUser.game, { eager: true, onDelete: "CASCADE" })
   @Field(() => [GameUser])
   gameUsers: GameUser[];
 

@@ -1,9 +1,18 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+  Subscription
+} from "@nestjs/graphql";
 
 import { CurrentUser } from "decorators/current-user.decorator";
 import { AuthGuard } from "guard/auth.guard";
-import { Game, User } from "modules/database/models";
+import { Game, GameUser, User } from "models";
+import { subscriptionIterator } from "utils/pub-sub";
 
 import { CreateGameInput } from "./game.input";
 import { GameService } from "./game.service";
@@ -32,10 +41,23 @@ export class GameResolver {
     return this.gameService.create(input, user);
   }
 
-  @ResolveField(() => [User], { nullable: true })
-  async users(@Parent() game: Game): Promise<User[]> {
-    const gameUsers = (await this.gameService.findById(game.id)).gameUsers;
+  @ResolveField(() => [User], { name: "users", nullable: true })
+  async getUsers(@Parent() game: Game): Promise<User[]> {
+    return this.gameService.getUsers(game.id);
+  }
 
-    return gameUsers.map((gu) => gu.user);
+  @ResolveField(() => [GameUser], { name: "onlinePlayers", nullable: true })
+  async getOnlinePlayers(@Parent() game: Game): Promise<GameUser[]> {
+    return this.gameService.getOnlinePlayers(game.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Subscription(() => [GameUser], { name: "onlinePlayersChanged", nullable: true })
+  async onlinePlayersChanged(@Args("id") id: string, @CurrentUser() user: User) {
+    this.gameService.connectUserToGame(id, user.id);
+
+    return subscriptionIterator(`onlinePlayersChanged-${id}`, async () => {
+      await this.gameService.disconnectUserFromGame(id, user.id);
+    });
   }
 }

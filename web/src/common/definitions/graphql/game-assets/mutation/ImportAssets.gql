@@ -1,0 +1,3 @@
+mutation ImportAssets($file: Upload!) {
+  ImportAssets(file: $file)
+}

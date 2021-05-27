@@ -1,11 +1,13 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
 import * as cookie from "cookie";
+import { graphqlUploadExpress } from "graphql-upload";
 
 import { Session, User } from "models";
 import { AccountModule } from "modules/account/account.module";
 import { DatabaseModule } from "modules/database/database.module";
+import { GameAssetsModule } from "modules/game-assets/game-assets.module";
 import { GameUserModule } from "modules/game-user/game-user.module";
 import { GameModule } from "modules/game/game.module";
 import { SessionModule } from "modules/session/session.module";
@@ -19,10 +21,12 @@ const ENABLE_PLAYGROUND = (process.env.ENABLE_PLAYGROUND as unknown) as boolean;
     DatabaseModule,
     AccountModule,
     GameModule,
+    GameAssetsModule,
     GameUserModule,
     SessionModule,
     UserModule,
     GraphQLModule.forRoot({
+      uploads: false,
       path: "/",
       autoSchemaFile: true,
       installSubscriptionHandlers: true,
@@ -56,4 +60,8 @@ const ENABLE_PLAYGROUND = (process.env.ENABLE_PLAYGROUND as unknown) as boolean;
     })
   ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(graphqlUploadExpress()).forRoutes("");
+  }
+}

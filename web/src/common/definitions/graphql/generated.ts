@@ -15,6 +15,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type Account = {
@@ -99,6 +101,7 @@ export type Mutation = {
   CreateGame?: Maybe<Game>;
   JoinGame?: Maybe<Game>;
   LeaveGame?: Maybe<Scalars["Boolean"]>;
+  ImportAssets: Scalars["Boolean"];
   CreateSession?: Maybe<Session>;
   UpdateSession?: Maybe<Session>;
   DeleteSession?: Maybe<Scalars["Boolean"]>;
@@ -134,6 +137,10 @@ export type MutationJoinGameArgs = {
 
 export type MutationLeaveGameArgs = {
   id: Scalars["String"];
+};
+
+export type MutationImportAssetsArgs = {
+  file: Scalars["Upload"];
 };
 
 export type MutationCreateSessionArgs = {
@@ -260,6 +267,12 @@ export type UnlinkAccountMutationVariables = Exact<{
 }>;
 
 export type UnlinkAccountMutation = { __typename?: "Mutation" } & Pick<Mutation, "UnlinkAccount">;
+
+export type ImportAssetsMutationVariables = Exact<{
+  file: Scalars["Upload"];
+}>;
+
+export type ImportAssetsMutation = { __typename?: "Mutation" } & Pick<Mutation, "ImportAssets">;
 
 export type GameUserFieldsFragment = { __typename?: "GameUser" } & Pick<
   GameUser,
@@ -549,6 +562,48 @@ export type UnlinkAccountMutationResult = Apollo.MutationResult<UnlinkAccountMut
 export type UnlinkAccountMutationOptions = Apollo.BaseMutationOptions<
   UnlinkAccountMutation,
   UnlinkAccountMutationVariables
+>;
+export const ImportAssetsDocument = gql`
+  mutation ImportAssets($file: Upload!) {
+    ImportAssets(file: $file)
+  }
+`;
+export type ImportAssetsMutationFn = Apollo.MutationFunction<
+  ImportAssetsMutation,
+  ImportAssetsMutationVariables
+>;
+
+/**
+ * __useImportAssetsMutation__
+ *
+ * To run a mutation, you first call `useImportAssetsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportAssetsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [importAssetsMutation, { data, loading, error }] = useImportAssetsMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useImportAssetsMutation(
+  baseOptions?: Apollo.MutationHookOptions<ImportAssetsMutation, ImportAssetsMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ImportAssetsMutation, ImportAssetsMutationVariables>(
+    ImportAssetsDocument,
+    options
+  );
+}
+export type ImportAssetsMutationHookResult = ReturnType<typeof useImportAssetsMutation>;
+export type ImportAssetsMutationResult = Apollo.MutationResult<ImportAssetsMutation>;
+export type ImportAssetsMutationOptions = Apollo.BaseMutationOptions<
+  ImportAssetsMutation,
+  ImportAssetsMutationVariables
 >;
 export const CreateGameDocument = gql`
   mutation CreateGame($input: CreateGameInput!) {
@@ -1331,6 +1386,7 @@ export type MutationKeySpecifier = (
   | "CreateGame"
   | "JoinGame"
   | "LeaveGame"
+  | "ImportAssets"
   | "CreateSession"
   | "UpdateSession"
   | "DeleteSession"
@@ -1345,6 +1401,7 @@ export type MutationFieldPolicy = {
   CreateGame?: FieldPolicy<any> | FieldReadFunction<any>;
   JoinGame?: FieldPolicy<any> | FieldReadFunction<any>;
   LeaveGame?: FieldPolicy<any> | FieldReadFunction<any>;
+  ImportAssets?: FieldPolicy<any> | FieldReadFunction<any>;
   CreateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   DeleteSession?: FieldPolicy<any> | FieldReadFunction<any>;

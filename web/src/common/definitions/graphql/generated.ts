@@ -15,6 +15,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type Account = {
@@ -117,10 +119,14 @@ export type Mutation = {
   CreateGame?: Maybe<Game>;
   JoinGame?: Maybe<Game>;
   LeaveGame?: Maybe<Scalars["Boolean"]>;
+<<<<<<< HEAD
   UpdateGameUserName?: Maybe<GameUser>;
   UpdateGameUserColor?: Maybe<GameUser>;
   SendMessage?: Maybe<UserMessage>;
   RollDice?: Maybe<RollDiceResult>;
+=======
+  ImportAssets: Scalars["Boolean"];
+>>>>>>> c463313 (import assets)
   CreateSession?: Maybe<Session>;
   UpdateSession?: Maybe<Session>;
   DeleteSession?: Maybe<Scalars["Boolean"]>;
@@ -158,6 +164,7 @@ export type MutationLeaveGameArgs = {
   id: Scalars["String"];
 };
 
+<<<<<<< HEAD
 export type MutationUpdateGameUserNameArgs = {
   name: Scalars["String"];
   id: Scalars["String"];
@@ -174,6 +181,10 @@ export type MutationSendMessageArgs = {
 
 export type MutationRollDiceArgs = {
   input: RollDiceInput;
+=======
+export type MutationImportAssetsArgs = {
+  file: Scalars["Upload"];
+>>>>>>> c463313 (import assets)
 };
 
 export type MutationCreateSessionArgs = {
@@ -353,6 +364,7 @@ export type UnlinkAccountMutationVariables = Exact<{
 
 export type UnlinkAccountMutation = { __typename?: "Mutation" } & Pick<Mutation, "UnlinkAccount">;
 
+<<<<<<< HEAD
 type MessageFields_UserMessage_Fragment = { __typename?: "UserMessage" } & Pick<
   UserMessage,
   "id" | "text" | "timestamp"
@@ -417,6 +429,13 @@ export type RollDiceMutation = { __typename?: "Mutation" } & {
       }
   >;
 };
+=======
+export type ImportAssetsMutationVariables = Exact<{
+  file: Scalars["Upload"];
+}>;
+
+export type ImportAssetsMutation = { __typename?: "Mutation" } & Pick<Mutation, "ImportAssets">;
+>>>>>>> c463313 (import assets)
 
 export type GameUserFieldsFragment = { __typename?: "GameUser" } & Pick<
   GameUser,
@@ -770,6 +789,7 @@ export type UnlinkAccountMutationOptions = Apollo.BaseMutationOptions<
   UnlinkAccountMutation,
   UnlinkAccountMutationVariables
 >;
+<<<<<<< HEAD
 export const SendMessageDocument = gql`
   mutation SendMessage($input: SendMessageInput!) {
     SendMessage(input: $input) {
@@ -788,12 +808,30 @@ export type SendMessageMutationFn = Apollo.MutationFunction<
  *
  * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
  * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+=======
+export const ImportAssetsDocument = gql`
+  mutation ImportAssets($file: Upload!) {
+    ImportAssets(file: $file)
+  }
+`;
+export type ImportAssetsMutationFn = Apollo.MutationFunction<
+  ImportAssetsMutation,
+  ImportAssetsMutationVariables
+>;
+
+/**
+ * __useImportAssetsMutation__
+ *
+ * To run a mutation, you first call `useImportAssetsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportAssetsMutation` returns a tuple that includes:
+>>>>>>> c463313 (import assets)
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
+<<<<<<< HEAD
  * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
  *   variables: {
  *      input: // value for 'input'
@@ -1086,6 +1124,28 @@ export type UpdateGameUserNameMutationResult = Apollo.MutationResult<UpdateGameU
 export type UpdateGameUserNameMutationOptions = Apollo.BaseMutationOptions<
   UpdateGameUserNameMutation,
   UpdateGameUserNameMutationVariables
+=======
+ * const [importAssetsMutation, { data, loading, error }] = useImportAssetsMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useImportAssetsMutation(
+  baseOptions?: Apollo.MutationHookOptions<ImportAssetsMutation, ImportAssetsMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ImportAssetsMutation, ImportAssetsMutationVariables>(
+    ImportAssetsDocument,
+    options
+  );
+}
+export type ImportAssetsMutationHookResult = ReturnType<typeof useImportAssetsMutation>;
+export type ImportAssetsMutationResult = Apollo.MutationResult<ImportAssetsMutation>;
+export type ImportAssetsMutationOptions = Apollo.BaseMutationOptions<
+  ImportAssetsMutation,
+  ImportAssetsMutationVariables
+>>>>>>> c463313 (import assets)
 >;
 export const CreateGameDocument = gql`
   mutation CreateGame($input: CreateGameInput!) {
@@ -1910,10 +1970,14 @@ export type MutationKeySpecifier = (
   | "CreateGame"
   | "JoinGame"
   | "LeaveGame"
+<<<<<<< HEAD
   | "UpdateGameUserName"
   | "UpdateGameUserColor"
   | "SendMessage"
   | "RollDice"
+=======
+  | "ImportAssets"
+>>>>>>> c463313 (import assets)
   | "CreateSession"
   | "UpdateSession"
   | "DeleteSession"
@@ -1928,10 +1992,14 @@ export type MutationFieldPolicy = {
   CreateGame?: FieldPolicy<any> | FieldReadFunction<any>;
   JoinGame?: FieldPolicy<any> | FieldReadFunction<any>;
   LeaveGame?: FieldPolicy<any> | FieldReadFunction<any>;
+<<<<<<< HEAD
   UpdateGameUserName?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateGameUserColor?: FieldPolicy<any> | FieldReadFunction<any>;
   SendMessage?: FieldPolicy<any> | FieldReadFunction<any>;
   RollDice?: FieldPolicy<any> | FieldReadFunction<any>;
+=======
+  ImportAssets?: FieldPolicy<any> | FieldReadFunction<any>;
+>>>>>>> c463313 (import assets)
   CreateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   DeleteSession?: FieldPolicy<any> | FieldReadFunction<any>;

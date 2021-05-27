@@ -5,8 +5,10 @@ import { ModalBody, ModalCloseButton, ModalFooter, ModalHeader } from "@chakra-u
 import Fuse from "fuse.js";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { FiMap, FiTrash } from "react-icons/fi";
+import { useDrop } from "react-use";
 
 import { IconButton } from "common/components/icon-button";
+import { useImportAssetsMutation } from "common/definitions/graphql/generated";
 import { useMapStore } from "modules/game-map/store/useMapStore";
 import { AssetPreview, SearchInput } from "modules/game/components";
 import { useModalStore } from "modules/modals/store/useModalStore";
@@ -57,6 +59,20 @@ export const SelectMapModal: React.FC = () => {
     setClickedMap(undefined);
     selectMap("");
   };
+
+  // * Handle import
+
+  const [importAssets, { data, loading, error }] = useImportAssetsMutation();
+  console.log({ data, loading, error });
+
+  useDrop({
+    onFiles: (files) => {
+      console.log({ files });
+      importAssets({ variables: { file: files[0] } });
+    }
+  });
+
+
 
   return (
     <>

@@ -2,8 +2,8 @@ import { ApolloClient, split } from "@apollo/client";
 import { NormalizedCacheObject } from "@apollo/client/cache";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
-import { LocalStorageWrapper, persistCache } from "apollo3-cache-persist";
 import { createUploadLink } from "apollo-upload-client";
+import { LocalStorageWrapper, persistCache } from "apollo3-cache-persist";
 import { useMemo } from "react";
 
 import cache from "./cache";

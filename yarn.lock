@@ -7012,6 +7012,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.22.1
     apollo-server-micro: ^2.24.0
     apollo-server-testing: ^2.24.0
+    apollo-upload-client: ^15.0.0
     babel-loader: ^8.2.2
     babel-plugin-transform-typescript-metadata: ^0.3.2
     chromatic: ^5.8.0
@@ -8138,6 +8139,18 @@ __metadata:
   peerDependencies:
     graphql: 14 - 15
   checksum: c533319b29a724bc7a5468213878fe4f2b9594503827e9247757c6bf1fa774505a3717ad2da65457da7e14de11744b85a3e3d204db434d94499f3e22bda5f0e5
+  languageName: node
+  linkType: hard
+
+"apollo-upload-client@npm:^15.0.0":
+  version: 15.0.0
+  resolution: "apollo-upload-client@npm:15.0.0"
+  dependencies:
+    extract-files: ^10.0.0
+  peerDependencies:
+    "@apollo/client": ^3.0.0
+    graphql: 14 - 15
+  checksum: 85113b557c704ba6a9868efb72cadbd49ef23d4426d71a7d3c4783cb398a271bf6056f9af50f4be61f6d3294be0d44c16a0a0b9a8ecb52e41fee606eb499927c
   languageName: node
   linkType: hard
 
@@ -12724,6 +12737,13 @@ __metadata:
   version: 9.0.0
   resolution: "extract-files@npm:9.0.0"
   checksum: 021b10787718a2f81847e58bd5eea3b09d636e8bb3cf281dad2aeeafc439c32f9e7d2353b2b4b30f6a7febf93be9d1edd76706ea56cff6850b3f39e1594e5bb3
+  languageName: node
+  linkType: hard
+
+"extract-files@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "extract-files@npm:10.0.0"
+  checksum: 42260fac5301f114da9fd1a10100ddfc802a8c92b3b3ad06226bddc75523d4063ec1e0155c38ff1afd67967ef4f0075cd726f476224a583dd9b347eb9973855a
   languageName: node
   linkType: hard
 

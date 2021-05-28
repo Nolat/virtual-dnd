@@ -6,8 +6,6 @@ import { CurrentUser } from "decorators/current-user.decorator";
 import { AuthGuard } from "guard/auth.guard";
 import { Game, User } from "models";
 
-import { UploadedFileResponse } from "./game-assets.input";
-
 @Resolver(() => Game)
 export class GameAssetsResolver {
   @UseGuards(AuthGuard)

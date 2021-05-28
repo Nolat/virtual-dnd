@@ -36,4 +36,30 @@ export class GameUserResolver {
   async leaveGame(@CurrentUser() user: User, @Args("id") id: string): Promise<boolean> {
     return this.gameUserService.leave(user, id);
   }
+
+  @UseGuards(AuthGuard)
+  @Mutation(() => GameUser, {
+    name: "UpdateGameUserName",
+    nullable: true
+  })
+  async updateGameUserName(
+    @CurrentUser() user: User,
+    @Args("id") id: string,
+    @Args("name") name: string
+  ): Promise<GameUser> {
+    return this.gameUserService.updateName(user, id, name);
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(() => GameUser, {
+    name: "UpdateGameUserColor",
+    nullable: true
+  })
+  async updateGameUserColor(
+    @CurrentUser() user: User,
+    @Args("id") id: string,
+    @Args("color") color: string
+  ): Promise<GameUser> {
+    return this.gameUserService.updateColor(user, id, color);
+  }
 }

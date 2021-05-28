@@ -1,0 +1,5 @@
+mutation UpdateGameUserColor($id: String!, $color: String!) {
+  UpdateGameUserColor(id: $id, color: $color) {
+    ...GameUserFields
+  }
+}

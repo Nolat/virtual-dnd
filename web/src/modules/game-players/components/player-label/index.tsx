@@ -1,20 +1,27 @@
-import { Box, Button } from "@chakra-ui/react";
-import React from "react";
+import { Box, Button, Menu, MenuButton } from "@chakra-ui/react";
 
-export const PlayerLabel: React.FC<PlayerLabelProps> = ({ name, color }) => {
+import { SelfPlayerMenu } from "../self-player-menu";
+
+export const PlayerLabel: React.FC<PlayerLabelProps> = ({ name, color, isMe }) => {
   return (
-    <Button
-      leftIcon={<Box width={2} height={2} borderRadius="full" bg={color} />}
-      variant="outline"
-      size="sm"
-      borderRadius="full"
-    >
-      {name}
-    </Button>
+    <Menu>
+      <MenuButton
+        as={Button}
+        leftIcon={<Box width={2} height={2} borderRadius="full" bg={color} />}
+        variant="outline"
+        size="sm"
+        borderRadius="full"
+      >
+        {name}
+      </MenuButton>
+
+      {isMe && <SelfPlayerMenu />}
+    </Menu>
   );
 };
 
 export interface PlayerLabelProps {
   name: string;
   color: string;
+  isMe: boolean;
 }

@@ -99,6 +99,8 @@ export type Mutation = {
   CreateGame?: Maybe<Game>;
   JoinGame?: Maybe<Game>;
   LeaveGame?: Maybe<Scalars["Boolean"]>;
+  UpdateGameUserName?: Maybe<GameUser>;
+  UpdateGameUserColor?: Maybe<GameUser>;
   CreateSession?: Maybe<Session>;
   UpdateSession?: Maybe<Session>;
   DeleteSession?: Maybe<Scalars["Boolean"]>;
@@ -133,6 +135,16 @@ export type MutationJoinGameArgs = {
 };
 
 export type MutationLeaveGameArgs = {
+  id: Scalars["String"];
+};
+
+export type MutationUpdateGameUserNameArgs = {
+  name: Scalars["String"];
+  id: Scalars["String"];
+};
+
+export type MutationUpdateGameUserColorArgs = {
+  color: Scalars["String"];
   id: Scalars["String"];
 };
 
@@ -264,7 +276,25 @@ export type UnlinkAccountMutation = { __typename?: "Mutation" } & Pick<Mutation,
 export type GameUserFieldsFragment = { __typename?: "GameUser" } & Pick<
   GameUser,
   "id" | "name" | "color"
->;
+> & { user: { __typename?: "User" } & UserFieldsFragment };
+
+export type UpdateGameUserColorMutationVariables = Exact<{
+  id: Scalars["String"];
+  color: Scalars["String"];
+}>;
+
+export type UpdateGameUserColorMutation = { __typename?: "Mutation" } & {
+  UpdateGameUserColor?: Maybe<{ __typename?: "GameUser" } & GameUserFieldsFragment>;
+};
+
+export type UpdateGameUserNameMutationVariables = Exact<{
+  id: Scalars["String"];
+  name: Scalars["String"];
+}>;
+
+export type UpdateGameUserNameMutation = { __typename?: "Mutation" } & {
+  UpdateGameUserName?: Maybe<{ __typename?: "GameUser" } & GameUserFieldsFragment>;
+};
 
 export type GameFieldsFragment = { __typename?: "Game" } & Pick<Game, "id" | "name"> & {
     master: { __typename?: "User" } & Pick<User, "id">;
@@ -386,6 +416,12 @@ export type UpdateUserMutation = { __typename?: "Mutation" } & {
   UpdateUser?: Maybe<{ __typename?: "User" } & UserFieldsFragment>;
 };
 
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = { __typename?: "Query" } & {
+  me?: Maybe<{ __typename?: "User" } & UserFieldsFragment>;
+};
+
 export type UserByAccountIdQueryVariables = Exact<{
   id: Scalars["String"];
   providerId: Scalars["String"];
@@ -439,7 +475,11 @@ export const GameUserFieldsFragmentDoc = gql`
     id
     name
     color
+    user {
+      ...UserFields
+    }
   }
+  ${UserFieldsFragmentDoc}
 `;
 export const GameFieldsFragmentDoc = gql`
   fragment GameFields on Game {
@@ -549,6 +589,106 @@ export type UnlinkAccountMutationResult = Apollo.MutationResult<UnlinkAccountMut
 export type UnlinkAccountMutationOptions = Apollo.BaseMutationOptions<
   UnlinkAccountMutation,
   UnlinkAccountMutationVariables
+>;
+export const UpdateGameUserColorDocument = gql`
+  mutation UpdateGameUserColor($id: String!, $color: String!) {
+    UpdateGameUserColor(id: $id, color: $color) {
+      ...GameUserFields
+    }
+  }
+  ${GameUserFieldsFragmentDoc}
+`;
+export type UpdateGameUserColorMutationFn = Apollo.MutationFunction<
+  UpdateGameUserColorMutation,
+  UpdateGameUserColorMutationVariables
+>;
+
+/**
+ * __useUpdateGameUserColorMutation__
+ *
+ * To run a mutation, you first call `useUpdateGameUserColorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGameUserColorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGameUserColorMutation, { data, loading, error }] = useUpdateGameUserColorMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      color: // value for 'color'
+ *   },
+ * });
+ */
+export function useUpdateGameUserColorMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateGameUserColorMutation,
+    UpdateGameUserColorMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateGameUserColorMutation, UpdateGameUserColorMutationVariables>(
+    UpdateGameUserColorDocument,
+    options
+  );
+}
+export type UpdateGameUserColorMutationHookResult = ReturnType<
+  typeof useUpdateGameUserColorMutation
+>;
+export type UpdateGameUserColorMutationResult = Apollo.MutationResult<UpdateGameUserColorMutation>;
+export type UpdateGameUserColorMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGameUserColorMutation,
+  UpdateGameUserColorMutationVariables
+>;
+export const UpdateGameUserNameDocument = gql`
+  mutation UpdateGameUserName($id: String!, $name: String!) {
+    UpdateGameUserName(id: $id, name: $name) {
+      ...GameUserFields
+    }
+  }
+  ${GameUserFieldsFragmentDoc}
+`;
+export type UpdateGameUserNameMutationFn = Apollo.MutationFunction<
+  UpdateGameUserNameMutation,
+  UpdateGameUserNameMutationVariables
+>;
+
+/**
+ * __useUpdateGameUserNameMutation__
+ *
+ * To run a mutation, you first call `useUpdateGameUserNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGameUserNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGameUserNameMutation, { data, loading, error }] = useUpdateGameUserNameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useUpdateGameUserNameMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateGameUserNameMutation,
+    UpdateGameUserNameMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateGameUserNameMutation, UpdateGameUserNameMutationVariables>(
+    UpdateGameUserNameDocument,
+    options
+  );
+}
+export type UpdateGameUserNameMutationHookResult = ReturnType<typeof useUpdateGameUserNameMutation>;
+export type UpdateGameUserNameMutationResult = Apollo.MutationResult<UpdateGameUserNameMutation>;
+export type UpdateGameUserNameMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGameUserNameMutation,
+  UpdateGameUserNameMutationVariables
 >;
 export const CreateGameDocument = gql`
   mutation CreateGame($input: CreateGameInput!) {
@@ -1120,6 +1260,43 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
+export const MeDocument = gql`
+  query me {
+    me {
+      ...UserFields
+    }
+  }
+  ${UserFieldsFragmentDoc}
+`;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
+export function useMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const UserByAccountIdDocument = gql`
   query UserByAccountId($id: String!, $providerId: String!) {
     UserByAccountId(id: $id, providerId: $providerId) {
@@ -1331,6 +1508,8 @@ export type MutationKeySpecifier = (
   | "CreateGame"
   | "JoinGame"
   | "LeaveGame"
+  | "UpdateGameUserName"
+  | "UpdateGameUserColor"
   | "CreateSession"
   | "UpdateSession"
   | "DeleteSession"
@@ -1345,6 +1524,8 @@ export type MutationFieldPolicy = {
   CreateGame?: FieldPolicy<any> | FieldReadFunction<any>;
   JoinGame?: FieldPolicy<any> | FieldReadFunction<any>;
   LeaveGame?: FieldPolicy<any> | FieldReadFunction<any>;
+  UpdateGameUserName?: FieldPolicy<any> | FieldReadFunction<any>;
+  UpdateGameUserColor?: FieldPolicy<any> | FieldReadFunction<any>;
   CreateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   DeleteSession?: FieldPolicy<any> | FieldReadFunction<any>;

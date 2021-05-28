@@ -3806,6 +3806,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@icons/material@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "@icons/material@npm:0.2.4"
+  peerDependencies:
+    react: "*"
+  checksum: 10b1841bfb7f1b6735d8ebe32a18bbbff96221bd42afa9ce7acd87c09d467d5c6468ad2e220dd739dd2e49c4aed09d62cbf06942890265002e0f769afeb1f5ad
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -7043,6 +7052,7 @@ __metadata:
     prettier: ^2.2.1
     prettier-plugin-import-sort: ^0.0.6
     react: 17.0.2
+    react-color: ^2.19.3
     react-dom: 17.0.2
     react-icons: ^4.2.0
     react-konva: ^17.0.2-0
@@ -7062,6 +7072,7 @@ __metadata:
     typeorm: ^0.2.32
     typeorm-typedi-extensions: ^0.4.1
     typescript: ^4.2.4
+    use-context-menu: ^0.2.1
     use-image: ^1.0.7
     zustand: ^3.5.0
   languageName: unknown
@@ -17064,6 +17075,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"lodash-es@npm:^4.17.15":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: ff0e7bb9595594d8b9c32fbe15912eaeefd83266f6e6872fbc498533cf8c2f039d12d37034b33965f1c04ef66ec1d6da83377c77e84e14c51a137901bb50865e
+  languageName: node
+  linkType: hard
+
 "lodash.clonedeep@npm:^4.5.0":
   version: 4.5.0
   resolution: "lodash.clonedeep@npm:4.5.0"
@@ -17204,7 +17222,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.21, lodash@npm:4.x, lodash@npm:^4.17.11, lodash@npm:^4.17.13, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0, lodash@npm:~4.17.20":
+"lodash@npm:4.17.21, lodash@npm:4.x, lodash@npm:^4.0.1, lodash@npm:^4.17.11, lodash@npm:^4.17.13, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0, lodash@npm:~4.17.20":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 4983720b9abca930a4a46f18db163d7dad8dd00dbed6db0cc7b499b33b717cce69f80928b27bbb1ff2cbd3b19d251ee90669a8b5ea466072ca81c2ebe91e7468
@@ -17499,6 +17517,13 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ">= 0.14.0"
   checksum: 4a211aba6af98525dc08e944eb13c92fe25261d5a8b00d4f22923f928737d8fbd345c52ec119a09a227a478acfa8d2a6ef3a5ea560cd6b01c4ba34d728259a97
+  languageName: node
+  linkType: hard
+
+"material-colors@npm:^1.2.1":
+  version: 1.2.6
+  resolution: "material-colors@npm:1.2.6"
+  checksum: 15883150a32abdb79638175b320712621a2962200ca3c09dfa0d5e3b614c081a0d459058ae367714f133801b8d9779f4137ddda4f2fbcaf8038a4624ab32c037
   languageName: node
   linkType: hard
 
@@ -20214,7 +20239,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.5.10, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -20517,6 +20542,23 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^15.3.0 || ^16.0.0 || ^17.0.0
   checksum: d4ddba85219bc4b839b01900ea275e4b39331f1b6995f64ee02210d10eb119c7b18ce6de5739aaf2b66ff0047c074096341d44113af84671c1b69d4b4650626c
+  languageName: node
+  linkType: hard
+
+"react-color@npm:^2.19.3":
+  version: 2.19.3
+  resolution: "react-color@npm:2.19.3"
+  dependencies:
+    "@icons/material": ^0.2.4
+    lodash: ^4.17.15
+    lodash-es: ^4.17.15
+    material-colors: ^1.2.1
+    prop-types: ^15.5.10
+    reactcss: ^1.2.0
+    tinycolor2: ^1.4.1
+  peerDependencies:
+    react: "*"
+  checksum: a40d8c4f67e0d8e2b3e5727e417468bd680cc9c2066eb6b22d41f2e39d8b92d3d234d471514f3746591eadae2bd8b77e2129d6312c9dc13bbbfb96859feb7b61
   languageName: node
   linkType: hard
 
@@ -20938,6 +20980,15 @@ fsevents@^1.2.7:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: 7d0dfebafe1d297503157abb2e9acdb49852185deb8700c16f4a6faad87642f84903ab18cfc16f40b9a0dfe97540f99834982ee953e6d48b39c41608dc3e4b29
+  languageName: node
+  linkType: hard
+
+"reactcss@npm:^1.2.0":
+  version: 1.2.3
+  resolution: "reactcss@npm:1.2.3"
+  dependencies:
+    lodash: ^4.0.1
+  checksum: 90fcf85d800293e2875a6e2d146765ec6e6958b2fa99542ee06a17f2dd7154e5eb116ca551718f684ea04be7841775e3d633e5ceeb3da82f990367bd4c28d3ad
   languageName: node
   linkType: hard
 
@@ -23578,7 +23629,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tinycolor2@npm:1.4.2":
+"tinycolor2@npm:1.4.2, tinycolor2@npm:^1.4.1":
   version: 1.4.2
   resolution: "tinycolor2@npm:1.4.2"
   checksum: cf33d084cb378d2988fad1b214e62f38be75ba1a9a6df98d4dadf77c31f82796d40822100e6d3e1973c9233ddf0ddbbbfdcac40e2288c958bca3c6d310e2ccb4
@@ -24615,6 +24666,15 @@ typescript@^4.2.4:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: 2cea8efcb740634ebd1409eafc52232abc28361386305afe2216cd791529c150f20c580c8310d790b59ff5d927b40c3b675775948183d0f9dce2f92100389c93
+  languageName: node
+  linkType: hard
+
+"use-context-menu@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "use-context-menu@npm:0.2.1"
+  peerDependencies:
+    react: ">=16"
+  checksum: 94231fe5f80d389e95b88146d436ae72b673ba5b2c2ea4ded69033e9afd56354e4751b1654488edd843faa6f9082054f2a0be5fe161c6abb0ca84a3ef32cb9b9
   languageName: node
   linkType: hard
 

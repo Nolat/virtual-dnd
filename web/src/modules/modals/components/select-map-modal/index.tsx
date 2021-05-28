@@ -68,7 +68,13 @@ export const SelectMapModal: React.FC = () => {
       <ModalBody>
         <SearchInput placeholder="Rechercher une map" onChange={handleChange} />
 
-        <SimpleGrid columns={5} spacing={4} mt={4}>
+        <SimpleGrid
+          minChildWidth={200}
+          spacing={4}
+          mt={4}
+          alignItems="center"
+          justifyItems="center"
+        >
           {list.map(({ id, name, width, height, imageUrl }: any) => (
             <AssetPreview
               key={id}

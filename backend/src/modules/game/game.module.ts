@@ -5,6 +5,7 @@ import * as ms from "ms";
 
 import { Game } from "models";
 import { GameUserModule } from "modules/game-user/game-user.module";
+import { SubscriptionModule } from "modules/subscription/subscription.module";
 
 import { GameResolver } from "./game.resolver";
 import { GameService } from "./game.service";
@@ -17,7 +18,8 @@ import { GameService } from "./game.service";
       ttl: ms("1d")
     }),
     TypeOrmModule.forFeature([Game]),
-    forwardRef(() => GameUserModule)
+    forwardRef(() => GameUserModule),
+    forwardRef(() => SubscriptionModule)
   ],
   providers: [GameResolver, GameService],
   exports: [GameService]

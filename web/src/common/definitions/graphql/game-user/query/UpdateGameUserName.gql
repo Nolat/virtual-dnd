@@ -1,0 +1,5 @@
+mutation UpdateGameUserName($id: String!, $name: String!) {
+  UpdateGameUserName(id: $id, name: $name) {
+    ...GameUserFields
+  }
+}

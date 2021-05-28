@@ -6,6 +6,7 @@ import { DeepPartial, In, Repository } from "typeorm";
 
 import { GameUser, User } from "models";
 import { GameService } from "modules/game/game.service";
+import { SubscriptionService } from "modules/subscription/subscription.service";
 
 import { JoinGameInput } from "./game-user.input";
 import { GameUserInfo } from "./game-user.output";
@@ -18,7 +19,9 @@ export class GameUserService {
     @InjectRepository(GameUser)
     private readonly gameUserRepository: Repository<GameUser>,
     @Inject(forwardRef(() => GameService))
-    private readonly gameService: GameService
+    private readonly gameService: GameService,
+    @Inject(forwardRef(() => SubscriptionService))
+    private readonly subscriptionService: SubscriptionService
   ) {}
 
   findByIds(ids: string[]) {
@@ -84,5 +87,43 @@ export class GameUserService {
 
     await this.gameUserRepository.remove(gameUser);
     return true;
+  }
+
+  async updateName(user: User, id: string, name: string) {
+    const game = await this.gameService.findById(id, { relations: ["master"] });
+    if (!game) throw new ApolloError("Game not found", "GAME_NOT_FOUND");
+
+    const gameUser = await this.gameUserRepository.findOne({
+      where: { user, game },
+      relations: ["user"]
+    });
+    if (!gameUser) return null;
+
+    gameUser.name = name;
+
+    await gameUser.save();
+
+    await this.subscriptionService.changeOnlinePlayers(id);
+
+    return gameUser;
+  }
+
+  async updateColor(user: User, id: string, color: string) {
+    const game = await this.gameService.findById(id, { relations: ["master"] });
+    if (!game) throw new ApolloError("Game not found", "GAME_NOT_FOUND");
+
+    const gameUser = await this.gameUserRepository.findOne({
+      where: { user, game },
+      relations: ["user"]
+    });
+    if (!gameUser) return null;
+
+    gameUser.color = color;
+
+    await gameUser.save();
+
+    await this.subscriptionService.changeOnlinePlayers(id);
+
+    return gameUser;
   }
 }

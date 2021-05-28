@@ -6,7 +6,7 @@ import { FindOneOptions, Repository } from "typeorm";
 
 import { Game, User } from "models";
 import { GameUserService } from "modules/game-user/game-user.service";
-import { pubSub } from "utils/pub-sub";
+import { SubscriptionService } from "modules/subscription/subscription.service";
 
 import { CreateGameInput } from "./game.input";
 
@@ -19,6 +19,8 @@ export class GameService {
     private readonly gameRepository: Repository<Game>,
     @Inject(forwardRef(() => GameUserService))
     private readonly gameUserService: GameUserService,
+    @Inject(forwardRef(() => SubscriptionService))
+    private readonly subscriptionService: SubscriptionService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
@@ -76,8 +78,7 @@ export class GameService {
       return false;
     }
 
-    const onlinePlayers = await this.getOnlinePlayers(gameId);
-    await pubSub.publish(`onlinePlayersChanged-${gameId}`, { onlinePlayersChanged: onlinePlayers });
+    await this.subscriptionService.changeOnlinePlayers(gameId);
 
     return true;
   }
@@ -99,8 +100,7 @@ export class GameService {
       return false;
     }
 
-    const onlinePlayers = await this.getOnlinePlayers(gameId);
-    await pubSub.publish(`onlinePlayersChanged-${gameId}`, { onlinePlayersChanged: onlinePlayers });
+    await this.subscriptionService.changeOnlinePlayers(gameId);
 
     return true;
   }

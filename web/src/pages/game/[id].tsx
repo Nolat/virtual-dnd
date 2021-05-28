@@ -71,6 +71,8 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
+      <GameContainer>{isLoading ? <Spinner /> : <Board />}</GameContainer>
+
       <Topbar>{!isLoading && <PlayersList />}</Topbar>
 
       <Sidebar side="left">
@@ -82,8 +84,6 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
       </Sidebar>
 
       <Sidebar side="right"></Sidebar>
-
-      <GameContainer>{isLoading ? <Spinner /> : <Board />}</GameContainer>
 
       <ModalController />
     </>

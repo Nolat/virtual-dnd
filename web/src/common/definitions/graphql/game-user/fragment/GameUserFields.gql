@@ -2,4 +2,7 @@ fragment GameUserFields on GameUser {
   id
   name
   color
+  user {
+    ...UserFields
+  }
 }

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { ModalContainer } from "common/containers";
 import { InvitePlayersModal, SelectMapModal } from "modules/modals/components";
+import { PlayerColorPickerModal, RenamePlayerModal } from "modules/modals/containers";
 import { ModalType, useModalStore } from "modules/modals/store/useModalStore";
 
 import { CreateGameModal } from "../create-game-modal";
@@ -21,6 +22,12 @@ const SwitchModal = ({ modal }) => {
 
     case ModalType.INVITE_PLAYERS:
       return <InvitePlayersModal />;
+
+    case ModalType.PLAYER_COLOR_PICKER:
+      return <PlayerColorPickerModal />;
+
+    case ModalType.RENAME_PLAYER:
+      return <RenamePlayerModal />;
 
     case ModalType.SELECT_MAP:
       return <SelectMapModal />;
@@ -46,6 +53,7 @@ export const ModalController: React.FC = () => {
       case undefined:
         break;
       case ModalType.GAME_PASSWORD:
+      case ModalType.PLAYER_COLOR_PICKER:
         setSize("xs");
         break;
 
@@ -55,6 +63,7 @@ export const ModalController: React.FC = () => {
         break;
 
       case ModalType.INVITE_PLAYERS:
+      case ModalType.RENAME_PLAYER:
         setSize("md");
         break;
 

@@ -6,6 +6,7 @@ import cache from "common/definitions/apollo/cache";
 import {
   OnlinePlayersDocument,
   OnlinePlayersQuery,
+  useMeQuery,
   useOnOnlinePlayersChangedSubscription,
   useOnlinePlayersQuery
 } from "common/definitions/graphql/generated";
@@ -18,6 +19,8 @@ export const PlayersList: React.FC = () => {
   const { data } = useOnlinePlayersQuery({
     variables: { id }
   });
+
+  const { data: meData } = useMeQuery();
 
   useOnOnlinePlayersChangedSubscription({
     variables: { id },
@@ -33,7 +36,14 @@ export const PlayersList: React.FC = () => {
   return (
     <Stack direction="row" alignItems="center" ml="100px">
       {data?.Game?.onlinePlayers?.map((player, index) => {
-        return <PlayerLabel key={index} name={player.name} color={player.color} />;
+        return (
+          <PlayerLabel
+            key={index}
+            name={player.name}
+            color={player.color}
+            isMe={meData?.me.id === player.user.id}
+          />
+        );
       })}
     </Stack>
   );

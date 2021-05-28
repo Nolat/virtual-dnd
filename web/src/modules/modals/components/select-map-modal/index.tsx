@@ -62,8 +62,7 @@ export const SelectMapModal: React.FC = () => {
 
   // * Handle import
 
-  const [importAssets, { data, loading, error }] = useImportAssetsMutation();
-  console.log({ data, loading, error });
+  const [importAssets] = useImportAssetsMutation();
 
   useDrop({
     onFiles: (files) => {
@@ -71,8 +70,6 @@ export const SelectMapModal: React.FC = () => {
       importAssets({ variables: { file: files[0] } });
     }
   });
-
-
 
   return (
     <>

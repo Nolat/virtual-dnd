@@ -1,14 +1,15 @@
-import { ApolloClient, HttpLink, split } from "@apollo/client";
+import { ApolloClient, split } from "@apollo/client";
 import { NormalizedCacheObject } from "@apollo/client/cache";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { LocalStorageWrapper, persistCache } from "apollo3-cache-persist";
+import { createUploadLink } from "apollo-upload-client";
 import { useMemo } from "react";
 
 import cache from "./cache";
 
 const createClient = () => {
-  const httpLink = new HttpLink({
+  const httpLink = createUploadLink({
     uri: process.env.NEXT_PUBLIC_API_ENDPOINT,
     credentials: "include"
   });

@@ -7,7 +7,7 @@ export const subscriptionIterator = (topic: string, onClose?: () => void) => {
   const savedReturn = iterator.return;
 
   iterator.return = async () => {
-    await onClose();
+    if (onClose) await onClose();
 
     return savedReturn
       ? savedReturn.call(iterator)

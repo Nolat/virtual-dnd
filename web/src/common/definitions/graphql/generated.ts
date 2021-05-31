@@ -89,6 +89,14 @@ export type LinkAccountInput = {
   accessTokenExpiresOn: Scalars["DateTime"];
 };
 
+export type Message = {
+  __typename?: "Message";
+  id: Scalars["String"];
+  text: Scalars["String"];
+  gameUser: GameUser;
+  timestamp: Scalars["String"];
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   LinkAccount?: Maybe<Account>;
@@ -101,6 +109,7 @@ export type Mutation = {
   LeaveGame?: Maybe<Scalars["Boolean"]>;
   UpdateGameUserName?: Maybe<GameUser>;
   UpdateGameUserColor?: Maybe<GameUser>;
+  SendMessage?: Maybe<Message>;
   CreateSession?: Maybe<Session>;
   UpdateSession?: Maybe<Session>;
   DeleteSession?: Maybe<Scalars["Boolean"]>;
@@ -148,6 +157,10 @@ export type MutationUpdateGameUserColorArgs = {
   id: Scalars["String"];
 };
 
+export type MutationSendMessageArgs = {
+  input: SendMessageInput;
+};
+
 export type MutationCreateSessionArgs = {
   input: CreateSessionInput;
 };
@@ -162,30 +175,23 @@ export type MutationDeleteSessionArgs = {
 
 export type Query = {
   __typename?: "Query";
-  me?: Maybe<User>;
-  Users?: Maybe<Array<User>>;
-  UserById?: Maybe<User>;
-  UserByEmail?: Maybe<User>;
-  UserByAccountId?: Maybe<User>;
   Game?: Maybe<Game>;
+  GameUser?: Maybe<GameUser>;
   GameUserInfo?: Maybe<GameUserInfo>;
+  GetMessages?: Maybe<Array<Maybe<Message>>>;
   Session?: Maybe<Session>;
-};
-
-export type QueryUserByIdArgs = {
-  id: Scalars["String"];
-};
-
-export type QueryUserByEmailArgs = {
-  email: Scalars["String"];
-};
-
-export type QueryUserByAccountIdArgs = {
-  providerId: Scalars["String"];
-  id: Scalars["String"];
+  UserByAccountId?: Maybe<User>;
+  UserByEmail?: Maybe<User>;
+  UserById?: Maybe<User>;
+  Users?: Maybe<Array<User>>;
+  me?: Maybe<User>;
 };
 
 export type QueryGameArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryGameUserArgs = {
   id: Scalars["String"];
 };
 
@@ -193,8 +199,30 @@ export type QueryGameUserInfoArgs = {
   id: Scalars["String"];
 };
 
+export type QueryGetMessagesArgs = {
+  id: Scalars["String"];
+};
+
 export type QuerySessionArgs = {
   token: Scalars["String"];
+};
+
+export type QueryUserByAccountIdArgs = {
+  providerId: Scalars["String"];
+  id: Scalars["String"];
+};
+
+export type QueryUserByEmailArgs = {
+  email: Scalars["String"];
+};
+
+export type QueryUserByIdArgs = {
+  id: Scalars["String"];
+};
+
+export type SendMessageInput = {
+  id: Scalars["String"];
+  text: Scalars["String"];
 };
 
 export type Session = {
@@ -210,9 +238,14 @@ export type Session = {
 export type Subscription = {
   __typename?: "Subscription";
   onlinePlayersChanged?: Maybe<Array<GameUser>>;
+  messageReceived?: Maybe<Message>;
 };
 
 export type SubscriptionOnlinePlayersChangedArgs = {
+  id: Scalars["String"];
+};
+
+export type SubscriptionMessageReceivedArgs = {
   id: Scalars["String"];
 };
 
@@ -273,10 +306,47 @@ export type UnlinkAccountMutationVariables = Exact<{
 
 export type UnlinkAccountMutation = { __typename?: "Mutation" } & Pick<Mutation, "UnlinkAccount">;
 
+export type MessageFieldsFragment = { __typename?: "Message" } & Pick<
+  Message,
+  "id" | "text" | "timestamp"
+> & { gameUser: { __typename?: "GameUser" } & GameUserFieldsFragment };
+
+export type SendMessageMutationVariables = Exact<{
+  input: SendMessageInput;
+}>;
+
+export type SendMessageMutation = { __typename?: "Mutation" } & {
+  SendMessage?: Maybe<{ __typename?: "Message" } & MessageFieldsFragment>;
+};
+
+export type GetMessagesQueryVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type GetMessagesQuery = { __typename?: "Query" } & {
+  GetMessages?: Maybe<Array<Maybe<{ __typename?: "Message" } & MessageFieldsFragment>>>;
+};
+
+export type OnMessageReceivedSubscriptionVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type OnMessageReceivedSubscription = { __typename?: "Subscription" } & {
+  messageReceived?: Maybe<{ __typename?: "Message" } & MessageFieldsFragment>;
+};
+
 export type GameUserFieldsFragment = { __typename?: "GameUser" } & Pick<
   GameUser,
   "id" | "name" | "color"
 > & { user: { __typename?: "User" } & UserFieldsFragment };
+
+export type GameUserQueryVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type GameUserQuery = { __typename?: "Query" } & {
+  GameUser?: Maybe<{ __typename?: "GameUser" } & GameUserFieldsFragment>;
+};
 
 export type UpdateGameUserColorMutationVariables = Exact<{
   id: Scalars["String"];
@@ -481,6 +551,17 @@ export const GameUserFieldsFragmentDoc = gql`
   }
   ${UserFieldsFragmentDoc}
 `;
+export const MessageFieldsFragmentDoc = gql`
+  fragment MessageFields on Message {
+    id
+    gameUser {
+      ...GameUserFields
+    }
+    text
+    timestamp
+  }
+  ${GameUserFieldsFragmentDoc}
+`;
 export const GameFieldsFragmentDoc = gql`
   fragment GameFields on Game {
     id
@@ -590,6 +671,178 @@ export type UnlinkAccountMutationOptions = Apollo.BaseMutationOptions<
   UnlinkAccountMutation,
   UnlinkAccountMutationVariables
 >;
+export const SendMessageDocument = gql`
+  mutation SendMessage($input: SendMessageInput!) {
+    SendMessage(input: $input) {
+      ...MessageFields
+    }
+  }
+  ${MessageFieldsFragmentDoc}
+`;
+export type SendMessageMutationFn = Apollo.MutationFunction<
+  SendMessageMutation,
+  SendMessageMutationVariables
+>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(
+  baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(
+    SendMessageDocument,
+    options
+  );
+}
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<
+  SendMessageMutation,
+  SendMessageMutationVariables
+>;
+export const GetMessagesDocument = gql`
+  query GetMessages($id: String!) {
+    GetMessages(id: $id) @client {
+      ...MessageFields
+    }
+  }
+  ${MessageFieldsFragmentDoc}
+`;
+
+/**
+ * __useGetMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMessagesQuery(
+  baseOptions: Apollo.QueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+}
+export function useGetMessagesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetMessagesQuery, GetMessagesQueryVariables>(
+    GetMessagesDocument,
+    options
+  );
+}
+export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
+export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
+export type GetMessagesQueryResult = Apollo.QueryResult<
+  GetMessagesQuery,
+  GetMessagesQueryVariables
+>;
+export const OnMessageReceivedDocument = gql`
+  subscription OnMessageReceived($id: String!) {
+    messageReceived(id: $id) {
+      ...MessageFields
+    }
+  }
+  ${MessageFieldsFragmentDoc}
+`;
+
+/**
+ * __useOnMessageReceivedSubscription__
+ *
+ * To run a query within a React component, call `useOnMessageReceivedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnMessageReceivedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnMessageReceivedSubscription({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOnMessageReceivedSubscription(
+  baseOptions: Apollo.SubscriptionHookOptions<
+    OnMessageReceivedSubscription,
+    OnMessageReceivedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useSubscription<
+    OnMessageReceivedSubscription,
+    OnMessageReceivedSubscriptionVariables
+  >(OnMessageReceivedDocument, options);
+}
+export type OnMessageReceivedSubscriptionHookResult = ReturnType<
+  typeof useOnMessageReceivedSubscription
+>;
+export type OnMessageReceivedSubscriptionResult = Apollo.SubscriptionResult<OnMessageReceivedSubscription>;
+export const GameUserDocument = gql`
+  query GameUser($id: String!) {
+    GameUser(id: $id) {
+      ...GameUserFields
+    }
+  }
+  ${GameUserFieldsFragmentDoc}
+`;
+
+/**
+ * __useGameUserQuery__
+ *
+ * To run a query within a React component, call `useGameUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGameUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGameUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGameUserQuery(
+  baseOptions: Apollo.QueryHookOptions<GameUserQuery, GameUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GameUserQuery, GameUserQueryVariables>(GameUserDocument, options);
+}
+export function useGameUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GameUserQuery, GameUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GameUserQuery, GameUserQueryVariables>(GameUserDocument, options);
+}
+export type GameUserQueryHookResult = ReturnType<typeof useGameUserQuery>;
+export type GameUserLazyQueryHookResult = ReturnType<typeof useGameUserLazyQuery>;
+export type GameUserQueryResult = Apollo.QueryResult<GameUserQuery, GameUserQueryVariables>;
 export const UpdateGameUserColorDocument = gql`
   mutation UpdateGameUserColor($id: String!, $color: String!) {
     UpdateGameUserColor(id: $id, color: $color) {
@@ -1499,6 +1752,19 @@ export type GameUserInfoFieldPolicy = {
   hasJoined?: FieldPolicy<any> | FieldReadFunction<any>;
   hasPassword?: FieldPolicy<any> | FieldReadFunction<any>;
 };
+export type MessageKeySpecifier = (
+  | "id"
+  | "text"
+  | "gameUser"
+  | "timestamp"
+  | MessageKeySpecifier
+)[];
+export type MessageFieldPolicy = {
+  id?: FieldPolicy<any> | FieldReadFunction<any>;
+  text?: FieldPolicy<any> | FieldReadFunction<any>;
+  gameUser?: FieldPolicy<any> | FieldReadFunction<any>;
+  timestamp?: FieldPolicy<any> | FieldReadFunction<any>;
+};
 export type MutationKeySpecifier = (
   | "LinkAccount"
   | "UnlinkAccount"
@@ -1510,6 +1776,7 @@ export type MutationKeySpecifier = (
   | "LeaveGame"
   | "UpdateGameUserName"
   | "UpdateGameUserColor"
+  | "SendMessage"
   | "CreateSession"
   | "UpdateSession"
   | "DeleteSession"
@@ -1526,30 +1793,35 @@ export type MutationFieldPolicy = {
   LeaveGame?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateGameUserName?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateGameUserColor?: FieldPolicy<any> | FieldReadFunction<any>;
+  SendMessage?: FieldPolicy<any> | FieldReadFunction<any>;
   CreateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   DeleteSession?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type QueryKeySpecifier = (
-  | "me"
-  | "Users"
-  | "UserById"
-  | "UserByEmail"
-  | "UserByAccountId"
   | "Game"
+  | "GameUser"
   | "GameUserInfo"
+  | "GetMessages"
   | "Session"
+  | "UserByAccountId"
+  | "UserByEmail"
+  | "UserById"
+  | "Users"
+  | "me"
   | QueryKeySpecifier
 )[];
 export type QueryFieldPolicy = {
-  me?: FieldPolicy<any> | FieldReadFunction<any>;
-  Users?: FieldPolicy<any> | FieldReadFunction<any>;
-  UserById?: FieldPolicy<any> | FieldReadFunction<any>;
-  UserByEmail?: FieldPolicy<any> | FieldReadFunction<any>;
-  UserByAccountId?: FieldPolicy<any> | FieldReadFunction<any>;
   Game?: FieldPolicy<any> | FieldReadFunction<any>;
+  GameUser?: FieldPolicy<any> | FieldReadFunction<any>;
   GameUserInfo?: FieldPolicy<any> | FieldReadFunction<any>;
+  GetMessages?: FieldPolicy<any> | FieldReadFunction<any>;
   Session?: FieldPolicy<any> | FieldReadFunction<any>;
+  UserByAccountId?: FieldPolicy<any> | FieldReadFunction<any>;
+  UserByEmail?: FieldPolicy<any> | FieldReadFunction<any>;
+  UserById?: FieldPolicy<any> | FieldReadFunction<any>;
+  Users?: FieldPolicy<any> | FieldReadFunction<any>;
+  me?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type SessionKeySpecifier = (
   | "id"
@@ -1568,9 +1840,14 @@ export type SessionFieldPolicy = {
   sessionToken?: FieldPolicy<any> | FieldReadFunction<any>;
   accessToken?: FieldPolicy<any> | FieldReadFunction<any>;
 };
-export type SubscriptionKeySpecifier = ("onlinePlayersChanged" | SubscriptionKeySpecifier)[];
+export type SubscriptionKeySpecifier = (
+  | "onlinePlayersChanged"
+  | "messageReceived"
+  | SubscriptionKeySpecifier
+)[];
 export type SubscriptionFieldPolicy = {
   onlinePlayersChanged?: FieldPolicy<any> | FieldReadFunction<any>;
+  messageReceived?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type UserKeySpecifier = (
   | "id"
@@ -1609,6 +1886,10 @@ export type TypedTypePolicies = TypePolicies & {
   GameUserInfo?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | GameUserInfoKeySpecifier | (() => undefined | GameUserInfoKeySpecifier);
     fields?: GameUserInfoFieldPolicy;
+  };
+  Message?: Omit<TypePolicy, "fields" | "keyFields"> & {
+    keyFields?: false | MessageKeySpecifier | (() => undefined | MessageKeySpecifier);
+    fields?: MessageFieldPolicy;
   };
   Mutation?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | MutationKeySpecifier | (() => undefined | MutationKeySpecifier);

@@ -1,20 +1,24 @@
 import { Badge, Button, HStack, Kbd, MenuButton, Text } from "@chakra-ui/react";
 import { FiMessageCircle } from "react-icons/fi";
+import { IHookStateSetAction } from "react-use/lib/misc/hookState";
 
 import { useChatStore } from "modules/game-chat/store/useChatStore";
 
-export const ChatButton: React.FC = () => {
-  const hasMessage = false;
+export const ChatButton: React.FC<ChatButtonProps> = ({ newMessageCount, reset }) => {
+  const { isOpen, toggle } = useChatStore();
 
-  const { toggle } = useChatStore();
+  const onClick = () => {
+    toggle();
+    reset();
+  };
 
   return (
     <MenuButton
       as={Button}
       rightIcon={
-        hasMessage ? (
+        newMessageCount > 0 && !isOpen ? (
           <Badge fontSize="0.8em" colorScheme="orange" borderRadius="full">
-            2
+            {newMessageCount}
           </Badge>
         ) : (
           <FiMessageCircle size={18} />
@@ -23,7 +27,7 @@ export const ChatButton: React.FC = () => {
       variant="outline"
       w={300}
       justifyContent="space-between"
-      onClick={toggle}
+      onClick={onClick}
     >
       <HStack spacing={4}>
         <Text>Messages</Text>
@@ -39,3 +43,8 @@ export const ChatButton: React.FC = () => {
     </MenuButton>
   );
 };
+
+interface ChatButtonProps {
+  newMessageCount: number;
+  reset: (value?: IHookStateSetAction<number>) => void;
+}

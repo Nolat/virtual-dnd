@@ -1,0 +1,8 @@
+fragment MessageFields on Message {
+  id
+  gameUser {
+    ...GameUserFields
+  }
+  text
+  timestamp
+}

@@ -31,9 +31,10 @@ export class GameUserService {
     });
   }
 
-  findByGameAndUser(gameId: string, userId: string) {
+  findByGameAndUser({ gameId, userId }: { gameId: string; userId: string }) {
     return this.gameUserRepository.findOne({
-      where: { user: { id: userId }, game: { id: gameId } }
+      where: { user: { id: userId }, game: { id: gameId } },
+      relations: ["user", "game"]
     });
   }
 

@@ -6,6 +6,7 @@ import * as cookie from "cookie";
 import { Session, User } from "models";
 import { AccountModule } from "modules/account/account.module";
 import { DatabaseModule } from "modules/database/database.module";
+import { GameChatModule } from "modules/game-chat/game-chat.module";
 import { GameUserModule } from "modules/game-user/game-user.module";
 import { GameModule } from "modules/game/game.module";
 import { SessionModule } from "modules/session/session.module";
@@ -19,6 +20,7 @@ const ENABLE_PLAYGROUND = (process.env.ENABLE_PLAYGROUND as unknown) as boolean;
     DatabaseModule,
     AccountModule,
     GameModule,
+    GameChatModule,
     GameUserModule,
     SessionModule,
     UserModule,

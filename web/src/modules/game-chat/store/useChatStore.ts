@@ -47,7 +47,7 @@ export const useChatStore = create<ChatState>((set) => ({
   rndPos: { x: 0, y: 0 },
   setRndPos: (pos) => set({ rndPos: pos }),
   resetRndPos: () => set({ rndPos: { x: 0, y: 0 } }),
-  rndSize: { width: "300px", height: "500px" },
+  rndSize: { width: "300px", height: "750px" },
   setRndSize: (size) => set({ rndSize: size }),
-  resetRndSize: () => set({ rndSize: { width: "300px", height: "500px" } })
+  resetRndSize: () => set({ rndSize: { width: "300px", height: "750px" } })
 }));

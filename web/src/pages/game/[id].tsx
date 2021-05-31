@@ -116,7 +116,7 @@ export const getServerSideProps: GetServerSideProps<GameProps> = async (ctx) => 
   }
 
   return {
-    props: { id, name: data.Game.name, masterId: data.Game.master.id }
+    props: { id, name: data.Game.name, masterId: data.Game.master.id ?? "" }
   };
 };
 

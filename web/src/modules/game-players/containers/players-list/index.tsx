@@ -34,7 +34,7 @@ export const PlayersList: React.FC = () => {
   });
 
   return (
-    <Stack direction="row" alignItems="center" ml="100px">
+    <Stack direction="row" alignItems="center">
       {data?.Game?.onlinePlayers?.map((player, index) => {
         return (
           <PlayerLabel

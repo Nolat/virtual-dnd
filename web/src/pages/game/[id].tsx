@@ -17,6 +17,7 @@ import {
   useGameUserInfoQuery,
   useJoinGameMutation
 } from "common/definitions/graphql/generated";
+import { ChatBox } from "modules/game-chat/components";
 import { SelectMapButton } from "modules/game-map/components";
 import { PlayersList } from "modules/game-players/containers";
 import { InvitePlayersButton, Sidebar, Topbar } from "modules/game/components";
@@ -73,7 +74,14 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
 
       <GameContainer>{isLoading ? <Spinner /> : <Board />}</GameContainer>
 
-      <Topbar>{!isLoading && <PlayersList />}</Topbar>
+      <Topbar>
+        {!isLoading && (
+          <>
+            <PlayersList />
+            <ChatBox />
+          </>
+        )}
+      </Topbar>
 
       <Sidebar side="left">
         <Stack spacing={4} alignSelf="flex-end">

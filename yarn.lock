@@ -7043,6 +7043,7 @@ __metadata:
     import-sort-style-module-alias: ^1.1.0
     isomorphic-unfetch: ^3.1.0
     jest: ^26.6.3
+    keyboardjs: ^2.6.4
     konva: ^7.2.5
     next: 10.2.0
     next-auth: ^3.19.8
@@ -7056,6 +7057,7 @@ __metadata:
     react-dom: 17.0.2
     react-icons: ^4.2.0
     react-konva: ^17.0.2-0
+    react-rnd: ^10.3.1
     react-use: ^17.2.4
     reflect-metadata: ^0.1.13
     reshake: ^1.2.2
@@ -12835,6 +12837,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-memoize@npm:^2.5.1":
+  version: 2.5.2
+  resolution: "fast-memoize@npm:2.5.2"
+  checksum: 88bd91488039c0e04131d5382b8ea084268f144ce14ab36c360dd04f7792ac0c419e125b0fe6e6f41e77f03d1f703b31697475b2e95889ca86510623e2f0d904
+  languageName: node
+  linkType: hard
+
 "fast-safe-stringify@npm:2.0.7, fast-safe-stringify@npm:^2.0.7":
   version: 2.0.7
   resolution: "fast-safe-stringify@npm:2.0.7"
@@ -16720,6 +16729,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"keyboardjs@npm:^2.6.4":
+  version: 2.6.4
+  resolution: "keyboardjs@npm:2.6.4"
+  checksum: 453b4482a276ed0d66c7592de4a78f660fa63ff78b839530dc04f96878cc92bc7619853b1686c28086139a8a469521ef57b74e20688dedc1b5a5d0c6e3907594
+  languageName: node
+  linkType: hard
+
 "keyv@npm:^3.0.0":
   version: 3.1.0
   resolution: "keyv@npm:3.1.0"
@@ -20534,6 +20550,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"re-resizable@npm:6.9.0":
+  version: 6.9.0
+  resolution: "re-resizable@npm:6.9.0"
+  dependencies:
+    fast-memoize: ^2.5.1
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0
+    react-dom: ^16.13.1 || ^17.0.0
+  checksum: 941121f15d7f352a42e00cdd3a253c7a5a6fb19776e94f2b71fd7a6fdbe305914c7b36ed7dcf918a11f28387e8e8689039b06d72ca571a9517075dfb2dd9814c
+  languageName: node
+  linkType: hard
+
 "react-clientside-effect@npm:^1.2.2":
   version: 1.2.5
   resolution: "react-clientside-effect@npm:1.2.5"
@@ -20659,7 +20687,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-draggable@npm:^4.4.3":
+"react-draggable@npm:4.4.3, react-draggable@npm:^4.4.3":
   version: 4.4.3
   resolution: "react-draggable@npm:4.4.3"
   dependencies:
@@ -20875,6 +20903,17 @@ fsevents@^1.2.7:
     "@types/react":
       optional: true
   checksum: 871059d1fb186562ad00ff37ac4c20bf32ccff574078cc15fe4f90e61717a26f4a93be91d00ec20dc875b7f3c5046303c543a5ef56a1554ecb08b60fa08c7bd7
+  languageName: node
+  linkType: hard
+
+"react-rnd@npm:^10.3.1":
+  version: 10.3.1
+  resolution: "react-rnd@npm:10.3.1"
+  dependencies:
+    re-resizable: 6.9.0
+    react-draggable: 4.4.3
+    tslib: 2.2.0
+  checksum: 70e696dcc9bb9bab203724355ea0d80e82796c77e44773e89e9c2091cc0398a26c9c2a9e0fe2a5fd3a520b6711770330689d938670c5706d49a2e97e13c07d47
   languageName: node
   linkType: hard
 

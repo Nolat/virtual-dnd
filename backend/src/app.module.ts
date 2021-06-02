@@ -7,6 +7,7 @@ import { Session, User } from "models";
 import { AccountModule } from "modules/account/account.module";
 import { DatabaseModule } from "modules/database/database.module";
 import { GameChatModule } from "modules/game-chat/game-chat.module";
+import { GameRollsModule } from "modules/game-rolls/game-rolls.module";
 import { GameUserModule } from "modules/game-user/game-user.module";
 import { GameModule } from "modules/game/game.module";
 import { SessionModule } from "modules/session/session.module";
@@ -21,6 +22,7 @@ const ENABLE_PLAYGROUND = (process.env.ENABLE_PLAYGROUND as unknown) as boolean;
     AccountModule,
     GameModule,
     GameChatModule,
+    GameRollsModule,
     GameUserModule,
     SessionModule,
     UserModule,

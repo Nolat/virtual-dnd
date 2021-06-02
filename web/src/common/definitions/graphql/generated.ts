@@ -45,6 +45,22 @@ export type CreateUserInput = {
   image: Scalars["String"];
 };
 
+export type DiceResult = {
+  __typename?: "DiceResult";
+  dice: Scalars["Float"];
+  result: Scalars["Float"];
+};
+
+export enum DiceType {
+  D4 = "D4",
+  D6 = "D6",
+  D8 = "D8",
+  D10 = "D10",
+  D12 = "D12",
+  D20 = "D20",
+  D100 = "D100"
+}
+
 export type Game = {
   __typename?: "Game";
   id: Scalars["ID"];
@@ -89,13 +105,7 @@ export type LinkAccountInput = {
   accessTokenExpiresOn: Scalars["DateTime"];
 };
 
-export type Message = {
-  __typename?: "Message";
-  id: Scalars["String"];
-  text: Scalars["String"];
-  gameUser: GameUser;
-  timestamp: Scalars["String"];
-};
+export type Message = UserMessage | RollMessage;
 
 export type Mutation = {
   __typename?: "Mutation";
@@ -109,7 +119,8 @@ export type Mutation = {
   LeaveGame?: Maybe<Scalars["Boolean"]>;
   UpdateGameUserName?: Maybe<GameUser>;
   UpdateGameUserColor?: Maybe<GameUser>;
-  SendMessage?: Maybe<Message>;
+  SendMessage?: Maybe<UserMessage>;
+  RollDice?: Maybe<RollDiceResult>;
   CreateSession?: Maybe<Session>;
   UpdateSession?: Maybe<Session>;
   DeleteSession?: Maybe<Scalars["Boolean"]>;
@@ -159,6 +170,10 @@ export type MutationUpdateGameUserColorArgs = {
 
 export type MutationSendMessageArgs = {
   input: SendMessageInput;
+};
+
+export type MutationRollDiceArgs = {
+  input: RollDiceInput;
 };
 
 export type MutationCreateSessionArgs = {
@@ -218,6 +233,30 @@ export type QueryUserByEmailArgs = {
 
 export type QueryUserByIdArgs = {
   id: Scalars["String"];
+};
+
+export type Roll = {
+  dice: DiceType;
+  count: Scalars["Float"];
+};
+
+export type RollDiceInput = {
+  id: Scalars["String"];
+  rolls: Array<Roll>;
+};
+
+export type RollDiceResult = {
+  __typename?: "RollDiceResult";
+  results: Array<DiceResult>;
+  sum: Scalars["Float"];
+};
+
+export type RollMessage = {
+  __typename?: "RollMessage";
+  id: Scalars["String"];
+  result: RollDiceResult;
+  gameUser: GameUser;
+  timestamp: Scalars["String"];
 };
 
 export type SendMessageInput = {
@@ -281,6 +320,14 @@ export type User = {
   games?: Maybe<Array<Game>>;
 };
 
+export type UserMessage = {
+  __typename?: "UserMessage";
+  id: Scalars["String"];
+  text: Scalars["String"];
+  gameUser: GameUser;
+  timestamp: Scalars["String"];
+};
+
 export type AccountFieldsFragment = { __typename?: "Account" } & Pick<
   Account,
   | "id"
@@ -306,17 +353,31 @@ export type UnlinkAccountMutationVariables = Exact<{
 
 export type UnlinkAccountMutation = { __typename?: "Mutation" } & Pick<Mutation, "UnlinkAccount">;
 
-export type MessageFieldsFragment = { __typename?: "Message" } & Pick<
-  Message,
+type MessageFields_UserMessage_Fragment = { __typename?: "UserMessage" } & Pick<
+  UserMessage,
   "id" | "text" | "timestamp"
 > & { gameUser: { __typename?: "GameUser" } & GameUserFieldsFragment };
+
+type MessageFields_RollMessage_Fragment = { __typename?: "RollMessage" } & Pick<
+  RollMessage,
+  "id" | "timestamp"
+> & {
+    result: { __typename?: "RollDiceResult" } & Pick<RollDiceResult, "sum"> & {
+        results: Array<{ __typename?: "DiceResult" } & Pick<DiceResult, "dice" | "result">>;
+      };
+    gameUser: { __typename?: "GameUser" } & GameUserFieldsFragment;
+  };
+
+export type MessageFieldsFragment =
+  | MessageFields_UserMessage_Fragment
+  | MessageFields_RollMessage_Fragment;
 
 export type SendMessageMutationVariables = Exact<{
   input: SendMessageInput;
 }>;
 
 export type SendMessageMutation = { __typename?: "Mutation" } & {
-  SendMessage?: Maybe<{ __typename?: "Message" } & MessageFieldsFragment>;
+  SendMessage?: Maybe<{ __typename?: "UserMessage" } & MessageFields_UserMessage_Fragment>;
 };
 
 export type GetMessagesQueryVariables = Exact<{
@@ -324,7 +385,14 @@ export type GetMessagesQueryVariables = Exact<{
 }>;
 
 export type GetMessagesQuery = { __typename?: "Query" } & {
-  GetMessages?: Maybe<Array<Maybe<{ __typename?: "Message" } & MessageFieldsFragment>>>;
+  GetMessages?: Maybe<
+    Array<
+      Maybe<
+        | ({ __typename?: "UserMessage" } & MessageFields_UserMessage_Fragment)
+        | ({ __typename?: "RollMessage" } & MessageFields_RollMessage_Fragment)
+      >
+    >
+  >;
 };
 
 export type OnMessageReceivedSubscriptionVariables = Exact<{
@@ -332,7 +400,22 @@ export type OnMessageReceivedSubscriptionVariables = Exact<{
 }>;
 
 export type OnMessageReceivedSubscription = { __typename?: "Subscription" } & {
-  messageReceived?: Maybe<{ __typename?: "Message" } & MessageFieldsFragment>;
+  messageReceived?: Maybe<
+    | ({ __typename?: "UserMessage" } & MessageFields_UserMessage_Fragment)
+    | ({ __typename?: "RollMessage" } & MessageFields_RollMessage_Fragment)
+  >;
+};
+
+export type RollDiceMutationVariables = Exact<{
+  input: RollDiceInput;
+}>;
+
+export type RollDiceMutation = { __typename?: "Mutation" } & {
+  RollDice?: Maybe<
+    { __typename?: "RollDiceResult" } & Pick<RollDiceResult, "sum"> & {
+        results: Array<{ __typename?: "DiceResult" } & Pick<DiceResult, "dice" | "result">>;
+      }
+  >;
 };
 
 export type GameUserFieldsFragment = { __typename?: "GameUser" } & Pick<
@@ -553,12 +636,28 @@ export const GameUserFieldsFragmentDoc = gql`
 `;
 export const MessageFieldsFragmentDoc = gql`
   fragment MessageFields on Message {
-    id
-    gameUser {
-      ...GameUserFields
+    ... on UserMessage {
+      id
+      text
+      gameUser {
+        ...GameUserFields
+      }
+      timestamp
     }
-    text
-    timestamp
+    ... on RollMessage {
+      id
+      result {
+        results {
+          dice
+          result
+        }
+        sum
+      }
+      gameUser {
+        ...GameUserFields
+      }
+      timestamp
+    }
   }
   ${GameUserFieldsFragmentDoc}
 `;
@@ -803,6 +902,51 @@ export type OnMessageReceivedSubscriptionHookResult = ReturnType<
   typeof useOnMessageReceivedSubscription
 >;
 export type OnMessageReceivedSubscriptionResult = Apollo.SubscriptionResult<OnMessageReceivedSubscription>;
+export const RollDiceDocument = gql`
+  mutation RollDice($input: RollDiceInput!) {
+    RollDice(input: $input) {
+      results {
+        dice
+        result
+      }
+      sum
+    }
+  }
+`;
+export type RollDiceMutationFn = Apollo.MutationFunction<
+  RollDiceMutation,
+  RollDiceMutationVariables
+>;
+
+/**
+ * __useRollDiceMutation__
+ *
+ * To run a mutation, you first call `useRollDiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRollDiceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rollDiceMutation, { data, loading, error }] = useRollDiceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRollDiceMutation(
+  baseOptions?: Apollo.MutationHookOptions<RollDiceMutation, RollDiceMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RollDiceMutation, RollDiceMutationVariables>(RollDiceDocument, options);
+}
+export type RollDiceMutationHookResult = ReturnType<typeof useRollDiceMutation>;
+export type RollDiceMutationResult = Apollo.MutationResult<RollDiceMutation>;
+export type RollDiceMutationOptions = Apollo.BaseMutationOptions<
+  RollDiceMutation,
+  RollDiceMutationVariables
+>;
 export const GameUserDocument = gql`
   query GameUser($id: String!) {
     GameUser(id: $id) {
@@ -1707,6 +1851,11 @@ export type AccountFieldPolicy = {
   accessToken?: FieldPolicy<any> | FieldReadFunction<any>;
   accessTokenExpiresOn?: FieldPolicy<any> | FieldReadFunction<any>;
 };
+export type DiceResultKeySpecifier = ("dice" | "result" | DiceResultKeySpecifier)[];
+export type DiceResultFieldPolicy = {
+  dice?: FieldPolicy<any> | FieldReadFunction<any>;
+  result?: FieldPolicy<any> | FieldReadFunction<any>;
+};
 export type GameKeySpecifier = (
   | "id"
   | "name"
@@ -1752,19 +1901,6 @@ export type GameUserInfoFieldPolicy = {
   hasJoined?: FieldPolicy<any> | FieldReadFunction<any>;
   hasPassword?: FieldPolicy<any> | FieldReadFunction<any>;
 };
-export type MessageKeySpecifier = (
-  | "id"
-  | "text"
-  | "gameUser"
-  | "timestamp"
-  | MessageKeySpecifier
-)[];
-export type MessageFieldPolicy = {
-  id?: FieldPolicy<any> | FieldReadFunction<any>;
-  text?: FieldPolicy<any> | FieldReadFunction<any>;
-  gameUser?: FieldPolicy<any> | FieldReadFunction<any>;
-  timestamp?: FieldPolicy<any> | FieldReadFunction<any>;
-};
 export type MutationKeySpecifier = (
   | "LinkAccount"
   | "UnlinkAccount"
@@ -1777,6 +1913,7 @@ export type MutationKeySpecifier = (
   | "UpdateGameUserName"
   | "UpdateGameUserColor"
   | "SendMessage"
+  | "RollDice"
   | "CreateSession"
   | "UpdateSession"
   | "DeleteSession"
@@ -1794,6 +1931,7 @@ export type MutationFieldPolicy = {
   UpdateGameUserName?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateGameUserColor?: FieldPolicy<any> | FieldReadFunction<any>;
   SendMessage?: FieldPolicy<any> | FieldReadFunction<any>;
+  RollDice?: FieldPolicy<any> | FieldReadFunction<any>;
   CreateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   UpdateSession?: FieldPolicy<any> | FieldReadFunction<any>;
   DeleteSession?: FieldPolicy<any> | FieldReadFunction<any>;
@@ -1822,6 +1960,24 @@ export type QueryFieldPolicy = {
   UserById?: FieldPolicy<any> | FieldReadFunction<any>;
   Users?: FieldPolicy<any> | FieldReadFunction<any>;
   me?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type RollDiceResultKeySpecifier = ("results" | "sum" | RollDiceResultKeySpecifier)[];
+export type RollDiceResultFieldPolicy = {
+  results?: FieldPolicy<any> | FieldReadFunction<any>;
+  sum?: FieldPolicy<any> | FieldReadFunction<any>;
+};
+export type RollMessageKeySpecifier = (
+  | "id"
+  | "result"
+  | "gameUser"
+  | "timestamp"
+  | RollMessageKeySpecifier
+)[];
+export type RollMessageFieldPolicy = {
+  id?: FieldPolicy<any> | FieldReadFunction<any>;
+  result?: FieldPolicy<any> | FieldReadFunction<any>;
+  gameUser?: FieldPolicy<any> | FieldReadFunction<any>;
+  timestamp?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type SessionKeySpecifier = (
   | "id"
@@ -1870,10 +2026,27 @@ export type UserFieldPolicy = {
   updatedAt?: FieldPolicy<any> | FieldReadFunction<any>;
   games?: FieldPolicy<any> | FieldReadFunction<any>;
 };
+export type UserMessageKeySpecifier = (
+  | "id"
+  | "text"
+  | "gameUser"
+  | "timestamp"
+  | UserMessageKeySpecifier
+)[];
+export type UserMessageFieldPolicy = {
+  id?: FieldPolicy<any> | FieldReadFunction<any>;
+  text?: FieldPolicy<any> | FieldReadFunction<any>;
+  gameUser?: FieldPolicy<any> | FieldReadFunction<any>;
+  timestamp?: FieldPolicy<any> | FieldReadFunction<any>;
+};
 export type TypedTypePolicies = TypePolicies & {
   Account?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | AccountKeySpecifier | (() => undefined | AccountKeySpecifier);
     fields?: AccountFieldPolicy;
+  };
+  DiceResult?: Omit<TypePolicy, "fields" | "keyFields"> & {
+    keyFields?: false | DiceResultKeySpecifier | (() => undefined | DiceResultKeySpecifier);
+    fields?: DiceResultFieldPolicy;
   };
   Game?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | GameKeySpecifier | (() => undefined | GameKeySpecifier);
@@ -1887,10 +2060,6 @@ export type TypedTypePolicies = TypePolicies & {
     keyFields?: false | GameUserInfoKeySpecifier | (() => undefined | GameUserInfoKeySpecifier);
     fields?: GameUserInfoFieldPolicy;
   };
-  Message?: Omit<TypePolicy, "fields" | "keyFields"> & {
-    keyFields?: false | MessageKeySpecifier | (() => undefined | MessageKeySpecifier);
-    fields?: MessageFieldPolicy;
-  };
   Mutation?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | MutationKeySpecifier | (() => undefined | MutationKeySpecifier);
     fields?: MutationFieldPolicy;
@@ -1898,6 +2067,14 @@ export type TypedTypePolicies = TypePolicies & {
   Query?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | QueryKeySpecifier | (() => undefined | QueryKeySpecifier);
     fields?: QueryFieldPolicy;
+  };
+  RollDiceResult?: Omit<TypePolicy, "fields" | "keyFields"> & {
+    keyFields?: false | RollDiceResultKeySpecifier | (() => undefined | RollDiceResultKeySpecifier);
+    fields?: RollDiceResultFieldPolicy;
+  };
+  RollMessage?: Omit<TypePolicy, "fields" | "keyFields"> & {
+    keyFields?: false | RollMessageKeySpecifier | (() => undefined | RollMessageKeySpecifier);
+    fields?: RollMessageFieldPolicy;
   };
   Session?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | SessionKeySpecifier | (() => undefined | SessionKeySpecifier);
@@ -1910,5 +2087,9 @@ export type TypedTypePolicies = TypePolicies & {
   User?: Omit<TypePolicy, "fields" | "keyFields"> & {
     keyFields?: false | UserKeySpecifier | (() => undefined | UserKeySpecifier);
     fields?: UserFieldPolicy;
+  };
+  UserMessage?: Omit<TypePolicy, "fields" | "keyFields"> & {
+    keyFields?: false | UserMessageKeySpecifier | (() => undefined | UserMessageKeySpecifier);
+    fields?: UserMessageFieldPolicy;
   };
 };

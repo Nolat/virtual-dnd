@@ -1,0 +1,9 @@
+mutation RollDice($input: RollDiceInput!) {
+  RollDice(input: $input) {
+    results {
+      dice
+      result
+    }
+    sum
+  }
+}

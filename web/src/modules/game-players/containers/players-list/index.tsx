@@ -41,7 +41,7 @@ export const PlayersList: React.FC = () => {
             key={index}
             name={player.name}
             color={player.color}
-            isMe={meData?.me.id === player.user.id}
+            isMe={meData?.me?.id === player.user.id}
           />
         );
       })}

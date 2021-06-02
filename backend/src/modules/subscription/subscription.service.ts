@@ -1,6 +1,6 @@
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 
-import { Message } from "modules/game-chat/game-chat.output";
+import { RollMessage, UserMessage } from "modules/game-chat/game-chat.output";
 import { GameService } from "modules/game/game.service";
 import { pubSub } from "utils/pub-sub";
 
@@ -16,7 +16,7 @@ export class SubscriptionService {
     await pubSub.publish(`onlinePlayersChanged-${gameId}`, { onlinePlayersChanged: onlinePlayers });
   }
 
-  async updateChatMessages(gameId: string, message: Message) {
+  async updateChatMessages(gameId: string, message: UserMessage | RollMessage) {
     await pubSub.publish(`messageReceived-${gameId}`, { messageReceived: message });
   }
 }

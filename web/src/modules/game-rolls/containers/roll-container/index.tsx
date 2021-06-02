@@ -1,43 +1,27 @@
 import { Badge, Box, Button, Flex, HStack } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 
-import { IconButton } from "common/components";
-import { D100Icon, D10Icon, D12Icon, D20Icon, D4Icon, D6Icon, D8Icon } from "common/components/svg";
+import { DiceIcon, IconButton } from "common/components";
+import { useRollDiceMutation } from "common/definitions/graphql/generated";
 import { OpenRollButton } from "modules/game-rolls/components";
-import { RollType, useRollStore } from "modules/game-rolls/store/useRollStore";
-
-const RollIcon: React.FC<{ type: RollType }> = ({ type }) => {
-  switch (type) {
-    case RollType.D4:
-      return <D4Icon />;
-
-    case RollType.D6:
-      return <D6Icon />;
-
-    case RollType.D8:
-      return <D8Icon />;
-
-    case RollType.D10:
-      return <D10Icon />;
-
-    case RollType.D12:
-      return <D12Icon />;
-
-    case RollType.D20:
-      return <D20Icon />;
-
-    case RollType.D100:
-      return <D100Icon />;
-
-    default:
-      return <></>;
-  }
-};
+import { useRollStore } from "modules/game-rolls/store/useRollStore";
 
 export const RollContainer: React.FC = () => {
+  const router = useRouter();
+  const id = router.query.id as string;
+
   const { isContainerOpen, rolls, incrementCount, resetCount } = useRollStore();
 
   const hasCount = rolls.filter((r) => r.count > 0).length;
+
+  const [rollDice, { loading }] = useRollDiceMutation();
+
+  const onClick = async () => {
+    const { data } = await rollDice({ variables: { input: { id, rolls } } });
+
+    if (data) resetCount();
+  };
 
   return (
     <Flex>
@@ -52,16 +36,16 @@ export const RollContainer: React.FC = () => {
           }}
         >
           <HStack overflow="hidden" spacing={3} mx={14} mt={-3} p={3}>
-            {rolls.map(({ type, count }) => {
+            {rolls.map(({ dice, count }) => {
               return (
-                <Box key={type} position="relative">
+                <Box key={dice} position="relative">
                   <IconButton
                     variant="solid"
-                    icon={<RollIcon type={type} />}
-                    aria-label={type}
-                    tooltip={type}
+                    icon={<DiceIcon dice={dice} />}
+                    aria-label={dice}
+                    tooltip={dice}
                     tooltipPlacement="top"
-                    onClick={() => incrementCount(type)}
+                    onClick={() => incrementCount(dice)}
                   />
                   {count > 0 && (
                     <Badge
@@ -81,7 +65,7 @@ export const RollContainer: React.FC = () => {
               );
             })}
 
-            <Button disabled={!hasCount} onClick={resetCount}>
+            <Button disabled={!hasCount} onClick={onClick} isLoading={loading}>
               Lancer
             </Button>
           </HStack>

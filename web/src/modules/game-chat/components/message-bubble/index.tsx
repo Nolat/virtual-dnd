@@ -6,9 +6,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   isMine,
   userColor,
   userName,
-  text,
   timestamp,
-  sameSenderThanPrevious
+  sameSenderThanPrevious,
+  children
 }) => {
   const bg = useColorModeValue("gray.100", "gray.800");
   const bgMine = useColorModeValue("gray.200", "gray.700");
@@ -38,10 +38,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           borderRadius={12}
           mr={isMine ? null : "auto"}
           ml={isMine ? "auto" : null}
+          maxWidth={400}
         >
-          <Text fontSize="sm" maxWidth={400} color={color}>
-            {text}
-          </Text>
+          {children}
           <Flex
             mr={isMine ? null : "auto"}
             ml={isMine ? "auto" : null}
@@ -64,7 +63,6 @@ export interface MessageBubbleProps {
   isMine: boolean;
   userColor: string;
   userName: string;
-  text: string;
   timestamp: string;
   sameSenderThanPrevious: boolean;
 }

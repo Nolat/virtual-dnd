@@ -1,0 +1,5 @@
+query GetMessages($id: String!) {
+  GetMessages(id: $id) @client {
+    ...MessageFields
+  }
+}

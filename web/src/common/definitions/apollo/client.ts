@@ -2,6 +2,7 @@ import { ApolloClient, HttpLink, split } from "@apollo/client";
 import { NormalizedCacheObject } from "@apollo/client/cache";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
+import { LocalStorageWrapper, persistCache } from "apollo3-cache-persist";
 import { useMemo } from "react";
 
 import cache from "./cache";
@@ -43,6 +44,13 @@ const createClient = () => {
 
 let client: ApolloClient<NormalizedCacheObject> | undefined;
 const initializeClient = (initialState?: NormalizedCacheObject) => {
+  if (process.browser)
+    persistCache({
+      cache,
+      debug: true,
+      storage: new LocalStorageWrapper(window.localStorage)
+    });
+
   const apolloClient = client ?? createClient();
 
   if (initialState) {

@@ -66,7 +66,7 @@ export class GameService {
   }
 
   async connectUserToGame(gameId: string, userId: string) {
-    const gameUser = await this.gameUserService.findByGameAndUser(gameId, userId);
+    const gameUser = await this.gameUserService.findByGameAndUser({ gameId, userId });
 
     try {
       const list =
@@ -84,7 +84,7 @@ export class GameService {
   }
 
   async disconnectUserFromGame(gameId: string, userId: string) {
-    const gameUser = await this.gameUserService.findByGameAndUser(gameId, userId);
+    const gameUser = await this.gameUserService.findByGameAndUser({ gameId, userId });
 
     try {
       const list: string[] =

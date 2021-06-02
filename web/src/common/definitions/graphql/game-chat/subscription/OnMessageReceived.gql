@@ -1,0 +1,5 @@
+subscription OnMessageReceived($id: String!) {
+  messageReceived(id: $id) {
+    ...MessageFields
+  }
+}

@@ -48,11 +48,7 @@ export const PlayerColorPickerModal: React.FC = () => {
       </ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        <SliderPicker
-          color={color}
-          onChange={(color) => setColor(color.hex)}
-          onClick={(e) => console.log({ e })}
-        />
+        <SliderPicker color={color} onChange={(color) => setColor(color.hex)} />
       </ModalBody>
       <ModalFooter>
         <Shake active={hasError} fixed type="hard" style={{ width: "100%" }}>

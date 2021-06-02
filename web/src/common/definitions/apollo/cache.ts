@@ -2,6 +2,8 @@ import { InMemoryCache } from "@apollo/client";
 
 import { TypedTypePolicies } from "../graphql/generated";
 
+// export const messagesVar = makeVar<MessageFieldsFragment[]>([]);
+
 const typePolicies: TypedTypePolicies = {
   Query: {
     fields: {
@@ -10,6 +12,11 @@ const typePolicies: TypedTypePolicies = {
           return incoming;
         }
       }
+      // GetMessages: {
+      //   read() {
+      //     return messagesVar();
+      //   }
+      // }
     }
   },
   Subscription: {

@@ -1,5 +1,7 @@
 overwrite: true
-schema: ${SCHEMA_PATH}
+schema: 
+  - ${SCHEMA_PATH}
+  - "src/common/definitions/graphql/LocalSchema.gql"
 documents: "src/common/definitions/graphql/**/*.gql"
 generates:
   src/common/definitions/graphql/generated.ts:

@@ -14,6 +14,12 @@ export class GameUserResolver {
   constructor(private readonly gameUserService: GameUserService) {}
 
   @UseGuards(AuthGuard)
+  @Query(() => GameUser, { name: "GameUser", nullable: true })
+  async getGameUser(@CurrentUser() user: User, @Args("id") id: string): Promise<GameUser> {
+    return this.gameUserService.findByGameAndUser({ gameId: id, userId: user.id });
+  }
+
+  @UseGuards(AuthGuard)
   @Query(() => GameUserInfo, { name: "GameUserInfo", nullable: true })
   async getGameUserInfo(@CurrentUser() user: User, @Args("id") id: string): Promise<GameUserInfo> {
     return this.gameUserService.getInfo(user, id);

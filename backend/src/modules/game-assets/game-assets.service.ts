@@ -13,10 +13,11 @@ export class GameAssetsService {
   uploadAssets({ createReadStream, filename }: FileUpload) {
     // TODO : Changer le filename et y ajouter un hash aléatoire
     // ? Si 2 personnes upload une image différente avec un même nom, la 2e image remplacera la première sur GCloud
-
+    const nameSplit = filename.split(".");
+    const name = nameSplit[0] + "-" + new Date().getTime() + "." + nameSplit[1];
     createReadStream()
       .pipe(
-        storage.bucket(bucketName).file(filename).createWriteStream({
+        storage.bucket(bucketName).file(name).createWriteStream({
           resumable: false,
           gzip: true
         })
@@ -24,7 +25,7 @@ export class GameAssetsService {
       .on("finish", () =>
         storage
           .bucket(bucketName)
-          .file(filename)
+          .file(name)
           .get()
           .then((e) => console.log({ e }))
       );

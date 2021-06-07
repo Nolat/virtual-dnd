@@ -1,8 +1,25 @@
 fragment MessageFields on Message {
-  id
-  gameUser {
-    ...GameUserFields
+  ... on UserMessage {
+    id
+    text
+    gameUser {
+      ...GameUserFields
+    }
+    timestamp
   }
-  text
-  timestamp
+
+  ... on RollMessage {
+    id
+    result {
+      results {
+        dice
+        result
+      }
+      sum
+    }
+    gameUser {
+      ...GameUserFields
+    }
+    timestamp
+  }
 }

@@ -23,11 +23,14 @@ export const SendMessageInput: React.FC = () => {
 
   const onSubmit = async () => {
     if (text === "") return;
+
+    setText("");
+
     await sendMessage({
       variables: { input: { id, text } },
       optimisticResponse: {
         SendMessage: {
-          __typename: "Message",
+          __typename: "UserMessage",
           id: "tmp",
           text,
           timestamp: new Date().toISOString(),
@@ -41,7 +44,7 @@ export const SendMessageInput: React.FC = () => {
           setTimeout(() => {
             setHasError(false);
           }, 250);
-        } else {
+        } else if (data?.SendMessage) {
           const cachedData = cache.readQuery<GetMessagesQuery>({
             query: GetMessagesDocument,
             variables: { id }
@@ -58,8 +61,6 @@ export const SendMessageInput: React.FC = () => {
               ]
             }
           });
-
-          setText("");
         }
       }
     });

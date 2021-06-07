@@ -1,8 +1,7 @@
 import { InMemoryCache } from "@apollo/client";
 
+import fragmentMatcher from "../graphql/fragment-matcher";
 import { TypedTypePolicies } from "../graphql/generated";
-
-// export const messagesVar = makeVar<MessageFieldsFragment[]>([]);
 
 const typePolicies: TypedTypePolicies = {
   Query: {
@@ -12,11 +11,6 @@ const typePolicies: TypedTypePolicies = {
           return incoming;
         }
       }
-      // GetMessages: {
-      //   read() {
-      //     return messagesVar();
-      //   }
-      // }
     }
   },
   Subscription: {
@@ -31,7 +25,8 @@ const typePolicies: TypedTypePolicies = {
 };
 
 const cache = new InMemoryCache({
-  typePolicies
+  typePolicies,
+  possibleTypes: fragmentMatcher.possibleTypes
 });
 
 export default cache;

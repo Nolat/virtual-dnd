@@ -20,6 +20,7 @@ import {
 import { ChatBox } from "modules/game-chat/components";
 import { SelectMapButton } from "modules/game-map/components";
 import { PlayersList } from "modules/game-players/containers";
+import { RollContainer } from "modules/game-rolls/containers";
 import { InvitePlayersButton, Sidebar, Topbar } from "modules/game/components";
 import { Board, GameContainer } from "modules/game/containers";
 import { ModalController } from "modules/modals/containers";
@@ -85,6 +86,7 @@ const Game: React.FC<GameProps> = ({ id, name, masterId }) => {
 
       <Sidebar side="left">
         <Stack spacing={4} alignSelf="flex-end">
+          <RollContainer />
           {isMaster && <SelectMapButton />}
           <InvitePlayersButton />
           <ColorModeButton />
@@ -116,7 +118,7 @@ export const getServerSideProps: GetServerSideProps<GameProps> = async (ctx) => 
   }
 
   return {
-    props: { id, name: data.Game.name, masterId: data.Game.master.id ?? "" }
+    props: { id, name: data.Game.name, masterId: data?.Game?.master?.id ?? "" }
   };
 };
 

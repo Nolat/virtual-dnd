@@ -77,7 +77,12 @@ export const ChatBox: React.FC = () => {
   useOnMessageReceivedSubscription({
     variables: { id },
     onSubscriptionData: ({ subscriptionData }) => {
-      if (subscriptionData?.data?.messageReceived?.gameUser?.user?.id === meData?.me?.id) return;
+      if (
+        !subscriptionData?.data?.messageReceived ||
+        (subscriptionData?.data?.messageReceived?.__typename === "UserMessage" &&
+          subscriptionData?.data?.messageReceived?.gameUser?.user?.id === meData?.me?.id)
+      )
+        return;
 
       if (!isOpen) inc();
 
@@ -91,7 +96,7 @@ export const ChatBox: React.FC = () => {
         variables: { id },
         data: {
           ...cachedData,
-          GetMessages: [...cachedData.GetMessages, subscriptionData.data.messageReceived]
+          GetMessages: [...cachedData?.GetMessages, subscriptionData?.data?.messageReceived]
         }
       });
     }

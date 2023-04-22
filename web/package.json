@@ -107,7 +107,7 @@
     "nock": "^13.0.6",
     "prettier": "^2.2.1",
     "prettier-plugin-import-sort": "^0.0.6",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.1.5",
     "start-server-and-test": "^1.11.0",
     "style-loader": "^2.0.0",
     "ts-jest": "^26.4.4",
